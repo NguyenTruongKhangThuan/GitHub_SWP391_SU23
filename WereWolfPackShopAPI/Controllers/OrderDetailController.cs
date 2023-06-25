@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WereWolfPackShopAPI.Services.OderDetailService;
 using WereWolfPackShopAPI.Services.OrderService;
-using WereWolfPackShopAPI.TempModels2;
+using WereWolfPackShopAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

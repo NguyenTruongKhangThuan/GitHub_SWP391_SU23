@@ -1,5 +1,5 @@
 ﻿using Microsoft.Identity.Client.Extensibility;
-using WereWolfPackShopAPI.TempModels2;
+using WereWolfPackShopAPI.Models;
 
 namespace WereWolfPackShopAPI.Services.OderDetailService
 {

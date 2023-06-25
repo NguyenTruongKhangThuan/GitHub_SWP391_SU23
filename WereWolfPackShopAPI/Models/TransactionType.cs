@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WereWolfPackShopAPI.TempModels2;
+namespace WereWolfPackShopAPI.Models;
 
 public partial class TransactionType
 {

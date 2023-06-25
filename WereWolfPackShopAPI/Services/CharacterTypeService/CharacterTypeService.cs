@@ -1,5 +1,5 @@
 ﻿using WereWolfPackShopAPI.Services.ImageService;
-using WereWolfPackShopAPI.TempModels2;
+using WereWolfPackShopAPI.Models;
 
 namespace WereWolfPackShopAPI.Services.CharacterTypeService
 {

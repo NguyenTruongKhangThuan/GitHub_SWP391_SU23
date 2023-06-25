@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace WereWolfPackShopAPI.TempModels2;
+namespace WereWolfPackShopAPI.Models;
 
 public partial class WereWolfPackShopDbContext : DbContext
 {
@@ -35,7 +35,7 @@ public partial class WereWolfPackShopDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=MSI\\SERVER1;User ID=sa;Password=12345;Database=WereWolfPackShopDB;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("workstation id=WereWolfPackShopDB.mssql.somee.com;packet size=4096;user id=HNTDuong_SQLLogin_1;pwd=12345678;data source=WereWolfPackShopDB.mssql.somee.com;persist security info=False;initial catalog=WereWolfPackShopDB;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,7 +48,6 @@ public partial class WereWolfPackShopDbContext : DbContext
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.Image).HasMaxLength(50);
             entity.Property(e => e.ProductId).HasMaxLength(50);
-            entity.Property(e => e.NumberOfCharacter).HasColumnType("integer");
 
             entity.HasOne(d => d.Product).WithMany(p => p.CharacterTypes)
                 .HasForeignKey(d => d.ProductId)
@@ -125,7 +124,6 @@ public partial class WereWolfPackShopDbContext : DbContext
             entity.Property(e => e.ProductId).HasMaxLength(50);
             entity.Property(e => e.Title).HasColumnType("text");
             entity.Property(e => e.UserId).HasMaxLength(50);
-            entity.Property(e => e.Ranking).HasColumnType("integer");
 
             entity.HasOne(d => d.Product).WithMany(p => p.ProductComments)
                 .HasForeignKey(d => d.ProductId)

@@ -7,7 +7,7 @@ using WereWolfPackShopAPI.Services.OrderService;
 using WereWolfPackShopAPI.Services.ProductService;
 using WereWolfPackShopAPI.Services.TransactionService;
 using WereWolfPackShopAPI.Services.UserService;
-using WereWolfPackShopAPI.TempModels2;
+using WereWolfPackShopAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

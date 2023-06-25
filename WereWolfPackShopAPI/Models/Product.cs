@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WereWolfPackShopAPI.TempModels2;
+namespace WereWolfPackShopAPI.Models;
 
 public partial class Product
 {
