@@ -1,43 +1,45 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WereWolfPackShopAPI.Services.ProductService;
+using WereWolfPackShopAPI.TempModels2;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WereWolfPackShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     [ApiController]
     public class ProductController : ControllerBase
     {
-        // GET: api/<ProductController>
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService)
+        {
+            _productService = productService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult GetAllProducts()
         {
-            return new string[] { "value1", "value2" };
+            List<Product> products = _productService.GetAllProducts();
+            if(products == null)
+            {
+                return BadRequest("Error");
+            }
+            return Ok(products);
         }
 
-        // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetProductById(string id)
         {
-            return "value";
-        }
-
-        // POST api/<ProductController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            Product product = _productService.GetProductById(id);
+            if(product == null)
+            {
+                return BadRequest("Error");
+            }
+            if (product.ProductId == null)
+            {
+                return BadRequest("Not Found/Unavailable");
+            }
+                return Ok(product);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace WereWolfPackShopAPI.Services.OrderService
     {
         Order GetOrderById(string orderId);
 
-        string CreateOrder(Order order);
+        string CreateOrder(string userId, Order order);
 
         string DeleteOrder(string orderId);
     }

@@ -1,43 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WereWolfPackShopAPI.Services.OrderService;
+using WereWolfPackShopAPI.TempModels2;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WereWolfPackShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/orders")]
     [ApiController]
     public class OrderController : ControllerBase
     {
-        // GET: api/<OrderController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IOrderService _orderService;
+        public OrderController(IOrderService orderService)
         {
-            return new string[] { "value1", "value2" };
+            _orderService = orderService;
         }
-
-        // GET api/<OrderController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<OrderController>
+        
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(string userId, Order order)
         {
+            string result = _orderService.CreateOrder(userId, order);
+            if (result.Equals("Success"))
+            {
+                return Ok("Create Complete");
+            }
+            return BadRequest(result);
         }
 
-        // PUT api/<OrderController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete]
+        public IActionResult Delete(string orderId)
         {
-        }
-
-        // DELETE api/<OrderController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            string result = _orderService.DeleteOrder(orderId);
+            if (result.Equals("Success"))
+            {
+                return Ok("Delete Complete");
+            }
+            return BadRequest(result);
         }
     }
 }

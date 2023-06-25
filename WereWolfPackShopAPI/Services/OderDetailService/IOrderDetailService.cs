@@ -1,4 +1,4 @@
-﻿using WereWolfPackShopAPI.TempModels2;
+﻿    using WereWolfPackShopAPI.TempModels2;
 
 namespace WereWolfPackShopAPI.Services.OderDetailService
 {
@@ -8,7 +8,7 @@ namespace WereWolfPackShopAPI.Services.OderDetailService
 
         string CreateOrderDetail(string orderId, OrderDetail orderDetail);
 
-        string UpdateOrderDetail(string orderId, OrderDetail orderDetail);
+        string UpdateOrderDetail(string orderDetailId, OrderDetail orderDetail);
 
         string DeleteOrderDetail(string orderDetailId);
 

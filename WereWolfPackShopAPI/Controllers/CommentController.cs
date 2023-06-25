@@ -1,43 +1,63 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WereWolfPackShopAPI.Services.CommentService;
+using WereWolfPackShopAPI.TempModels2;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WereWolfPackShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/comments")]
     [ApiController]
     public class CommentController : ControllerBase
     {
-        // GET: api/<CommentController>
+        private readonly ICommentService _commentService;
+        public CommentController(ICommentService commentService)
+        {
+            _commentService = commentService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult GetProductComments(string productId)
         {
-            return new string[] { "value1", "value2" };
+            List<ProductComment> productComments = _commentService.GetProductComments(productId);
+            if(productComments == null)
+            {
+                return BadRequest("Not Found");
+            }
+            return Ok(productComments);
         }
 
-        // GET api/<CommentController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<CommentController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult CreateComment(string productId, [FromForm] ProductComment productComment)
         {
+            string result = _commentService.CreateComment(productId, productComment);
+            if (result.Equals("Success"))
+            {
+                return Ok("Create Complete");
+            }
+            return Ok(result);
         }
 
-        // PUT api/<CommentController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete]
+        public IActionResult Delete(string commnentId)
         {
+            string result = _commentService.DeleteComment(commnentId);
+            if (result.Equals("Success"))
+            {
+                return Ok("Delete Complete");
+            }
+            return BadRequest(result);
         }
 
-        // DELETE api/<CommentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPut]
+        public IActionResult Ranking(string commentId,int id)
         {
+            string result = _commentService.Ranking(commentId, id);
+            if (result.Equals("Success"))
+            {
+                return Ok("Ranked");
+            }
+            return Ok(result);
         }
     }
 }

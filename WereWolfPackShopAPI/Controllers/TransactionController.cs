@@ -1,43 +1,52 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WereWolfPackShopAPI.Services.TransactionService;
+using WereWolfPackShopAPI.TempModels2;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WereWolfPackShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/transactions")]
     [ApiController]
     public class TransactionController : ControllerBase
     {
-        // GET: api/<TransactionController>
+        private readonly ITransactionService _transactionService;
+        public TransactionController(ITransactionService transactionService)
+        {
+            _transactionService = transactionService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get(string userId)
         {
-            return new string[] { "value1", "value2" };
+            List<Transaction> transactions = _transactionService.GetTransactions(userId);
+            if(transactions == null)
+            {
+                return BadRequest("Error");
+            }
+            return Ok(transactions);
         }
 
-        // GET api/<TransactionController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<TransactionController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(string userId, string orderId, [FromForm] Transaction transaction)
         {
+            string result = _transactionService.CreateTransaction(userId, orderId, transaction);
+            if (result.Equals("Success"))
+            {
+                return Ok("Create Complete");
+            }
+            return Ok(result);
         }
 
-        // PUT api/<TransactionController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete]
+        public IActionResult Delete(string transactionIsd)
         {
-        }
-
-        // DELETE api/<TransactionController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            string result = _transactionService.DeleteTransaction(transactionIsd);
+            if(result.Equals("Success"))
+            {
+                return Ok("Delete Complete");
+            }
+            return BadRequest(result);
         }
     }
 }

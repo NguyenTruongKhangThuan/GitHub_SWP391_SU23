@@ -6,7 +6,9 @@ namespace WereWolfPackShopAPI.Services.TransactionService
     {
         List<Transaction> GetAllTransactions();
 
-        string CreateTransaction(string orderId, Transaction transaction);
+        List<Transaction> GetTransactions(string userId);
+
+        string CreateTransaction(string userId, string orderId, Transaction transaction);
 
         string DeleteTransaction(string transactionId);
 

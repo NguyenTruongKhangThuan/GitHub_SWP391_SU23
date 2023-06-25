@@ -1,4 +1,5 @@
-﻿using WereWolfPackShopAPI.TempModels2;
+﻿using Microsoft.Identity.Client.Extensibility;
+using WereWolfPackShopAPI.TempModels2;
 
 namespace WereWolfPackShopAPI.Services.OderDetailService
 {
@@ -22,7 +23,7 @@ namespace WereWolfPackShopAPI.Services.OderDetailService
                     Random random = new Random();
                     id += random.Next(1, 10000000);
 
-                    if(_dbContext.OrderDetails.Find(id) != null)
+                    if (_dbContext.OrderDetails.Find(id) != null)
                     {
                         id = "OD";
                     }
@@ -30,7 +31,7 @@ namespace WereWolfPackShopAPI.Services.OderDetailService
                     {
                         check = false;
                     }
-                }while (check);
+                } while (check);
 
                 orderDetail.OrderId = id;
                 orderDetail.OrderId = orderId;
@@ -46,12 +47,48 @@ namespace WereWolfPackShopAPI.Services.OderDetailService
 
         public string DeleteByOrderId(string orderId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<OrderDetail> orderDetails = GetOrderDetails(orderId);
+                if (orderDetails.Count > 0)
+                {
+                    foreach (OrderDetail orderDetail in orderDetails)
+                    {
+                        _dbContext.OrderDetails.Remove(orderDetail);
+                    }
+                    return "Success";
+                }
+                else
+                {
+                    return "Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public string DeleteOrderDetail(string orderDetailId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                OrderDetail orderDetail = _dbContext.OrderDetails.Find(orderDetailId);
+                if(orderDetail != null)
+                {
+                    _dbContext.OrderDetails.Remove(orderDetail);
+                    _dbContext.SaveChanges();
+                    return "Success";
+                }
+                else
+                {
+                    return "Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public List<OrderDetail> GetOrderDetails(string orderId)
@@ -67,9 +104,26 @@ namespace WereWolfPackShopAPI.Services.OderDetailService
             }
         }
 
-        public string UpdateOrderDetail(string orderId, OrderDetail orderDetail)
+        public string UpdateOrderDetail(string orderDetailId, OrderDetail orderDetail)
         {
-            throw new NotImplementedException();
+            try
+            {
+                OrderDetail updatedOrderDetail = _dbContext.OrderDetails.Find(orderDetailId);
+                if(updatedOrderDetail != null)
+                {
+                    updatedOrderDetail.Amount = orderDetail.Amount;
+                    _dbContext.SaveChanges();
+                    return "Success";
+                }
+                else
+                {
+                    return "Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }
