@@ -1,43 +1,75 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BoardGameShopAPI.Services.OrderService;
+using BoardGameShopAPI.TempModels2;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BoardGameShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/orders")]
     [ApiController]
     public class OrderController : ControllerBase
     {
-        // GET: api/<OrderController>
+        private readonly IOrderService _orderService;
+        public OrderController(IOrderService orderService)
+        {
+            _orderService = orderService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get(string orderId)
         {
-            return new string[] { "value1", "value2" };
+            Order order = _orderService.GetOrders(orderId);
+            if(order == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            else
+            {
+                if(order.OrderId == null)
+                {
+                    return BadRequest("Not Found");
+                }
+                else
+                {
+                    return Ok(order);
+                }
+            }
         }
 
-        // GET api/<OrderController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<OrderController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult CreateOrder(Order order)
         {
+            string res = _orderService.CreateOrder(order);
+            if (res.Equals("Success"))
+            {
+                return Ok("Create Successfully");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
-        // PUT api/<OrderController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete]
+        public IActionResult DeleteOrder(string orderId)
         {
-        }
-
-        // DELETE api/<OrderController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            string res = _orderService.DeleteOrder(orderId);
+            if (res.Equals("Success"))
+            {
+                return Ok("Delete Successfully");
+            }
+            else
+            {
+                if (res.Equals("NotFound"))
+                {
+                    return BadRequest("Order Is Not Found");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
         }
     }
 }

@@ -1,43 +1,83 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BoardGameShopAPI.Services.UserService;
+using BoardGameShopAPI.TempModels2;
+using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BoardGameShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        // GET: api/<UserController>
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Login(string username, string password)
         {
-            return new string[] { "value1", "value2" };
+            User user = _userService.Login(username, password);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                string authToken = _userService.CreateAuthToken(user);
+                return Ok(authToken);
+            }
         }
 
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPut]
+        public IActionResult EditProfile(User user)
         {
-            return "value";
+            string res = _userService.UpdateUserAccount(user);
+            if (res.Equals("Success"))
+            {
+                return Ok("Update Successfully");
+            }
+            else
+            {
+                if (res.Equals("NotFound"))
+                {
+                    return BadRequest("User Is Not Found");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
         }
 
-        // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult CreateAccount(User user)
         {
+            string res = _userService.CreateUserAccount(user);
+            if (res.Equals("Success"))
+            {
+                return Ok("Create Successfully");
+            }
+            else
+            {
+                if (res.Equals("Duplicated"))
+                {
+                    return BadRequest("Duplicated User's Name!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpHead("{token}")]
+        public IActionResult GetUserData(string token)
         {
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(_userService.ReadAuthToken(token));
         }
     }
 }

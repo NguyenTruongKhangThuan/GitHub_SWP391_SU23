@@ -115,7 +115,7 @@ namespace BoardGameShopAPI.Controllers
             string res = _boardGameService.UpdateBoardGame(boardGame);
             if (res.Equals("Success"))
             {
-                return Ok("Create Successfully");
+                return Ok("Update Successfully");
             }
             else
             {
@@ -136,7 +136,7 @@ namespace BoardGameShopAPI.Controllers
             string res = _boardGameService.DeleteBoardGame(id);
             if (res.Equals("Success"))
             {
-                return Ok("Create Successfully");
+                return Ok("Delete Successfully");
             }
             else
             {
@@ -175,7 +175,7 @@ namespace BoardGameShopAPI.Controllers
             {
                 if (res.Equals("Duplicated"))
                 {
-                    return BadRequest("Duplicated BoardGame's Name!");
+                    return BadRequest("Duplicated Owner's Name!");
                 }
                 else
                 {
@@ -190,13 +190,13 @@ namespace BoardGameShopAPI.Controllers
             string res = _ownerService.UpdateOwner(owner);
             if (res.Equals("Success"))
             {
-                return Ok("Create Successfully");
+                return Ok("Update Successfully");
             }
             else
             {
                 if (res.Equals("NotFound"))
                 {
-                    return BadRequest("Board Game Is Not Found");
+                    return BadRequest("Owner Is Not Found");
                 }
                 else
                 {

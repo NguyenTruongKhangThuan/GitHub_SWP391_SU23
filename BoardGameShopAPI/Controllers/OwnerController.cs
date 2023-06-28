@@ -1,43 +1,62 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BoardGameShopAPI.Services.OwnerService;
+using BoardGameShopAPI.TempModels2;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BoardGameShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/owner")]
     [ApiController]
     public class OwnerController : ControllerBase
     {
-        // GET: api/<OwnerController>
+        private readonly IOwnerService _ownerService;
+        public OwnerController(IOwnerService ownerService)
+        {
+            _ownerService = ownerService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult OwnerLogin(string ownerName, string password)
         {
-            return new string[] { "value1", "value2" };
+            Owner owner = _ownerService.OwnerLogin(ownerName, password);
+            if(owner == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                string ownerInfoToken = _ownerService.CreateOwnerToken(owner);
+                return Ok(ownerInfoToken);
+            }
         }
 
-        // GET api/<OwnerController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPut]
+        public IActionResult Update(Owner owner)
         {
-            return "value";
+            string res = _ownerService.UpdateOwner(owner);
+            if (res.Equals("Success"))
+            {
+                return Ok("Update Successfully");
+            }
+            else
+            {
+                if (res.Equals("NotFound"))
+                {
+                    return BadRequest("Owner Is Not Found");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
         }
 
-        // POST api/<OwnerController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("{token}")]
+        public IActionResult GetOwnerInfo(string token)
         {
-        }
-
-        // PUT api/<OwnerController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<OwnerController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(_ownerService.ReadOwnerToken(token));
         }
     }
 }

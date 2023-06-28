@@ -1,43 +1,86 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BoardGameShopAPI.Services.PaymentService;
+using BoardGameShopAPI.TempModels2;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BoardGameShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/payments")]
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        // GET: api/<PaymentController>
+        private readonly IPaymentService _paymentService;
+        public PaymentController(IPaymentService paymentService)
+        {
+            _paymentService = paymentService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get(string userId)
         {
-            return new string[] { "value1", "value2" };
+            List<Payment> payments = _paymentService.GetPaymentList(userId);
+            if (payments == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            return Ok(payments);
         }
 
-        // GET api/<PaymentController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<PaymentController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Create(Payment payment)
         {
+            string res = _paymentService.CreatePayment(payment);
+            if (res.Equals("Success"))
+            {
+                return Ok("Create Successfully");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
-        // PUT api/<PaymentController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public IActionResult Update(Payment payment)
         {
+            string res = _paymentService.UpdatePayment(payment);
+            if (res.Equals("Success"))
+            {
+                return Ok("Update Successfully");
+            }
+            else
+            {
+                if (res.Equals("NotFound"))
+                {
+                    return BadRequest("Payment Is Not Found");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
         }
 
-        // DELETE api/<PaymentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public IActionResult Delete(string id)
         {
+            string res = _paymentService.DeletePayment(id);
+            if (res.Equals("Success"))
+            {
+                return Ok("Delete Successfully");
+            }
+            else
+            {
+                if (res.Equals("NotFound"))
+                {
+                    return BadRequest("Payment Is Not Found");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
         }
     }
 }
