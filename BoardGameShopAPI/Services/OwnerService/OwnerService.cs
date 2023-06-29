@@ -97,7 +97,7 @@ namespace BoardGameShopAPI.Services.OwnerService
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, owner.OwnerName),
-                new Claim(ClaimTypes.Role, "OWNER"),
+                new Claim(ClaimTypes.Role, "Owner"),
                 new Claim("ownerId", owner.OwnerId),
                 new Claim("ownerName", owner.OwnerName),
                 new Claim("password", owner.Password),

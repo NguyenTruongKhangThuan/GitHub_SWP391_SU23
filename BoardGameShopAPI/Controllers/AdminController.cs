@@ -7,7 +7,10 @@ using BoardGameShopAPI.Services.OwnerService;
 using BoardGameShopAPI.Services.PaymentService;
 using BoardGameShopAPI.Services.UserService;
 using BoardGameShopAPI.TempModels2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,6 +18,7 @@ namespace BoardGameShopAPI.Controllers
 {
     [Route("admin/api")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IUserService _userService;

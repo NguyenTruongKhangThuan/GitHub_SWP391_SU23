@@ -1,6 +1,9 @@
 ﻿using BoardGameShopAPI.Services.UserService;
 using BoardGameShopAPI.TempModels2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Runtime.InteropServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -74,7 +77,7 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
-        [HttpHead("{token}")]
+        [HttpGet("{token}")]
         public IActionResult GetUserData(string token)
         {
             return Ok(_userService.ReadAuthToken(token));

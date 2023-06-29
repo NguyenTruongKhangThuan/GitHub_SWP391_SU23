@@ -68,7 +68,7 @@ namespace BoardGameShopAPI.Controllers
             string res = _orderDetailService.DeleteOrderDetail(id);
             if (res.Equals("Success"))
             {
-                return Ok("Create Successfully");
+                return Ok("Delete Successfully");
             }
             else
             {

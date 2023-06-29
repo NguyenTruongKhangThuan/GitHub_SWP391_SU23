@@ -13,7 +13,7 @@ namespace BoardGameShopAPI.Services.GamePackService
             _context = context;
         }
 
-        public string CreateGanePack(GamePack gamePack)
+        public string CreateGamePack(GamePack gamePack)
         {
             try
             {

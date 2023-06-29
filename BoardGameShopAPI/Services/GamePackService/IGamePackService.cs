@@ -10,7 +10,7 @@ namespace BoardGameShopAPI.Services.GamePackService
 
         string DeleteGamePack(string gamePackId);
 
-        string CreateGanePack(GamePack gamePack);
+        string CreateGamePack(GamePack gamePack);
 
         string UpdateGamePack(GamePack gamePack);
     }
