@@ -1,4 +1,4 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
 
 namespace BoardGameShopAPI.Services.UserService
 {
@@ -17,5 +17,8 @@ namespace BoardGameShopAPI.Services.UserService
         User Login(string username, string password);
 
         string UpdateUserAccount(User user);
+
+        //Statistic Calculation
+        int GetNumberOfUserAccount();
     }
 }

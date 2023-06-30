@@ -1,4 +1,4 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
 
 namespace BoardGameShopAPI.Services.OwnerService
 {

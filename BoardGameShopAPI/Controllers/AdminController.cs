@@ -6,7 +6,7 @@ using BoardGameShopAPI.Services.OrderService;
 using BoardGameShopAPI.Services.OwnerService;
 using BoardGameShopAPI.Services.PaymentService;
 using BoardGameShopAPI.Services.UserService;
-using BoardGameShopAPI.TempModels2;
+using BoardGameShopAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -248,6 +248,46 @@ namespace BoardGameShopAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(orderDetails);
+        }
+
+        //Statistic Calculation
+        [HttpGet("statistics/users")]
+        public IActionResult GetCreatedAccount()
+        {
+            int num = _userService.GetNumberOfUserAccount();
+            if (num == int.MinValue)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            return Ok(num);
+        }
+
+        [HttpGet("statistics/gamepacks")]
+        public IActionResult GetAvailableNumberOfGamePacks()
+        {
+            int num = _gamePackService.GetNumberOfAvailablePack();
+            if (num == int.MinValue)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            return Ok(num);
+        }
+
+        [HttpGet("statistics/income")]
+        public IActionResult GetTotalIncome()
+        {
+            float totalIncome = _paymentService.TotalIncome();
+            if (totalIncome == float.MinValue)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            return Ok(totalIncome);
+        }
+
+        [HttpGet("statistics/bestseller")]
+        public IActionResult GetBestSeller()
+        {
+
         }
     }
 }

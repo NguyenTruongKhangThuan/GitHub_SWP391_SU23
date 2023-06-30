@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BoardGameShopAPI.TempModels2;
+namespace BoardGameShopAPI.Models;
 
 public partial class User
 {

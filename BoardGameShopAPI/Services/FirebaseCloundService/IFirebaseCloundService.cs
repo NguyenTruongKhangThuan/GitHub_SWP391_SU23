@@ -9,7 +9,5 @@
         void UpdateImage(string imageSource, string id, string modelName);
 
         void DeleteImage(string id, string modelName);
-
-        string setImageName(IFormFile imgFile);
     }
 }

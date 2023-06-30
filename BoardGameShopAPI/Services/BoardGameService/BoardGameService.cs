@@ -1,14 +1,19 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
+using BoardGameShopAPI.Services.FirebaseCloundService;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.BoardGameService
 {
     public class BoardGameService : IBoardGameService
     {
+        private readonly string ModelName = "BoardGames";
+
         private readonly BoardGameShopDbContext _context;
-        public BoardGameService(BoardGameShopDbContext context)
+        private readonly IFirebaseCloundService _firebaseCloundService;
+        public BoardGameService(BoardGameShopDbContext context, IFirebaseCloundService firebaseCloundService)
         {
             _context = context;
+            _firebaseCloundService = firebaseCloundService;
         }
 
         public string CreateBoardGame(BoardGame boardGame)
@@ -23,6 +28,9 @@ namespace BoardGameShopAPI.Services.BoardGameService
                         Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
                                       .ToString(new string('0', n.Value.Length)));
 
+                    //Upload Image
+                    _firebaseCloundService.UploadImage(boardGame.ImageSrc, boardGame.Image, ModelName);
+                    //Create BoardGame
                     boardGame.BoardGameId = createdId;
                     _context.BoardGames.Add(boardGame);
                     _context.SaveChanges();
@@ -50,6 +58,8 @@ namespace BoardGameShopAPI.Services.BoardGameService
                 }
                 else
                 {
+                    _firebaseCloundService.DeleteImage(boardGame.Image, ModelName);
+
                     _context.BoardGames.Remove(boardGame);
                     _context.SaveChanges();
                     return "Success";
@@ -65,7 +75,14 @@ namespace BoardGameShopAPI.Services.BoardGameService
         {
             try
             {
-                return _context.BoardGames.OrderBy(bg => bg.BoardGameId).ToList();
+                return _context.BoardGames.Select(bg => new BoardGame()
+                {
+                    BoardGameId = bg.BoardGameId,
+                    Name = bg.Name,
+                    Description = bg.Description,
+                    Image = bg.Image,
+                    ImageSrc = _firebaseCloundService.RetrieveImage(bg.Image, ModelName),
+                }).OrderBy(bg => bg.BoardGameId).ToList();
             }
             catch(Exception)
             {
@@ -79,6 +96,8 @@ namespace BoardGameShopAPI.Services.BoardGameService
             {
                 if(_context.BoardGames.Find(boardGame.BoardGameId) != null)
                 {
+                    _firebaseCloundService.UpdateImage(boardGame.ImageSrc, boardGame.Image, ModelName);
+
                     _context.BoardGames.Update(boardGame);
                     _context.SaveChanges();
                     return "Success";

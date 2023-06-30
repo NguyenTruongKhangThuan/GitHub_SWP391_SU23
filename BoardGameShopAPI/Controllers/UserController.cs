@@ -1,5 +1,5 @@
 ﻿using BoardGameShopAPI.Services.UserService;
-using BoardGameShopAPI.TempModels2;
+using BoardGameShopAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

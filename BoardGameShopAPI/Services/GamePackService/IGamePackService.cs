@@ -1,4 +1,4 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
 
 namespace BoardGameShopAPI.Services.GamePackService
 {
@@ -13,5 +13,8 @@ namespace BoardGameShopAPI.Services.GamePackService
         string CreateGamePack(GamePack gamePack);
 
         string UpdateGamePack(GamePack gamePack);
+
+        //Statistic Calculation
+        int GetNumberOfAvailablePack();
     }
 }

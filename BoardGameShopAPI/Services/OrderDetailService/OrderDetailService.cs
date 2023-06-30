@@ -1,4 +1,4 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.OrderDetailService
@@ -87,6 +87,12 @@ namespace BoardGameShopAPI.Services.OrderDetailService
             {
                 return ex.Message;
             }
+        }
+
+        public float CalcPrice(string orderDetailId)
+        {
+            OrderDetail orderDetail = _context.OrderDetails.Find(orderDetailId);
+            return (float)(orderDetail.Amount * orderDetail.Price);
         }
     }
 }

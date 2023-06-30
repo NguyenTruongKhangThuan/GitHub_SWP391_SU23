@@ -1,5 +1,5 @@
 ﻿using BoardGameShopAPI.Services.OrderDetailService;
-using BoardGameShopAPI.TempModels2;
+using BoardGameShopAPI.Models;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.OrderService
@@ -77,6 +77,26 @@ namespace BoardGameShopAPI.Services.OrderService
             catch(Exception ex)
             {
                 return null;
+            }
+        }
+
+        public float CalcTotalPrice(string orderId)
+        {
+            try
+            {
+                float totalCost = 0;
+                List<OrderDetail> orderDetails = _orderDetailService.GetOrderDetail(orderId);
+
+                foreach (var orderDetail in orderDetails)
+                {
+                    totalCost += _orderDetailService.CalcPrice(orderDetail.OrderDetailId);
+                }
+                return totalCost;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return float.MinValue;
             }
         }
     }

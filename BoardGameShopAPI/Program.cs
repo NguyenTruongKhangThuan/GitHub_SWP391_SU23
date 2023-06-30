@@ -7,7 +7,7 @@ using BoardGameShopAPI.Services.OrderService;
 using BoardGameShopAPI.Services.OwnerService;
 using BoardGameShopAPI.Services.PaymentService;
 using BoardGameShopAPI.Services.UserService;
-using BoardGameShopAPI.TempModels2;
+using BoardGameShopAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

@@ -1,4 +1,4 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
 
 namespace BoardGameShopAPI.Services.OrderDetailService
 {
@@ -11,5 +11,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
         string UpdateOrderdetail(OrderDetail orderDetail);
 
         string DeleteOrderDetail(string orderDetailId);
+
+        float CalcPrice(string orderDetailId);
     }
 }

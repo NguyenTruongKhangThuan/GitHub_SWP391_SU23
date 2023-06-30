@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace BoardGameShopAPI.TempModels2;
+namespace BoardGameShopAPI.Models;
 
 public partial class BoardGameShopDbContext : DbContext
 {
@@ -35,7 +35,7 @@ public partial class BoardGameShopDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=MSI\\SERVER1;User ID=sa;Password=12345;Database=BoardGameShopDB;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("workstation id=BoardGameShopDB.mssql.somee.com;packet size=4096;user id=HNTDuong_SQLLogin_1;pwd=12345678;data source=BoardGameShopDB.mssql.somee.com;persist security info=False;initial catalog=BoardGameShopDB;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -46,6 +46,7 @@ public partial class BoardGameShopDbContext : DbContext
             entity.Property(e => e.BoardGameId).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Image).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Component>(entity =>
@@ -55,8 +56,8 @@ public partial class BoardGameShopDbContext : DbContext
             entity.Property(e => e.ComponentId).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.GamePackId).HasMaxLength(50);
-            entity.Property(e => e.Type).HasMaxLength(50);
             entity.Property(e => e.Image).HasMaxLength(100);
+            entity.Property(e => e.Type).HasMaxLength(50);
 
             entity.HasOne(d => d.GamePack).WithMany(p => p.Components)
                 .HasForeignKey(d => d.GamePackId)
@@ -127,7 +128,6 @@ public partial class BoardGameShopDbContext : DbContext
             entity.Property(e => e.OwnerName).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.PhoneNumber).HasMaxLength(50);
-            entity.Property(e => e.Status).HasColumnType("bit");
         });
 
         modelBuilder.Entity<Payment>(entity =>

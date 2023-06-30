@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BoardGameShopAPI.TempModels2;
+namespace BoardGameShopAPI.Models;
 
 public partial class Component
 {
@@ -16,6 +17,9 @@ public partial class Component
     public string? Description { get; set; }
 
     public string? Image { get; set; }
+
+    [NotMapped]
+    public string? ImageSrc { get; set; }
 
     public virtual GamePack? GamePack { get; set; }
 }

@@ -1,16 +1,22 @@
 ﻿using BoardGameShopAPI.Services.ComponentService;
-using BoardGameShopAPI.TempModels2;
+using BoardGameShopAPI.Models;
 using Microsoft.AspNetCore.Components;
 using System.Text.RegularExpressions;
+using BoardGameShopAPI.Services.FirebaseCloundService;
+using System.Numerics;
 
 namespace BoardGameShopAPI.Services.GamePackService
 {
     public class GamePackService : IGamePackService
     {
+        private readonly string ModelName = "GamePacks";
+
+        private readonly IFirebaseCloundService _firebaseCloundService;
         private readonly BoardGameShopDbContext _context;
-        public GamePackService(BoardGameShopDbContext context)
+        public GamePackService(BoardGameShopDbContext context, IFirebaseCloundService firebaseCloundService)
         {
             _context = context;
+            _firebaseCloundService = firebaseCloundService;
         }
 
         public string CreateGamePack(GamePack gamePack)
@@ -25,6 +31,8 @@ namespace BoardGameShopAPI.Services.GamePackService
                         "GP000001" :
                         Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
                                       .ToString(new string('0', n.Value.Length)));
+
+                    _firebaseCloundService.UploadImage(gamePack.ImageSrc, gamePack.Image, ModelName);
 
                     gamePack.GamePackId = createdId;
                     _context.GamePacks.Add(gamePack);
@@ -69,7 +77,7 @@ namespace BoardGameShopAPI.Services.GamePackService
         {
             try
             {
-                return _context.GamePacks.Where(gp => gp.AvailableAmount >= 0).OrderBy(gp => gp.GamePackId).ToList();
+                return GetPackList().Where(gp => gp.AvailableAmount >= 0).OrderBy(gp => gp.GamePackId).ToList();
             }
             catch (Exception)
             {
@@ -81,7 +89,7 @@ namespace BoardGameShopAPI.Services.GamePackService
         {
             try
             {
-                return _context.GamePacks.Where(gp => gp.OwnerId == ownerId)
+                return GetPackList().Where(gp => gp.OwnerId == ownerId)
                     .OrderBy(gp => gp.GamePackId).ToList();
             }
             catch (Exception)
@@ -96,6 +104,8 @@ namespace BoardGameShopAPI.Services.GamePackService
             {
                 if (_context.GamePacks.Find(gamePack.GamePackId) != null)
                 {
+                    _firebaseCloundService.UpdateImage(gamePack.ImageSrc, gamePack.Image, ModelName);
+
                     _context.GamePacks.Update(gamePack);
                     _context.SaveChanges();
                     return "Success";
@@ -108,6 +118,44 @@ namespace BoardGameShopAPI.Services.GamePackService
             catch (Exception ex)
             {
                 return ex.Message;
+            }
+        }
+
+        private List<GamePack> GetPackList()
+        {
+            return _context.GamePacks.Select(gp => new GamePack()
+            {
+                GamePackId = gp.GamePackId,
+                BoardGameId = gp.BoardGameId,
+                OwnerId = gp.OwnerId,
+                GamePackName = gp.GamePackName,
+                Image = gp.Image,
+                Description = gp.Description,
+                Price = gp.Price,
+                Age = gp.Age,
+                NumberOfPlayer = gp.NumberOfPlayer,
+                GameDuration = gp.GameDuration,
+                Origin = gp.Origin,
+                Weight = gp.Weight,
+                Size = gp.Size,
+                Material = gp.Material,
+                GameRule = gp.GameRule,
+                AvailableAmount = gp.AvailableAmount,
+                ImageSrc = _firebaseCloundService.RetrieveImage(gp.Image, ModelName)
+            }).ToList();
+        }
+
+        //Statistic Calculation
+        public int GetNumberOfAvailablePack()
+        {
+            try
+            {
+                return (int)GetPackList().Where(gp => gp.AvailableAmount>=0).Sum(gp =>  gp.AvailableAmount);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return int.MinValue;
             }
         }
     }

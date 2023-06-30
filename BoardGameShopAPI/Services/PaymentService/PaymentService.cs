@@ -1,4 +1,6 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
+using Microsoft.OpenApi.Any;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.PaymentService
@@ -121,6 +123,21 @@ namespace BoardGameShopAPI.Services.PaymentService
             catch (Exception ex)
             {
                 return ex.Message;
+            }
+        }
+
+        //Statistic Calculation
+        public float TotalIncome()
+        {
+            try
+            {
+                return (float)_context.Payments.Where(p => p.PaymentDate.Value.Year == DateTime.Now.Year
+                && p.PaymentDate.Value.Month == DateTime.Now.Month).Sum(p => p.AmountOfMoney);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return float.MinValue;
             }
         }
     }

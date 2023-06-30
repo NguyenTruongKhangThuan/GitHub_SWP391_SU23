@@ -1,4 +1,4 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
 
 namespace BoardGameShopAPI.Services.PaymentService
 {
@@ -18,5 +18,6 @@ namespace BoardGameShopAPI.Services.PaymentService
         string CreatePayment(Payment payment);
 
         //Statistic Calculation:
+        float TotalIncome();
     }
 }

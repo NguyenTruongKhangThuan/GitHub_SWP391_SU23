@@ -1,4 +1,4 @@
-﻿using BoardGameShopAPI.TempModels2;
+﻿using BoardGameShopAPI.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -151,6 +151,20 @@ namespace BoardGameShopAPI.Services.UserService
             catch(Exception ex)
             {
                 return ex.Message;
+            }
+        }
+
+        //Statistic Calculation
+        public int GetNumberOfUserAccount()
+        {
+            try
+            {
+                return _context.Users.Count();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine (ex.Message);
+                return int.MinValue;
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿using BoardGameShopAPI.Services.ComponentService;
-using BoardGameShopAPI.TempModels2;
+using BoardGameShopAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

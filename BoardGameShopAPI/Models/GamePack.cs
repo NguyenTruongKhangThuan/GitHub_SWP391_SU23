@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BoardGameShopAPI.TempModels2;
+namespace BoardGameShopAPI.Models;
 
 public partial class GamePack
 {
@@ -36,6 +37,9 @@ public partial class GamePack
     public string? GameRule { get; set; }
 
     public int? AvailableAmount { get; set; }
+
+    [NotMapped]
+    public string? ImageSrc { get; set; }
 
     public virtual BoardGame? BoardGame { get; set; }
 

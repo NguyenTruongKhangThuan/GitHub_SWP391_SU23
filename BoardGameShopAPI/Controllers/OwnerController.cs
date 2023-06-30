@@ -1,7 +1,7 @@
 ﻿using BoardGameShopAPI.Services.ComponentService;
 using BoardGameShopAPI.Services.GamePackService;
 using BoardGameShopAPI.Services.OwnerService;
-using BoardGameShopAPI.TempModels2;
+using BoardGameShopAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
