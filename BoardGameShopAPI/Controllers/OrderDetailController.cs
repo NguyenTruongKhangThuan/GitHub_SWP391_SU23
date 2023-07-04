@@ -37,6 +37,10 @@ namespace BoardGameShopAPI.Controllers
             }
             else
             {
+                if (res.Equals("NotEnough"))
+                {
+                    return BadRequest("Amount requested is higher than available amount");
+                }
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

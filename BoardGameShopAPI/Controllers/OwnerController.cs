@@ -30,6 +30,7 @@ namespace BoardGameShopAPI.Controllers
 
         //Owner Function
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult OwnerLogin(string ownerName, string password)
         {
             Owner owner = _ownerService.OwnerLogin(ownerName, password);

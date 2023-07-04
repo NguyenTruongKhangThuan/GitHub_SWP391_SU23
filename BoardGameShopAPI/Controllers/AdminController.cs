@@ -287,7 +287,8 @@ namespace BoardGameShopAPI.Controllers
         [HttpGet("statistics/bestseller")]
         public IActionResult GetBestSeller()
         {
-
+            List<GamePack> bestSeller = _paymentService.GetBestSeller();
+            return Ok(bestSeller);
         }
     }
 }

@@ -19,5 +19,7 @@ namespace BoardGameShopAPI.Services.PaymentService
 
         //Statistic Calculation:
         float TotalIncome();
+
+        List<GamePack> GetBestSeller();
     }
 }

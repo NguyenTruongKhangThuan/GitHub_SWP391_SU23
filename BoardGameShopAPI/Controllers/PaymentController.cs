@@ -1,6 +1,8 @@
 ﻿using BoardGameShopAPI.Services.PaymentService;
 using BoardGameShopAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using BoardGameShopAPI.Services.MomoService;
+using ProGCoder_MomoAPI.Models.Order;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,9 +13,11 @@ namespace BoardGameShopAPI.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
-        public PaymentController(IPaymentService paymentService)
+        private readonly IMomoService _momoService;
+        public PaymentController(IPaymentService paymentService, IMomoService momoService)
         {
             _paymentService = paymentService;
+            _momoService = momoService;
         }
 
         [HttpGet]
@@ -81,6 +85,23 @@ namespace BoardGameShopAPI.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError);
                 }
             }
+        }
+
+        //Momo API Management:
+        [HttpPost("momo")]
+        public async Task<IActionResult> CreatePaymentUrl(string userId, OrderInfoModel orderInfo)
+        {
+            var response = await _momoService.CreatePaymentAsync(userId, orderInfo);
+            //return Redirect(response.PayUrl);
+            return Ok(response.PayUrl);
+
+        }
+
+        [HttpGet("momo")]
+        public IActionResult PaymentCallBack()
+        {
+            var response = _momoService.PaymentExecuteAsync(HttpContext.Request.Query);
+            return Ok(HttpContext.Request.Query);
         }
     }
 }

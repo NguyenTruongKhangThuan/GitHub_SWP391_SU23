@@ -1,4 +1,5 @@
 ﻿using BoardGameShopAPI.Models;
+using BoardGameShopAPI.Services.GamePackService;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.OrderDetailService
@@ -6,15 +7,23 @@ namespace BoardGameShopAPI.Services.OrderDetailService
     public class OrderDetailService : IOrderDetailService
     {
         private readonly BoardGameShopDbContext _context;
-        public OrderDetailService(BoardGameShopDbContext context)
+        private readonly IGamePackService _gamePackService;
+        public OrderDetailService(BoardGameShopDbContext context, IGamePackService gamePackService)
         {
             _context = context;
+            _gamePackService = gamePackService;
         }
 
         public string CreateOrderDetail(OrderDetail orderDetail)
         {
             try
             {
+                string res = _gamePackService.DecreaseGamePackAmount(orderDetail.GamePackId, orderDetail.Amount);
+                if (res.Equals("NotEnough"))
+                {
+                    return res;
+                }
+
                 string tempId = _context.OrderDetails.LastOrDefault().OrderId;
                 string createId = tempId == null ?
                     "OD00000001" : 
@@ -43,6 +52,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
                 }
                 else
                 {
+                    _gamePackService.IncreaseGamePackAmount(orderDetailId, orderDetail.Amount);
                     _context.OrderDetails.Remove(orderDetail);
                     _context.SaveChanges();
                     return "Success";

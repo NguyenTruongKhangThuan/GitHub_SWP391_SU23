@@ -145,12 +145,39 @@ namespace BoardGameShopAPI.Services.GamePackService
             }).ToList();
         }
 
+        public GamePack GetGamePack(string gamePackId)
+        {
+            return _context.GamePacks.Find(gamePackId);
+        }
+
+        public string DecreaseGamePackAmount(string gamePackId, int? amount)
+        {
+            GamePack gamePack = _context.GamePacks.Find(gamePackId);
+            if (gamePack.AvailableAmount > amount)
+            {
+                gamePack.AvailableAmount -= amount;
+                _context.SaveChanges();
+                return "Success";
+            }
+            else
+            {
+                return "NotEnough";
+            }
+        }
+
+        public void IncreaseGamePackAmount(string gamePackId, int? amount)
+        {
+            GamePack gamePack = _context.GamePacks.Find(gamePackId);
+            gamePack.AvailableAmount += amount;
+            _context.SaveChanges();
+        }
+
         //Statistic Calculation
         public int GetNumberOfAvailablePack()
         {
             try
             {
-                return (int)GetPackList().Where(gp => gp.AvailableAmount>=0).Sum(gp =>  gp.AvailableAmount);
+                return (int)GetPackList().Where(gp => gp.AvailableAmount >= 0).Sum(gp => gp.AvailableAmount);
             }
             catch (Exception ex)
             {

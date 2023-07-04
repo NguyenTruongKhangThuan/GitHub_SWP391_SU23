@@ -15,6 +15,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
+using BoardGameShopAPI.Services.MomoService;
+using ProGCoder_MomoAPI.Models.Momo;
+using BoardGameShopAPI.Services.GameTagService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +68,8 @@ builder.Services.AddDbContext<BoardGameShopDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BoardGameShopDB"));
 });
 
+builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
+
 builder.Services.AddScoped<IBoardGameService, BoardGameService>();
 builder.Services.AddScoped<IComponentService, ComponentService>();
 builder.Services.AddScoped<IGamePackService, GamePackService>();
@@ -74,6 +79,8 @@ builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFirebaseCloundService, FirebaseCloundService>(); 
+builder.Services.AddScoped<IMomoService, MomoService>();
+builder.Services.AddScoped<IGameTagService, GameTagService>();
 
 var app = builder.Build();
 

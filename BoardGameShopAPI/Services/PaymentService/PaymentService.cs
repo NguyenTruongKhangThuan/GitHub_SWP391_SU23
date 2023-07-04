@@ -1,4 +1,5 @@
 ﻿using BoardGameShopAPI.Models;
+using BoardGameShopAPI.Services.GamePackService;
 using Microsoft.OpenApi.Any;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,9 +9,11 @@ namespace BoardGameShopAPI.Services.PaymentService
     public class PaymentService : IPaymentService
     {
         private readonly BoardGameShopDbContext _context;
-        public PaymentService(BoardGameShopDbContext context)
+        private readonly IGamePackService _gamePackService;
+        public PaymentService(BoardGameShopDbContext context, IGamePackService gamePackService)
         {
             _context = context;
+            _gamePackService = gamePackService;
         }
 
         public string CreatePayment(Payment payment)
@@ -139,6 +142,33 @@ namespace BoardGameShopAPI.Services.PaymentService
                 Console.WriteLine(ex.Message);
                 return float.MinValue;
             }
+        }
+
+        public List<GamePack> GetBestSeller()
+        {
+            var soldGamePackList = _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
+                (p, odt) => new
+                {
+                    PaymentId = p.PaymentId,
+                    GamePackId = odt.GamePackId,
+                    Amount = odt.Amount,
+                })
+                .GroupBy(l => l.GamePackId)
+                .Select(l => new
+                {
+                    GamePackId = l.Key,
+                    SoldNumber = l.Sum(i => i.Amount),
+                })
+                .OrderByDescending(l => l.SoldNumber)
+                .Take(3);
+
+            List<GamePack> gamePacks = new List<GamePack>();
+            foreach (var pack in gamePacks)
+            {
+                gamePacks.Add(_gamePackService.GetGamePack(pack.GamePackId));
+            }
+
+            return gamePacks;
         }
     }
 }

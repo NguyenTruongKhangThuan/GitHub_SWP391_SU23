@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BoardGameShopAPI.Models;
+namespace BoardGameShopAPI.Repository.Models;
 
 public partial class GamePack
 {
@@ -48,6 +48,4 @@ public partial class GamePack
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     public virtual Owner? Owner { get; set; }
-
-    public virtual ICollection<GameTag> GameTags { get; set; } = new List<GameTag>();
 }

@@ -14,6 +14,12 @@ namespace BoardGameShopAPI.Services.GamePackService
 
         string UpdateGamePack(GamePack gamePack);
 
+        GamePack GetGamePack(string gamePackId);
+
+        string DecreaseGamePackAmount(string  gamePackId, int? amount);
+
+        void IncreaseGamePackAmount(string gamePackId, int? amount);
+
         //Statistic Calculation
         int GetNumberOfAvailablePack();
     }

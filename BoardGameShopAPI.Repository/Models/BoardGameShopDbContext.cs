@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace BoardGameShopAPI.Models;
+namespace BoardGameShopAPI.Repository.Models;
 
 public partial class BoardGameShopDbContext : DbContext
 {
+    private readonly string connectionString;
+
     public BoardGameShopDbContext()
     {
+    }
+
+    public BoardGameShopDbContext(string cs)
+    {
+        this.connectionString = cs;
     }
 
     public BoardGameShopDbContext(DbContextOptions<BoardGameShopDbContext> options)
@@ -21,8 +28,6 @@ public partial class BoardGameShopDbContext : DbContext
 
     public virtual DbSet<GamePack> GamePacks { get; set; }
 
-    public virtual DbSet<GameTag> GameTags { get; set; }
-
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
@@ -35,9 +40,15 @@ public partial class BoardGameShopDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("workstation id=BoardGameShopDB.mssql.somee.com;packet size=4096;user id=HNTDuong_SQLLogin_1;pwd=12345678;data source=BoardGameShopDB.mssql.somee.com;persist security info=False;initial catalog=BoardGameShopDB;TrustServerCertificate=true");
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("workstation id=BoardGameShopDB.mssql.somee.com;packet size=4096;user id=HNTDuong_SQLLogin_1;pwd=12345678;data source=BoardGameShopDB.mssql.somee.com;persist security info=False;initial catalog=BoardGameShopDB;TrustServerCertificate=true");
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlServer(connectionString);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -47,6 +58,7 @@ public partial class BoardGameShopDbContext : DbContext
 
             entity.Property(e => e.BoardGameId).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Image).HasMaxLength(100);
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
@@ -90,33 +102,6 @@ public partial class BoardGameShopDbContext : DbContext
             entity.HasOne(d => d.Owner).WithMany(p => p.GamePacks)
                 .HasForeignKey(d => d.OwnerId)
                 .HasConstraintName("FK_GamePack_Owner");
-
-            entity.HasMany(d => d.GameTags).WithMany(p => p.GamePacks)
-                .UsingEntity<Dictionary<string, object>>(
-                    "TagInPack",
-                    r => r.HasOne<GameTag>().WithMany()
-                        .HasForeignKey("GameTagId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_TagInPack_GameTag"),
-                    l => l.HasOne<GamePack>().WithMany()
-                        .HasForeignKey("GamePackId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_TagInPack_GamePack"),
-                    j =>
-                    {
-                        j.HasKey("GamePackId", "GameTagId");
-                        j.ToTable("TagInPack");
-                        j.IndexerProperty<string>("GamePackId").HasMaxLength(50);
-                        j.IndexerProperty<string>("GameTagId").HasMaxLength(50);
-                    });
-        });
-
-        modelBuilder.Entity<GameTag>(entity =>
-        {
-            entity.ToTable("GameTag");
-
-            entity.Property(e => e.GameTagId).HasMaxLength(50);
-            entity.Property(e => e.GameTagName).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Order>(entity =>
