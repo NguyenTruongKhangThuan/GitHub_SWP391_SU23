@@ -1,5 +1,6 @@
 ﻿using BoardGameShopAPI.Models;
 using BoardGameShopAPI.Services.FirebaseCloundService;
+using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.BoardGameService
@@ -16,13 +17,13 @@ namespace BoardGameShopAPI.Services.BoardGameService
             _firebaseCloundService = firebaseCloundService;
         }
 
-        public string CreateBoardGame(BoardGame boardGame)
+        public async Task<string> CreateBoardGame(BoardGame boardGame)
         {
             try
             {
                 if (_context.BoardGames.Where(bg => bg.Name == boardGame.Name).FirstOrDefault() == null)
                 {
-                    string tempId = _context.BoardGames.LastOrDefault().BoardGameId;
+                    string tempId = _context.BoardGames.OrderBy(x => x.BoardGameId).LastOrDefault().BoardGameId;
                     string createdId = tempId == null ?
                         "O00000001" :
                         Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
@@ -33,7 +34,7 @@ namespace BoardGameShopAPI.Services.BoardGameService
                     //Create BoardGame
                     boardGame.BoardGameId = createdId;
                     _context.BoardGames.Add(boardGame);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else
@@ -47,7 +48,7 @@ namespace BoardGameShopAPI.Services.BoardGameService
             }
         }
 
-        public string DeleteBoardGame(string boardGameId)
+        public async Task<string> DeleteBoardGame(string boardGameId)
         {
             try
             {
@@ -61,7 +62,7 @@ namespace BoardGameShopAPI.Services.BoardGameService
                     _firebaseCloundService.DeleteImage(boardGame.Image, ModelName);
 
                     _context.BoardGames.Remove(boardGame);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }
@@ -71,18 +72,18 @@ namespace BoardGameShopAPI.Services.BoardGameService
             }
         }
 
-        public List<BoardGame> GetBoardGames()
+        public async Task<List<BoardGame>> GetBoardGames()
         {
             try
             {
-                return _context.BoardGames.Select(bg => new BoardGame()
+                return await _context.BoardGames.Select(bg => new BoardGame()
                 {
                     BoardGameId = bg.BoardGameId,
                     Name = bg.Name,
                     Description = bg.Description,
                     Image = bg.Image,
                     ImageSrc = _firebaseCloundService.RetrieveImage(bg.Image, ModelName),
-                }).OrderBy(bg => bg.BoardGameId).ToList();
+                }).OrderBy(bg => bg.BoardGameId).ToListAsync();
             }
             catch(Exception)
             {
@@ -90,7 +91,7 @@ namespace BoardGameShopAPI.Services.BoardGameService
             }
         }
 
-        public string UpdateBoardGame(BoardGame boardGame)
+        public async Task<string> UpdateBoardGame(BoardGame boardGame)
         {
             try
             {
@@ -99,7 +100,7 @@ namespace BoardGameShopAPI.Services.BoardGameService
                     _firebaseCloundService.UpdateImage(boardGame.ImageSrc, boardGame.Image, ModelName);
 
                     _context.BoardGames.Update(boardGame);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else

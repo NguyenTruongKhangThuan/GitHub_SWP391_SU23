@@ -46,9 +46,9 @@ namespace BoardGameShopAPI.Controllers
 
         //User Management
         [HttpGet("users")]
-        public IActionResult GetUserList()
+        public async Task<IActionResult> GetUserList()
         {
-            List<User> users = _userService.ReadUserList();
+            List<User> users = await _userService.ReadUserList();
             if (users == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -58,9 +58,9 @@ namespace BoardGameShopAPI.Controllers
 
         //Component Management
         [HttpGet("components")]
-        public IActionResult GetComponents(string gamePackId)
+        public async Task<IActionResult> GetComponents(string gamePackId)
         {
-            List<Component> components = _componentService.GetGamePackComponents(gamePackId);
+            List<Component> components = await _componentService.GetGamePackComponents(gamePackId);
             if (components == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -70,9 +70,9 @@ namespace BoardGameShopAPI.Controllers
 
         //GamePack Management
         [HttpGet("gamepacks")]
-        public IActionResult GetAllGamePack()
+        public async Task<IActionResult> GetAllGamePack()
         {
-            List<GamePack> gamePacks = _gamePackService.GetAllGamePack();
+            List<GamePack> gamePacks = await _gamePackService.GetAllGamePack();
             if(gamePacks == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -82,9 +82,9 @@ namespace BoardGameShopAPI.Controllers
 
         //BoardGame Management
         [HttpGet("boardgames")]
-        public IActionResult GetAllBoardGame()
+        public async Task<IActionResult> GetAllBoardGame()
         {
-            List<BoardGame> boardGames =_boardGameService.GetBoardGames();
+            List<BoardGame> boardGames = await _boardGameService.GetBoardGames();
             if(boardGames == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -93,9 +93,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("boardgames")]
-        public IActionResult CreateBoardGame(BoardGame boardGame)
+        public async Task<IActionResult> CreateBoardGame(BoardGame boardGame)
         {
-            string res = _boardGameService.CreateBoardGame(boardGame);
+            string res = await _boardGameService.CreateBoardGame(boardGame);
             if (res.Equals("Success"))
             {
                 return Ok("Create Successfully");
@@ -114,9 +114,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut("boardgames")]
-        public IActionResult UpdateBoardGame(BoardGame boardGame)
+        public async Task<IActionResult> UpdateBoardGame(BoardGame boardGame)
         {
-            string res = _boardGameService.UpdateBoardGame(boardGame);
+            string res = await _boardGameService.UpdateBoardGame(boardGame);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -135,9 +135,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpDelete("boardgames/{id}")]
-        public IActionResult DeleteBoardGame(string id)
+        public async Task<IActionResult> DeleteBoardGame(string id)
         {
-            string res = _boardGameService.DeleteBoardGame(id);
+            string res = await _boardGameService.DeleteBoardGame(id);
             if (res.Equals("Success"))
             {
                 return Ok("Delete Successfully");
@@ -157,9 +157,9 @@ namespace BoardGameShopAPI.Controllers
 
         //Owner Management
         [HttpGet("owners")]
-        public IActionResult GetAllOwner()
+        public async Task<IActionResult> GetAllOwner()
         {
-            List<Owner> owners = _ownerService.GetOwners();
+            List<Owner> owners = await _ownerService.GetOwners();
             if(owners == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -168,9 +168,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("owners")]
-        public IActionResult CreateOwnerAccount(Owner owner)
+        public async Task<IActionResult> CreateOwnerAccount(Owner owner)
         {
-            string res = _ownerService.CreateOwner(owner);
+            string res = await _ownerService.CreateOwner(owner);
             if (res.Equals("Success"))
             {
                 return Ok("Create Successfully");
@@ -189,9 +189,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut("owners")]
-        public IActionResult UpdateOwnerState(Owner owner)
+        public async Task<IActionResult> UpdateOwnerState(Owner owner)
         {
-            string res = _ownerService.UpdateOwner(owner);
+            string res = await _ownerService.UpdateOwner(owner);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -211,9 +211,9 @@ namespace BoardGameShopAPI.Controllers
 
         //Payment Management
         [HttpGet("payments")]
-        public IActionResult GetAllPayment()
+        public async Task<IActionResult> GetAllPayment()
         {
-            List<Payment> payments = _paymentService.GetAllPayment();
+            List<Payment> payments = await _paymentService.GetAllPayment();
             if(payments == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -223,9 +223,9 @@ namespace BoardGameShopAPI.Controllers
 
         //Order Management
         [HttpGet("orders")]
-        public IActionResult GetOrder(string orderId)
+        public async Task<IActionResult> GetOrder(string orderId)
         {
-            Order order = _orderService.GetOrders(orderId);
+            Order order = await _orderService.GetOrders(orderId);
             if(order == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -240,9 +240,9 @@ namespace BoardGameShopAPI.Controllers
 
         //OrderDetail Management
         [HttpGet("orderdetails")]
-        public IActionResult GetAllOrderDetail(string orderId)
+        public async Task<IActionResult> GetAllOrderDetail(string orderId)
         {
-            List<OrderDetail> orderDetails = _orderDetailService.GetOrderDetail(orderId);
+            List<OrderDetail> orderDetails = await _orderDetailService.GetOrderDetail(orderId);
             if( orderDetails == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -285,9 +285,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet("statistics/bestseller")]
-        public IActionResult GetBestSeller()
+        public async Task<IActionResult> GetBestSeller()
         {
-            List<GamePack> bestSeller = _paymentService.GetBestSeller();
+            List<GamePack> bestSeller = await _paymentService.GetBestSeller();
             return Ok(bestSeller);
         }
     }

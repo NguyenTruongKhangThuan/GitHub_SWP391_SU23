@@ -1,4 +1,5 @@
 ﻿using BoardGameShopAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -73,14 +74,14 @@ namespace BoardGameShopAPI.Services.UserService
         }
 
         //User Service
-        public string CreateUserAccount(User user)
+        public async Task<string> CreateUserAccount(User user)
         {
             try
             {
                 User dbUser = _context.Users.Where(u => u.Username == user.Username).FirstOrDefault();
                 if(dbUser == null)
                 {
-                    string tempId = _context.Users.Where(u => u.RoleId != "RO01").LastOrDefault()?.UserId;
+                    string tempId = _context.Users.Where(u => u.RoleId != "RO01").OrderBy(x => x.UserId).LastOrDefault()?.UserId;
                     string createdId = tempId == null ?
                         "U00000001" :
                         Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
@@ -89,7 +90,7 @@ namespace BoardGameShopAPI.Services.UserService
                     user.UserId = createdId;
                     user.RoleId = "RO01";
                     _context.Users.Add(user);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else
@@ -103,12 +104,12 @@ namespace BoardGameShopAPI.Services.UserService
             }
         }
 
-        public User Login(string username, string password)
+        public async Task<User> Login(string username, string password)
         {
             try
             {
-                User user = _context.Users.Where(u =>  u.Username == username
-                && u.Password == password).FirstOrDefault();
+                User user = await _context.Users.Where(u =>  u.Username == username
+                && u.Password == password).FirstOrDefaultAsync();
 
                 return user;
             }
@@ -119,11 +120,11 @@ namespace BoardGameShopAPI.Services.UserService
             }
         }
 
-        public List<User> ReadUserList()
+        public async Task<List<User>> ReadUserList()
         {
             try
             {
-                return _context.Users.OrderBy(u => u.UserId).ToList();
+                return await _context.Users.OrderBy(u => u.UserId).ToListAsync();
             }
             catch(Exception ex)
             {
@@ -132,7 +133,7 @@ namespace BoardGameShopAPI.Services.UserService
             }
         }
 
-        public string UpdateUserAccount(User user)
+        public async Task<string> UpdateUserAccount(User user)
         {
             try
             {
@@ -144,7 +145,7 @@ namespace BoardGameShopAPI.Services.UserService
                 else
                 {
                     _context.Users.Update(user);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }

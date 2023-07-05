@@ -1,5 +1,6 @@
 ﻿using BoardGameShopAPI.Models;
 using BoardGameShopAPI.Services.FirebaseCloundService;
+using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.ComponentService
@@ -16,11 +17,11 @@ namespace BoardGameShopAPI.Services.ComponentService
             _firebaseCloundService = firebaseCloundService;
         }
 
-        public string CreateComponent(Component component)
+        public async Task<string> CreateComponent(Component component)
         {
             try
             {
-                string tempId = _context.Components.LastOrDefault().ComponentId;
+                string tempId = _context.Components.OrderBy(x => x.ComponentId).LastOrDefault().ComponentId;
                 string createdId = tempId == null ?
                     "O00000001" :
                     Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
@@ -30,7 +31,7 @@ namespace BoardGameShopAPI.Services.ComponentService
 
                 component.ComponentId = createdId;
                 _context.Components.Add(component);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return "Success";
             }
             catch (Exception ex)
@@ -39,7 +40,7 @@ namespace BoardGameShopAPI.Services.ComponentService
             }
         }
 
-        public string DeleteComponent(string componentId)
+        public async Task<string> DeleteComponent(string componentId)
         {
             try
             {
@@ -53,7 +54,7 @@ namespace BoardGameShopAPI.Services.ComponentService
                     _firebaseCloundService.DeleteImage(component.Image, ModelName);
 
                     _context.Components.Remove(component);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }
@@ -63,11 +64,11 @@ namespace BoardGameShopAPI.Services.ComponentService
             }
         }
 
-        public List<Component> GetGamePackComponents(string gamePackId)
+        public async Task<List<Component>> GetGamePackComponents(string gamePackId)
         {
             try
             {
-                return _context.Components.Select(c => new Component()
+                return await _context.Components.Select(c => new Component()
                 {
                     ComponentId = c.ComponentId,
                     GamePackId = c.GamePackId,
@@ -77,7 +78,7 @@ namespace BoardGameShopAPI.Services.ComponentService
                     Image = c.Image,
                     ImageSrc = _firebaseCloundService.RetrieveImage(c.Image, ModelName),
                 }).Where(c => c.GamePackId == gamePackId)
-                    .OrderBy(c => c.ComponentId).ToList();
+                    .OrderBy(c => c.ComponentId).ToListAsync();
             }
             catch (Exception)
             {
@@ -85,7 +86,7 @@ namespace BoardGameShopAPI.Services.ComponentService
             }
         }
 
-        public string UpdateComponent(Component component)
+        public async Task<string> UpdateComponent(Component component)
         {
             try
             {
@@ -98,7 +99,7 @@ namespace BoardGameShopAPI.Services.ComponentService
                     _firebaseCloundService.UpdateImage(component.ImageSrc, component.Image, ModelName);
 
                     _context.Components.Update(component);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }

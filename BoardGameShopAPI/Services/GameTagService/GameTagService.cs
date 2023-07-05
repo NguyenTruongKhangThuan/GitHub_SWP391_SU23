@@ -1,4 +1,5 @@
 ﻿using BoardGameShopAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.GameTagService
@@ -12,11 +13,11 @@ namespace BoardGameShopAPI.Services.GameTagService
         }
 
 
-        public string AddNewGameTag(GameTag gameTag)
+        public async Task<string> AddNewGameTag(GameTag gameTag)
         {
             try
             {
-                string tempId = _context.GameTags.LastOrDefault().GameTagName;
+                string tempId = _context.GameTags.OrderBy(x => x.GameTagId).LastOrDefault().GameTagName;
                 string createdId = tempId == null ?
                     "GT001" :
                     Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
@@ -24,7 +25,7 @@ namespace BoardGameShopAPI.Services.GameTagService
 
                 gameTag.GameTagId = createdId;
                 _context.GameTags.Add(gameTag);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return "Success";
             }
             catch(Exception ex)
@@ -33,7 +34,7 @@ namespace BoardGameShopAPI.Services.GameTagService
             }
         }
 
-        public string DeleteGameTag(string gameTagId)
+        public async Task<string> DeleteGameTag(string gameTagId)
         {
             try
             {
@@ -41,7 +42,7 @@ namespace BoardGameShopAPI.Services.GameTagService
                 if (gameTag != null)
                 {
                     _context.GameTags.Remove(gameTag);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else
@@ -55,11 +56,11 @@ namespace BoardGameShopAPI.Services.GameTagService
             }
         }
 
-        public List<GameTag> GetGameTag()
+        public async Task<List<GameTag>> GetGameTag()
         {
             try
             {
-                return _context.GameTags.OrderBy(gt => gt.GameTagName).ToList();
+                return await _context.GameTags.OrderBy(gt => gt.GameTagName).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -68,11 +69,11 @@ namespace BoardGameShopAPI.Services.GameTagService
             }
         }
 
-        public GameTag GetGameTagById(string gameTagId)
+        public async Task<GameTag> GetGameTagById(string gameTagId)
         {
             try
             {
-                GameTag gameTag = _context.GameTags.Find(gameTagId);
+                GameTag gameTag = await _context.GameTags.FindAsync(gameTagId);
                 if (gameTag != null)
                 {
                     return gameTag;
@@ -89,7 +90,7 @@ namespace BoardGameShopAPI.Services.GameTagService
             }
         }
 
-        public string UpdateGameTag(GameTag gameTag)
+        public async Task<string> UpdateGameTag(GameTag gameTag)
         {
             try
             {
@@ -97,7 +98,7 @@ namespace BoardGameShopAPI.Services.GameTagService
                 if(dbGameTag != null)
                 {
                     _context.GameTags.Update(gameTag);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else

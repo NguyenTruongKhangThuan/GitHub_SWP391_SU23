@@ -4,13 +4,13 @@ namespace BoardGameShopAPI.Services.OrderDetailService
 {
     public interface IOrderDetailService
     {
-        List<OrderDetail> GetOrderDetail(string orderId);
+        Task<List<OrderDetail>> GetOrderDetail(string orderId);
 
-        string CreateOrderDetail(OrderDetail orderDetail);
+        Task<string> CreateOrderDetail(OrderDetail orderDetail);
 
-        string UpdateOrderdetail(OrderDetail orderDetail);
+        Task<string> UpdateOrderdetail(OrderDetail orderDetail);
 
-        string DeleteOrderDetail(string orderDetailId);
+        Task<string> DeleteOrderDetail(string orderDetailId);
 
         float CalcPrice(string orderDetailId);
     }

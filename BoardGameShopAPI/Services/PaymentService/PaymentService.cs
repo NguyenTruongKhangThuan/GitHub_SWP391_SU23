@@ -1,5 +1,6 @@
 ﻿using BoardGameShopAPI.Models;
 using BoardGameShopAPI.Services.GamePackService;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -16,11 +17,11 @@ namespace BoardGameShopAPI.Services.PaymentService
             _gamePackService = gamePackService;
         }
 
-        public string CreatePayment(Payment payment)
+        public async Task<string> CreatePayment(Payment payment)
         {
             try
             {
-                string tempId = _context.Payments.LastOrDefault()?.PaymentId;
+                string tempId = _context.Payments.OrderBy(x => x.PaymentId).LastOrDefault()?.PaymentId;
                 string createdId = tempId == null ?
                     "PM00000001" :
                     Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value)+1)
@@ -28,7 +29,7 @@ namespace BoardGameShopAPI.Services.PaymentService
 
                 payment.PaymentId = createdId;
                 _context.Payments.Add(payment);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return "Success";
             }
             catch (Exception ex)
@@ -37,7 +38,7 @@ namespace BoardGameShopAPI.Services.PaymentService
             }
         }
 
-        public string DeletePayment(string paymentId)
+        public async Task<string> DeletePayment(string paymentId)
         {
             try
             {
@@ -49,7 +50,7 @@ namespace BoardGameShopAPI.Services.PaymentService
                 else
                 {
                     _context.Payments.Remove(payment);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }
@@ -59,11 +60,11 @@ namespace BoardGameShopAPI.Services.PaymentService
             }
         }
 
-        public List<Payment> GetAllPayment()
+        public async Task<List<Payment>> GetAllPayment()
         {
             try
             {
-                return _context.Payments.OrderByDescending(pm => pm.PaymentDate).ToList();
+                return await _context.Payments.OrderByDescending(pm => pm.PaymentDate).ToListAsync();
             }
             catch(Exception e)
             {
@@ -71,12 +72,12 @@ namespace BoardGameShopAPI.Services.PaymentService
             }
         }
 
-        public List<Payment> GetPaymentList(string userId)
+        public async  Task<List<Payment>> GetPaymentList(string userId)
         {
             try
             {
-                return _context.Payments.Where(pm => pm.UserId == userId)
-                    .OrderByDescending(pm => pm.PaymentDate).ToList();
+                return await _context.Payments.Where(pm => pm.UserId == userId)
+                    .OrderByDescending(pm => pm.PaymentDate).ToListAsync();
             }
             catch(Exception e)
             {
@@ -84,7 +85,7 @@ namespace BoardGameShopAPI.Services.PaymentService
             }
         }
 
-        public string UpdatePayment(Payment payment)
+        public async Task<string> UpdatePayment(Payment payment)
         {
             try
             {
@@ -96,7 +97,7 @@ namespace BoardGameShopAPI.Services.PaymentService
                 else
                 {
                     _context.Payments.Update(payment);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }
@@ -106,7 +107,7 @@ namespace BoardGameShopAPI.Services.PaymentService
             }
         }
 
-        public string UpdatePaymentState(string paymentId, string state)
+        public async Task<string> UpdatePaymentState(string paymentId, string state)
         {
             try
             {
@@ -119,7 +120,7 @@ namespace BoardGameShopAPI.Services.PaymentService
                 {
                     dbPayment.State = state;
                     _context.Payments.Update(dbPayment);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }
@@ -144,7 +145,7 @@ namespace BoardGameShopAPI.Services.PaymentService
             }
         }
 
-        public List<GamePack> GetBestSeller()
+        public async Task<List<GamePack>> GetBestSeller()
         {
             var soldGamePackList = _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
                 (p, odt) => new
@@ -165,7 +166,7 @@ namespace BoardGameShopAPI.Services.PaymentService
             List<GamePack> gamePacks = new List<GamePack>();
             foreach (var pack in gamePacks)
             {
-                gamePacks.Add(_gamePackService.GetGamePack(pack.GamePackId));
+                gamePacks.Add(await _gamePackService.GetGamePack(pack.GamePackId));
             }
 
             return gamePacks;

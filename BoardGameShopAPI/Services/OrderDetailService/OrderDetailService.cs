@@ -1,5 +1,7 @@
 ﻿using BoardGameShopAPI.Models;
 using BoardGameShopAPI.Services.GamePackService;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Writers;
 using System.Text.RegularExpressions;
 
 namespace BoardGameShopAPI.Services.OrderDetailService
@@ -14,17 +16,17 @@ namespace BoardGameShopAPI.Services.OrderDetailService
             _gamePackService = gamePackService;
         }
 
-        public string CreateOrderDetail(OrderDetail orderDetail)
+        public async Task<string> CreateOrderDetail(OrderDetail orderDetail)
         {
             try
             {
-                string res = _gamePackService.DecreaseGamePackAmount(orderDetail.GamePackId, orderDetail.Amount);
+                string res = _gamePackService.DecreaseGamePackAmount(orderDetail.GamePackId, orderDetail.Amount).Result;
                 if (res.Equals("NotEnough"))
                 {
                     return res;
                 }
 
-                string tempId = _context.OrderDetails.LastOrDefault().OrderId;
+                string tempId = _context.OrderDetails.OrderBy(x => x.OrderDetailId).LastOrDefault().OrderId;
                 string createId = tempId == null ?
                     "OD00000001" : 
                     Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value)+1)
@@ -32,7 +34,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
 
                 orderDetail.OrderId = createId;
                 _context.OrderDetails.Add(orderDetail);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return "Success";
             }
             catch (Exception ex)
@@ -41,7 +43,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
             }
         }
 
-        public string DeleteOrderDetail(string orderDetailId)
+        public async Task<string> DeleteOrderDetail(string orderDetailId)
         {
             try
             {
@@ -54,7 +56,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
                 {
                     _gamePackService.IncreaseGamePackAmount(orderDetailId, orderDetail.Amount);
                     _context.OrderDetails.Remove(orderDetail);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }
@@ -64,12 +66,12 @@ namespace BoardGameShopAPI.Services.OrderDetailService
             }
         }
 
-        public List<OrderDetail> GetOrderDetail(string orderId)
+        public async Task<List<OrderDetail>> GetOrderDetail(string orderId)
         {
             try
             {
-                return _context.OrderDetails.Where(odt => odt.OrderId == orderId)
-                    .OrderByDescending(odt => odt.OrderId).ToList();
+                return await _context.OrderDetails.Where(odt => odt.OrderId == orderId)
+                    .OrderByDescending(odt => odt.OrderId).ToListAsync();
             }
             catch (Exception e)
             {
@@ -77,7 +79,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
             }
         }
 
-        public string UpdateOrderdetail(OrderDetail orderDetail)
+        public async Task<string> UpdateOrderdetail(OrderDetail orderDetail)
         {
             try
             {
@@ -89,7 +91,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
                 else
                 {
                     _context.OrderDetails.Remove(orderDetail);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }

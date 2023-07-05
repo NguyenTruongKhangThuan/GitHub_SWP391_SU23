@@ -17,9 +17,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetGamePackComponents(string gamePackId)
+        public async Task<IActionResult> GetGamePackComponents(string gamePackId)
         {
-            List<Component> components = _componentService.GetGamePackComponents(gamePackId);
+            List<Component> components = await _componentService.GetGamePackComponents(gamePackId);
             if(components == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);

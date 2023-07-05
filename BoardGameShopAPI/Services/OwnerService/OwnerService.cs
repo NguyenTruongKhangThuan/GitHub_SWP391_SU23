@@ -1,4 +1,5 @@
 ﻿using BoardGameShopAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,13 +17,13 @@ namespace BoardGameShopAPI.Services.OwnerService
             _configuration = configuration;
         }
 
-        public string CreateOwner(Owner owner)
+        public async Task<string> CreateOwner(Owner owner)
         {
             try
             {
                 if(_context.Owners.Where(ow => ow.OwnerName == owner.OwnerName).FirstOrDefault() == null)
                 {
-                    string tempId = _context.Owners.LastOrDefault()?.OwnerId;
+                    string tempId = _context.Owners.OrderBy(x => x.OwnerId).LastOrDefault()?.OwnerId;
                     string createdId = tempId == null ?
                         "OW00000001" :
                         Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
@@ -30,7 +31,7 @@ namespace BoardGameShopAPI.Services.OwnerService
 
                     owner.OwnerId = createdId;
                     _context.Owners.Add(owner);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else
@@ -44,11 +45,11 @@ namespace BoardGameShopAPI.Services.OwnerService
             }
         }
 
-        public List<Owner> GetOwners()
+        public async Task<List<Owner>> GetOwners()
         {
             try
             {
-                return _context.Owners.OrderBy(ow => ow.OwnerId).ToList();
+                return await _context.Owners.OrderBy(ow => ow.OwnerId).ToListAsync();
             }
             catch(Exception)
             {
@@ -56,12 +57,12 @@ namespace BoardGameShopAPI.Services.OwnerService
             }
         }
 
-        public Owner OwnerLogin(string ownername, string password)
+        public async Task<Owner> OwnerLogin(string ownername, string password)
         {
             try
             {
-                Owner owner = _context.Owners.Where(ow => ow.OwnerName == ow.OwnerName
-                                && ow.Password == password).FirstOrDefault();
+                Owner owner = await _context.Owners.Where(ow => ow.OwnerName == ow.OwnerName
+                                && ow.Password == password).FirstOrDefaultAsync();
                 return owner;
             }
             catch(Exception ex)
@@ -70,7 +71,7 @@ namespace BoardGameShopAPI.Services.OwnerService
             }
         }
 
-        public string UpdateOwner(Owner owner)
+        public async Task<string> UpdateOwner(Owner owner)
         {
             try
             {
@@ -81,7 +82,7 @@ namespace BoardGameShopAPI.Services.OwnerService
                 else
                 {
                     _context.Owners.Update(owner);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }

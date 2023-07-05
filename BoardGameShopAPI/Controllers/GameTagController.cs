@@ -17,9 +17,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllTag()
+        public async Task<IActionResult> GetAllTag()
         {
-            List<GameTag> gameTags = _gameTagService.GetGameTag();
+            List<GameTag> gameTags = await _gameTagService.GetGameTag();
             if(gameTags != null)
             {
                 return Ok(gameTags);
@@ -31,9 +31,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetGameTagById(string id)
+        public async Task<IActionResult> GetGameTagById(string id)
         {
-            GameTag gameTag = _gameTagService.GetGameTagById(id);
+            GameTag gameTag = await _gameTagService.GetGameTagById(id);
             if(gameTag!= null)
             {
                 if(gameTag.GameTagId == null)
@@ -49,9 +49,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateGameTag(GameTag gameTag)
+        public async Task<IActionResult> CreateGameTag(GameTag gameTag)
         {
-            string res = _gameTagService.AddNewGameTag(gameTag);
+            string res = await _gameTagService.AddNewGameTag(gameTag);
             if (res.Equals("Success"))
             {
                 return Ok("Create Successfully");
@@ -60,9 +60,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateGameTag(GameTag gameTag)
+        public async Task<IActionResult> UpdateGameTag(GameTag gameTag)
         {
-            string res = _gameTagService.UpdateGameTag(gameTag);
+            string res = await _gameTagService.UpdateGameTag(gameTag);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -78,9 +78,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteGameTag(string id)
+        public async Task<IActionResult> DeleteGameTag(string id)
         {
-            string res = _gameTagService.DeleteGameTag(id);
+            string res = await _gameTagService.DeleteGameTag(id);
             if (res.Equals("Success"))
             {
                 return Ok("Delete Successfully");

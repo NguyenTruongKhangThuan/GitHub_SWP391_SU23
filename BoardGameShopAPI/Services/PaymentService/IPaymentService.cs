@@ -5,21 +5,21 @@ namespace BoardGameShopAPI.Services.PaymentService
     public interface IPaymentService
     {
         //Basic CRUD
-        List<Payment> GetAllPayment();
+        Task<List<Payment>> GetAllPayment();
 
-        List<Payment> GetPaymentList(string userId); //Get the User {id}'s  Payment
+        Task<List<Payment>> GetPaymentList(string userId); //Get the User {id}'s  Payment
 
-        string DeletePayment(string paymentId);
+        Task<string> DeletePayment(string paymentId);
 
-        string UpdatePayment(Payment payment);
+        Task<string> UpdatePayment(Payment payment);
 
-        string UpdatePaymentState(string paymentId, string state);
+        Task<string> UpdatePaymentState(string paymentId, string state);
 
-        string CreatePayment(Payment payment);
+        Task<string> CreatePayment(Payment payment);
 
         //Statistic Calculation:
         float TotalIncome();
 
-        List<GamePack> GetBestSeller();
+        Task<List<GamePack>> GetBestSeller();
     }
 }

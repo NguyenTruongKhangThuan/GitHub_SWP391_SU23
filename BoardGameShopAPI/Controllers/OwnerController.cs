@@ -31,9 +31,9 @@ namespace BoardGameShopAPI.Controllers
         //Owner Function
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult OwnerLogin(string ownerName, string password)
+        public async Task<IActionResult> OwnerLogin(string ownerName, string password)
         {
-            Owner owner = _ownerService.OwnerLogin(ownerName, password);
+            Owner owner = await _ownerService.OwnerLogin(ownerName, password);
             if (owner == null)
             {
                 return NotFound();
@@ -46,9 +46,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(Owner owner)
+        public async Task<IActionResult> Update(Owner owner)
         {
-            string res = _ownerService.UpdateOwner(owner);
+            string res = await _ownerService.UpdateOwner(owner);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -74,9 +74,9 @@ namespace BoardGameShopAPI.Controllers
 
         //GamePack Function
         [HttpGet("gamepacks")]
-        public IActionResult GetPacks(string ownerId)
+        public async Task<IActionResult> GetPacks(string ownerId)
         {
-            List<GamePack> gamePacks = _gamePackService.GetGamePacksByOwner(ownerId);
+            List<GamePack> gamePacks = await _gamePackService.GetGamePacksByOwner(ownerId);
             if (gamePacks == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -85,9 +85,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("gamepacks")]
-        public IActionResult CreatePack(GamePack gamePack)
+        public async Task<IActionResult> CreatePack(GamePack gamePack)
         {
-            string res = _gamePackService.CreateGamePack(gamePack);
+            string res = await _gamePackService.CreateGamePack(gamePack);
             if (res.Equals("Success"))
             {
                 return Ok("Create Successfully");
@@ -106,9 +106,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut("gamepacks")]
-        public IActionResult UpdatePack(GamePack gamePack)
+        public async Task<IActionResult> UpdatePack(GamePack gamePack)
         {
-            string res = _gamePackService.UpdateGamePack(gamePack);
+            string res = await _gamePackService.UpdateGamePack(gamePack);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -127,9 +127,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpDelete("gamepacks/{id}")]
-        public IActionResult DeletePack(string id)
+        public async Task<IActionResult> DeletePack(string id)
         {
-            string res = _gamePackService.DeleteGamePack(id);
+            string res = await _gamePackService.DeleteGamePack(id);
             if (res.Equals("Success"))
             {
                 return Ok("Delete Successfully");
@@ -149,9 +149,9 @@ namespace BoardGameShopAPI.Controllers
 
         //Component Function
         [HttpGet("components")]
-        public IActionResult GetPacksComponent(string gamePackId)
+        public async Task<IActionResult> GetPacksComponent(string gamePackId)
         {
-            List<Component> components = _componentService.GetGamePackComponents(gamePackId);
+            List<Component> components = await _componentService.GetGamePackComponents(gamePackId);
             if (components == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -160,9 +160,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("components")]
-        public IActionResult CreateComponent(Component component)
+        public async Task<IActionResult> CreateComponent(Component component)
         {
-            string res = _componentService.CreateComponent(component);
+            string res = await _componentService.CreateComponent(component);
             if (res.Equals("Success"))
             {
                 return Ok("Create Successfully");
@@ -181,9 +181,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut("components")]
-        public IActionResult UpdateComponent(Component component)
+        public async Task<IActionResult> UpdateComponent(Component component)
         {
-            string res = _componentService.UpdateComponent(component);
+            string res = await _componentService.UpdateComponent(component);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -202,9 +202,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpDelete("components/{id}")]
-        public IActionResult DeleteComponent(string id)
+        public async Task<IActionResult> DeleteComponent(string id)
         {
-            string res = _componentService.DeleteComponent(id);
+            string res = await _componentService.DeleteComponent(id);
             if (res.Equals("Success"))
             {
                 return Ok("Delete Successfully");

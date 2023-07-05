@@ -4,12 +4,12 @@ namespace BoardGameShopAPI.Services.BoardGameService
 {
     public interface IBoardGameService
     {
-        List<BoardGame> GetBoardGames();
+        Task<List<BoardGame>> GetBoardGames();
 
-        string CreateBoardGame(BoardGame boardGame);
+        Task<string> CreateBoardGame(BoardGame boardGame);
 
-        string UpdateBoardGame(BoardGame boardGame);
+        Task<string> UpdateBoardGame(BoardGame boardGame);
 
-        string DeleteBoardGame(string boardGameId);
+        Task<string> DeleteBoardGame(string boardGameId);
     }
 }

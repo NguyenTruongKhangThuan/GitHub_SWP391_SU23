@@ -21,9 +21,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string userId)
+        public async Task<IActionResult> Get(string userId)
         {
-            List<Payment> payments = _paymentService.GetPaymentList(userId);
+            List<Payment> payments = await _paymentService.GetPaymentList(userId);
             if (payments == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -32,9 +32,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Payment payment)
+        public async Task<IActionResult> Create(Payment payment)
         {
-            string res = _paymentService.CreatePayment(payment);
+            string res = await _paymentService.CreatePayment(payment);
             if (res.Equals("Success"))
             {
                 return Ok("Create Successfully");
@@ -46,9 +46,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(Payment payment)
+        public async Task<IActionResult> Update(Payment payment)
         {
-            string res = _paymentService.UpdatePayment(payment);
+            string res = await _paymentService.UpdatePayment(payment);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -67,9 +67,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            string res = _paymentService.DeletePayment(id);
+            string res = await _paymentService.DeletePayment(id);
             if (res.Equals("Success"))
             {
                 return Ok("Delete Successfully");

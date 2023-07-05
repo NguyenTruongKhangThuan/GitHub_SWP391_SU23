@@ -17,9 +17,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            List<BoardGame> boardGames = _boardGameService.GetBoardGames();
+            List<BoardGame> boardGames = await _boardGameService.GetBoardGames();
             if(boardGames == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);

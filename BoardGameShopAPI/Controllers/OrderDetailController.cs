@@ -17,9 +17,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string orderId)
+        public async Task<IActionResult> Get(string orderId)
         {
-            List<OrderDetail> orderDetails = _orderDetailService.GetOrderDetail(orderId);
+            List<OrderDetail> orderDetails = await _orderDetailService.GetOrderDetail(orderId);
             if (orderDetails == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -28,9 +28,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(OrderDetail orderDetail)
+        public async Task<IActionResult> Create(OrderDetail orderDetail)
         {
-            string res = _orderDetailService.CreateOrderDetail(orderDetail);
+            string res = await _orderDetailService.CreateOrderDetail(orderDetail);
             if (res.Equals("Success"))
             {
                 return Ok("Create Successfully");
@@ -46,9 +46,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(OrderDetail orderDetail)
+        public async Task<IActionResult> Update(OrderDetail orderDetail)
         {
-            string res = _orderDetailService.UpdateOrderdetail(orderDetail);
+            string res = await _orderDetailService.UpdateOrderdetail(orderDetail);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -67,9 +67,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            string res = _orderDetailService.DeleteOrderDetail(id);
+            string res = await _orderDetailService.DeleteOrderDetail(id);
             if (res.Equals("Success"))
             {
                 return Ok("Delete Successfully");

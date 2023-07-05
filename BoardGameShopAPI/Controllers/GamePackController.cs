@@ -17,13 +17,20 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetGamePacks()
+        public async Task<IActionResult> GetGamePacks()
         {
-            List<GamePack> gamePacks = _gamePackService.GetAllGamePack();
+            List<GamePack> gamePacks = await _gamePackService.GetAvailableGamePack();
             if(gamePacks == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
+            return Ok(gamePacks);
+        }
+
+        [HttpGet("searchmethods")]
+        public async Task<IActionResult> SearchGamePackByName(string searchValue, string boardGameName)
+        {
+            List<GamePack> gamePacks = await _gamePackService.SearchGamePack(searchValue, boardGameName);
             return Ok(gamePacks);
         }
     }

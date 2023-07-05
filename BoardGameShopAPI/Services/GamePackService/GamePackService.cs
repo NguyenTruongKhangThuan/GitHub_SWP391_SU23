@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using System.Text.RegularExpressions;
 using BoardGameShopAPI.Services.FirebaseCloundService;
 using System.Numerics;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameShopAPI.Services.GamePackService
 {
@@ -19,14 +20,14 @@ namespace BoardGameShopAPI.Services.GamePackService
             _firebaseCloundService = firebaseCloundService;
         }
 
-        public string CreateGamePack(GamePack gamePack)
+        public async Task<string> CreateGamePack(GamePack gamePack)
         {
             try
             {
                 GamePack dbGamePack = _context.GamePacks.Where(gp => gp.GamePackName == gamePack.GamePackName).FirstOrDefault();
                 if (dbGamePack == null)
                 {
-                    string tempId = _context.GamePacks.LastOrDefault().GamePackId;
+                    string tempId = _context.GamePacks.OrderBy(x => x.GamePackId).LastOrDefault().GamePackId;
                     string createdId = tempId == null ?
                         "GP000001" :
                         Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
@@ -36,7 +37,7 @@ namespace BoardGameShopAPI.Services.GamePackService
 
                     gamePack.GamePackId = createdId;
                     _context.GamePacks.Add(gamePack);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else
@@ -50,7 +51,7 @@ namespace BoardGameShopAPI.Services.GamePackService
             }
         }
 
-        public string DeleteGamePack(string gamePackId)
+        public async Task<string> DeleteGamePack(string gamePackId)
         {
             try
             {
@@ -63,7 +64,7 @@ namespace BoardGameShopAPI.Services.GamePackService
                 {
                     gamePack.AvailableAmount = -1;
                     _context.GamePacks.Update(gamePack);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
             }
@@ -73,11 +74,11 @@ namespace BoardGameShopAPI.Services.GamePackService
             }
         }
 
-        public List<GamePack> GetAllGamePack()
+        public async Task<List<GamePack>> GetAllGamePack()
         {
             try
             {
-                return GetPackList().Where(gp => gp.AvailableAmount >= 0).OrderBy(gp => gp.GamePackId).ToList();
+                return await GetPackList().OrderBy(gp => gp.GamePackId).ToListAsync();
             }
             catch (Exception)
             {
@@ -85,12 +86,11 @@ namespace BoardGameShopAPI.Services.GamePackService
             }
         }
 
-        public List<GamePack> GetGamePacksByOwner(string ownerId)
+        public async Task<List<GamePack>> GetAvailableGamePack()
         {
             try
             {
-                return GetPackList().Where(gp => gp.OwnerId == ownerId)
-                    .OrderBy(gp => gp.GamePackId).ToList();
+                return await GetPackList().Where(gp => gp.AvailableAmount >= 0).OrderBy(gp => gp.GamePackId).ToListAsync();
             }
             catch (Exception)
             {
@@ -98,7 +98,20 @@ namespace BoardGameShopAPI.Services.GamePackService
             }
         }
 
-        public string UpdateGamePack(GamePack gamePack)
+        public async Task<List<GamePack>> GetGamePacksByOwner(string ownerId)
+        {
+            try
+            {
+                return await GetPackList().Where(gp => gp.OwnerId == ownerId)
+                    .OrderBy(gp => gp.GamePackId).ToListAsync();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<string> UpdateGamePack(GamePack gamePack)
         {
             try
             {
@@ -107,7 +120,7 @@ namespace BoardGameShopAPI.Services.GamePackService
                     _firebaseCloundService.UpdateImage(gamePack.ImageSrc, gamePack.Image, ModelName);
 
                     _context.GamePacks.Update(gamePack);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else
@@ -121,9 +134,9 @@ namespace BoardGameShopAPI.Services.GamePackService
             }
         }
 
-        private List<GamePack> GetPackList()
+        private IQueryable<GamePack> GetPackList()
         {
-            return _context.GamePacks.Select(gp => new GamePack()
+            return  _context.GamePacks.Select(gp => new GamePack()
             {
                 GamePackId = gp.GamePackId,
                 BoardGameId = gp.BoardGameId,
@@ -142,21 +155,21 @@ namespace BoardGameShopAPI.Services.GamePackService
                 GameRule = gp.GameRule,
                 AvailableAmount = gp.AvailableAmount,
                 ImageSrc = _firebaseCloundService.RetrieveImage(gp.Image, ModelName)
-            }).ToList();
+            });
         }
 
-        public GamePack GetGamePack(string gamePackId)
+        public async Task<GamePack> GetGamePack(string gamePackId)
         {
-            return _context.GamePacks.Find(gamePackId);
+            return await _context.GamePacks.FindAsync(gamePackId);
         }
 
-        public string DecreaseGamePackAmount(string gamePackId, int? amount)
+        public async Task<string> DecreaseGamePackAmount(string gamePackId, int? amount)
         {
             GamePack gamePack = _context.GamePacks.Find(gamePackId);
             if (gamePack.AvailableAmount > amount)
             {
                 gamePack.AvailableAmount -= amount;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return "Success";
             }
             else
@@ -165,11 +178,26 @@ namespace BoardGameShopAPI.Services.GamePackService
             }
         }
 
-        public void IncreaseGamePackAmount(string gamePackId, int? amount)
+        public async void IncreaseGamePackAmount(string gamePackId, int? amount)
         {
             GamePack gamePack = _context.GamePacks.Find(gamePackId);
             gamePack.AvailableAmount += amount;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<GamePack>> SearchGamePack(string searchValue, string boardGameName)
+        {
+            IQueryable<GamePack> gamePacks = _context.GamePacks.Where(gp => gp.GamePackName.Contains(searchValue));
+
+            if (boardGameName.Equals("All"))
+            {
+                return await gamePacks.ToListAsync();
+            }
+            else
+            {
+                string boardGameId = _context.BoardGames.Where(bg => bg.Name ==  boardGameName).FirstOrDefault().BoardGameId;
+                return await gamePacks.Where(gp => gp.BoardGameId ==  boardGameId).ToListAsync();
+            }
         }
 
         //Statistic Calculation

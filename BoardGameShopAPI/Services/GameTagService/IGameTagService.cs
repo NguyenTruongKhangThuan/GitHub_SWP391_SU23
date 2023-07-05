@@ -4,14 +4,14 @@ namespace BoardGameShopAPI.Services.GameTagService
 {
     public interface IGameTagService
     {
-        List<GameTag> GetGameTag();
+        Task<List<GameTag>> GetGameTag();
 
-        string AddNewGameTag(GameTag gameTag);
+        Task<string> AddNewGameTag(GameTag gameTag);
 
-        string UpdateGameTag(GameTag gameTag);
+        Task<string> UpdateGameTag(GameTag gameTag);
 
-        string DeleteGameTag(string gameTagId);
+        Task<string> DeleteGameTag(string gameTagId);
 
-        GameTag GetGameTagById(string gameTagId);
+        Task<GameTag> GetGameTagById(string gameTagId);
     }
 }

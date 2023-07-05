@@ -10,13 +10,13 @@ namespace BoardGameShopAPI.Services.UserService
         User ReadAuthToken(string authToken);
 
         //Basic CRUD Method for User
-        List<User> ReadUserList();
+        Task<List<User>> ReadUserList();
 
-        string CreateUserAccount(User user);
+        Task<string> CreateUserAccount(User user);
 
-        User Login(string username, string password);
+        Task<User> Login(string username, string password);
 
-        string UpdateUserAccount(User user);
+        Task<string> UpdateUserAccount(User user);
 
         //Statistic Calculation
         int GetNumberOfUserAccount();

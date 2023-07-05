@@ -21,9 +21,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string username, string password)
+        public async Task<IActionResult> Login(string username, string password)
         {
-            User user = _userService.Login(username, password);
+            User user = await _userService.Login(username, password);
             if (user == null)
             {
                 return NotFound();
@@ -36,9 +36,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult EditProfile(User user)
+        public async Task<IActionResult> EditProfile(User user)
         {
-            string res = _userService.UpdateUserAccount(user);
+            string res = await _userService.UpdateUserAccount(user);
             if (res.Equals("Success"))
             {
                 return Ok("Update Successfully");
@@ -57,9 +57,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateAccount(User user)
+        public async Task<IActionResult> CreateAccount(User user)
         {
-            string res = _userService.CreateUserAccount(user);
+            string res = await _userService.CreateUserAccount(user);
             if (res.Equals("Success"))
             {
                 return Ok("Create Successfully");

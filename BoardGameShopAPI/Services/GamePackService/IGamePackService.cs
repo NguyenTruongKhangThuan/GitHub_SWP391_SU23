@@ -4,21 +4,25 @@ namespace BoardGameShopAPI.Services.GamePackService
 {
     public interface IGamePackService
     {
-        List<GamePack> GetAllGamePack();
+        Task<List<GamePack>> GetAllGamePack();
 
-        List<GamePack> GetGamePacksByOwner(string ownerId);
+        Task<List<GamePack>> GetAvailableGamePack();
 
-        string DeleteGamePack(string gamePackId);
+        Task<List<GamePack>> GetGamePacksByOwner(string ownerId);
 
-        string CreateGamePack(GamePack gamePack);
+        Task<string> DeleteGamePack(string gamePackId);
 
-        string UpdateGamePack(GamePack gamePack);
+        Task<string> CreateGamePack(GamePack gamePack);
 
-        GamePack GetGamePack(string gamePackId);
+        Task<string> UpdateGamePack(GamePack gamePack);
 
-        string DecreaseGamePackAmount(string  gamePackId, int? amount);
+        Task<GamePack> GetGamePack(string gamePackId);
+
+        Task<string> DecreaseGamePackAmount(string  gamePackId, int? amount);
 
         void IncreaseGamePackAmount(string gamePackId, int? amount);
+
+        Task<List<GamePack>> SearchGamePack(string searchValue, string boardGameName);
 
         //Statistic Calculation
         int GetNumberOfAvailablePack();

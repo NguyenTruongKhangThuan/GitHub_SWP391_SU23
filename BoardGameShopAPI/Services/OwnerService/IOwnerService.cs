@@ -4,13 +4,13 @@ namespace BoardGameShopAPI.Services.OwnerService
 {
     public interface IOwnerService
     {
-        List<Owner> GetOwners();
+        Task<List<Owner>> GetOwners();
 
-        string CreateOwner(Owner owner);
+        Task<string> CreateOwner(Owner owner);
 
-        string UpdateOwner(Owner owner);
+        Task<string> UpdateOwner(Owner owner);
 
-        Owner OwnerLogin(string ownername, string password);
+        Task<Owner> OwnerLogin(string ownername, string password);
 
         string CreateOwnerToken(Owner owner);
 

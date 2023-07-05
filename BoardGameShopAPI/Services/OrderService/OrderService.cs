@@ -1,6 +1,7 @@
 ﻿using BoardGameShopAPI.Services.OrderDetailService;
 using BoardGameShopAPI.Models;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameShopAPI.Services.OrderService
 {
@@ -14,11 +15,11 @@ namespace BoardGameShopAPI.Services.OrderService
             _orderDetailService = orderDetail;
         }
 
-        public string CreateOrder(Order order)
+        public async Task<string> CreateOrder(Order order)
         {
             try
             {
-                string tempId = _context.Orders.LastOrDefault().OrderId;
+                string tempId = _context.Orders.OrderBy(x => x.OrderId).LastOrDefault().OrderId;
                 string createdId = tempId == null ?
                     "O00000001" :
                     Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
@@ -26,7 +27,7 @@ namespace BoardGameShopAPI.Services.OrderService
 
                 order.OrderId = createdId;
                 _context.Orders.Add(order);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return "Success";
             }
             catch(Exception ex)
@@ -35,21 +36,21 @@ namespace BoardGameShopAPI.Services.OrderService
             }
         }
 
-        public string DeleteOrder(string orderId)
+        public async Task<string> DeleteOrder(string orderId)
         {
             try
             {
                 Order order = _context.Orders.Find(orderId);
                 if(order != null)
                 {
-                    List<OrderDetail> orderDetails = _orderDetailService.GetOrderDetail(orderId);
+                    List<OrderDetail> orderDetails = await _orderDetailService.GetOrderDetail(orderId);
                     foreach (var orderDetail in orderDetails)
                     {
                         _orderDetailService.DeleteOrderDetail(orderDetail.OrderDetailId);
                     }
 
                     _context.Orders.Remove(order);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return "Success";
                 }
                 else
@@ -63,11 +64,11 @@ namespace BoardGameShopAPI.Services.OrderService
             }
         }
 
-        public Order GetOrders(string orderId)
+        public async Task<Order> GetOrders(string orderId)
         {
             try
             {
-                Order order = _context.Orders.Where(o => o.OrderId == orderId).FirstOrDefault();
+                Order order = await _context.Orders.Where(o => o.OrderId == orderId).FirstOrDefaultAsync();
                 if(order != null)
                 {
                     return order;
@@ -80,12 +81,12 @@ namespace BoardGameShopAPI.Services.OrderService
             }
         }
 
-        public float CalcTotalPrice(string orderId)
+        public async Task<float> CalcTotalPrice(string orderId)
         {
             try
             {
                 float totalCost = 0;
-                List<OrderDetail> orderDetails = _orderDetailService.GetOrderDetail(orderId);
+                List<OrderDetail> orderDetails = await _orderDetailService.GetOrderDetail(orderId);
 
                 foreach (var orderDetail in orderDetails)
                 {
