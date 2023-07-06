@@ -90,7 +90,8 @@ namespace BoardGameShopAPI.Services.ComponentService
         {
             try
             {
-                if(_context.Components.Find(component.ComponentId) == null)
+                Component dbComponent = _context.Components.Find(component.ComponentId);
+                if (dbComponent == null)
                 {
                     return "NotFound";
                 }
@@ -98,7 +99,7 @@ namespace BoardGameShopAPI.Services.ComponentService
                 {
                     _firebaseCloundService.UpdateImage(component.ImageSrc, component.Image, ModelName);
 
-                    _context.Components.Update(component);
+                    _context.Entry(dbComponent).CurrentValues.SetValues(component);
                     await _context.SaveChangesAsync();
                     return "Success";
                 }

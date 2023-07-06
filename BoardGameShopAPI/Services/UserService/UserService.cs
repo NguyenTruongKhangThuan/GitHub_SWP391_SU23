@@ -144,7 +144,7 @@ namespace BoardGameShopAPI.Services.UserService
                 }
                 else
                 {
-                    _context.Users.Update(user);
+                    _context.Entry(dbUser).CurrentValues.SetValues(user);
                     await _context.SaveChangesAsync();
                     return "Success";
                 }

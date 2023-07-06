@@ -90,7 +90,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
                 }
                 else
                 {
-                    _context.OrderDetails.Remove(orderDetail);
+                    _context.Entry(dbOrderDetail).CurrentValues.SetValues(orderDetail);
                     await _context.SaveChangesAsync();
                     return "Success";
                 }

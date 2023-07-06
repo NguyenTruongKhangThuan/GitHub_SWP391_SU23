@@ -115,11 +115,12 @@ namespace BoardGameShopAPI.Services.GamePackService
         {
             try
             {
-                if (_context.GamePacks.Find(gamePack.GamePackId) != null)
+                GamePack dbGamePack = _context.GamePacks.Find(gamePack.GamePackId);
+                if (dbGamePack != null)
                 {
                     _firebaseCloundService.UpdateImage(gamePack.ImageSrc, gamePack.Image, ModelName);
 
-                    _context.GamePacks.Update(gamePack);
+                    _context.Entry(dbGamePack).CurrentValues.SetValues(gamePack);
                     await _context.SaveChangesAsync();
                     return "Success";
                 }

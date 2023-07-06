@@ -75,13 +75,14 @@ namespace BoardGameShopAPI.Services.OwnerService
         {
             try
             {
-                if(_context.Owners.Find(owner.OwnerId) == null)
+                Owner dbOwner = _context.Owners.Find(owner.OwnerId);
+                if (dbOwner == null)
                 {
                     return "NotFound";
                 }
                 else
                 {
-                    _context.Owners.Update(owner);
+                    _context.Entry(dbOwner).CurrentValues.SetValues(owner);
                     await _context.SaveChangesAsync();
                     return "Success";
                 }

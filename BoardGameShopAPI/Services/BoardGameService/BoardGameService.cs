@@ -95,11 +95,12 @@ namespace BoardGameShopAPI.Services.BoardGameService
         {
             try
             {
-                if(_context.BoardGames.Find(boardGame.BoardGameId) != null)
+                BoardGame dbBoardGame = _context.BoardGames.Find(boardGame.BoardGameId)
+                if (dbBoardGame != null)
                 {
                     _firebaseCloundService.UpdateImage(boardGame.ImageSrc, boardGame.Image, ModelName);
 
-                    _context.BoardGames.Update(boardGame);
+                    _context.Entry(dbBoardGame).CurrentValues.SetValues(boardGame);
                     await _context.SaveChangesAsync();
                     return "Success";
                 }

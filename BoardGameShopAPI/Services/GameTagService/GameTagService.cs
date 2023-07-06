@@ -97,7 +97,7 @@ namespace BoardGameShopAPI.Services.GameTagService
                 GameTag dbGameTag = _context.GameTags.Find(gameTag.GameTagId);
                 if(dbGameTag != null)
                 {
-                    _context.GameTags.Update(gameTag);
+                    _context.Entry(dbGameTag).CurrentValues.SetValues(gameTag);
                     await _context.SaveChangesAsync();
                     return "Success";
                 }
