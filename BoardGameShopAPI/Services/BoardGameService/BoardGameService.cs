@@ -95,7 +95,7 @@ namespace BoardGameShopAPI.Services.BoardGameService
         {
             try
             {
-                BoardGame dbBoardGame = _context.BoardGames.Find(boardGame.BoardGameId)
+                BoardGame dbBoardGame = _context.BoardGames.Find(boardGame.BoardGameId);
                 if (dbBoardGame != null)
                 {
                     _firebaseCloundService.UpdateImage(boardGame.ImageSrc, boardGame.Image, ModelName);

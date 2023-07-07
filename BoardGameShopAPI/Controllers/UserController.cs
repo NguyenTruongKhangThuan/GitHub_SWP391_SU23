@@ -36,7 +36,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditProfile(User user)
+        public async Task<IActionResult> EditProfile([FromForm] User user)
         {
             string res = await _userService.UpdateUserAccount(user);
             if (res.Equals("Success"))
@@ -57,7 +57,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAccount(User user)
+        public async Task<IActionResult> CreateAccount([FromForm] User user)
         {
             string res = await _userService.CreateUserAccount(user);
             if (res.Equals("Success"))

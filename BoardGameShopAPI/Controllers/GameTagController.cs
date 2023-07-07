@@ -49,7 +49,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGameTag(GameTag gameTag)
+        public async Task<IActionResult> CreateGameTag([FromForm] GameTag gameTag)
         {
             string res = await _gameTagService.AddNewGameTag(gameTag);
             if (res.Equals("Success"))
@@ -60,7 +60,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateGameTag(GameTag gameTag)
+        public async Task<IActionResult> UpdateGameTag([FromForm] GameTag gameTag)
         {
             string res = await _gameTagService.UpdateGameTag(gameTag);
             if (res.Equals("Success"))

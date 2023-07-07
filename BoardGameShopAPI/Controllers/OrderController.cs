@@ -38,7 +38,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(Order order)
+        public async Task<IActionResult> CreateOrder([FromForm] Order order)
         {
             string res = await _orderService.CreateOrder(order);
             if (res.Equals("Success"))

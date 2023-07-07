@@ -28,7 +28,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(OrderDetail orderDetail)
+        public async Task<IActionResult> Create([FromForm] OrderDetail orderDetail)
         {
             string res = await _orderDetailService.CreateOrderDetail(orderDetail);
             if (res.Equals("Success"))
@@ -46,7 +46,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(OrderDetail orderDetail)
+        public async Task<IActionResult> Update([FromForm] OrderDetail orderDetail)
         {
             string res = await _orderDetailService.UpdateOrderdetail(orderDetail);
             if (res.Equals("Success"))

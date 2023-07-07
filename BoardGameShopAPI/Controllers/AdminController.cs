@@ -93,7 +93,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("boardgames")]
-        public async Task<IActionResult> CreateBoardGame(BoardGame boardGame)
+        public async Task<IActionResult> CreateBoardGame([FromForm] BoardGame boardGame)
         {
             string res = await _boardGameService.CreateBoardGame(boardGame);
             if (res.Equals("Success"))
@@ -114,7 +114,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut("boardgames")]
-        public async Task<IActionResult> UpdateBoardGame(BoardGame boardGame)
+        public async Task<IActionResult> UpdateBoardGame([FromForm] BoardGame boardGame)
         {
             string res = await _boardGameService.UpdateBoardGame(boardGame);
             if (res.Equals("Success"))
@@ -168,7 +168,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("owners")]
-        public async Task<IActionResult> CreateOwnerAccount(Owner owner)
+        public async Task<IActionResult> CreateOwnerAccount([FromForm] Owner owner)
         {
             string res = await _ownerService.CreateOwner(owner);
             if (res.Equals("Success"))
@@ -189,7 +189,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut("owners")]
-        public async Task<IActionResult> UpdateOwnerState(Owner owner)
+        public async Task<IActionResult> UpdateOwnerState([FromForm] Owner owner)
         {
             string res = await _ownerService.UpdateOwner(owner);
             if (res.Equals("Success"))

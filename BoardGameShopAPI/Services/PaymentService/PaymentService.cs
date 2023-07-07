@@ -96,7 +96,7 @@ namespace BoardGameShopAPI.Services.PaymentService
                 }
                 else
                 {
-                    _context.Entry(dbPayment).CurrentValues.GetType(payment);
+                    _context.Entry(dbPayment).CurrentValues.SetValues(payment);
                     await _context.SaveChangesAsync();
                     return "Success";
                 }

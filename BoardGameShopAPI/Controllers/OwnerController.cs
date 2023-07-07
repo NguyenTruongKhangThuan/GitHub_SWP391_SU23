@@ -46,7 +46,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(Owner owner)
+        public async Task<IActionResult> Update([FromForm] Owner owner)
         {
             string res = await _ownerService.UpdateOwner(owner);
             if (res.Equals("Success"))
@@ -85,7 +85,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("gamepacks")]
-        public async Task<IActionResult> CreatePack(GamePack gamePack)
+        public async Task<IActionResult> CreatePack([FromForm] GamePack gamePack)
         {
             string res = await _gamePackService.CreateGamePack(gamePack);
             if (res.Equals("Success"))
@@ -106,7 +106,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut("gamepacks")]
-        public async Task<IActionResult> UpdatePack(GamePack gamePack)
+        public async Task<IActionResult> UpdatePack([FromForm] GamePack gamePack)
         {
             string res = await _gamePackService.UpdateGamePack(gamePack);
             if (res.Equals("Success"))
@@ -160,7 +160,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("components")]
-        public async Task<IActionResult> CreateComponent(Component component)
+        public async Task<IActionResult> CreateComponent([FromForm] Component component)
         {
             string res = await _componentService.CreateComponent(component);
             if (res.Equals("Success"))
@@ -181,7 +181,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut("components")]
-        public async Task<IActionResult> UpdateComponent(Component component)
+        public async Task<IActionResult> UpdateComponent([FromForm] Component component)
         {
             string res = await _componentService.UpdateComponent(component);
             if (res.Equals("Success"))
