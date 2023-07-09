@@ -64,6 +64,27 @@ namespace BoardGameShopAPI.Services.ComponentService
             }
         }
 
+        public async Task<string> DeleteListOfComponents(List<Component> components)
+        {
+            try
+            {
+                foreach (var component in components)
+                {
+                    Component deletedComponent = _context.Components.Find(component.ComponentId);
+
+                    _firebaseCloundService.DeleteImage(component.Image, ModelName);
+
+                    _context.Components.Remove(deletedComponent);
+                    await _context.SaveChangesAsync();
+                }
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         public async Task<List<Component>> GetGamePackComponents(string gamePackId)
         {
             try

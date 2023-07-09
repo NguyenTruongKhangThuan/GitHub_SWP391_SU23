@@ -74,6 +74,25 @@ namespace BoardGameShopAPI.Services.GamePackService
             }
         }
 
+        public async Task<string> DeleteMultipleGamePack(List<GamePack> gamePacks)
+        {
+            try
+            {
+                foreach (var pack in gamePacks)
+                {
+                    GamePack gamePack = _context.GamePacks.Find(pack.GamePackId);
+                    gamePack.AvailableAmount = -1;
+                    _context.Update(gamePack);
+                    await _context.SaveChangesAsync();
+                }
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         public async Task<List<GamePack>> GetAllGamePack()
         {
             try

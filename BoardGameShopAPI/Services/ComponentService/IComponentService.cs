@@ -11,5 +11,7 @@ namespace BoardGameShopAPI.Services.ComponentService
         Task<string> UpdateComponent(Component component);
 
         Task<string> DeleteComponent(string componentId);
+
+        Task<string> DeleteListOfComponents(List<Component> components);
     }
 }

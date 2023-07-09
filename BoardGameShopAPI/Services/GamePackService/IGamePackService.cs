@@ -12,6 +12,8 @@ namespace BoardGameShopAPI.Services.GamePackService
 
         Task<string> DeleteGamePack(string gamePackId);
 
+        Task<string> DeleteMultipleGamePack(List<GamePack> gamePacks);
+
         Task<string> CreateGamePack(GamePack gamePack);
 
         Task<string> UpdateGamePack(GamePack gamePack);
