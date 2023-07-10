@@ -36,7 +36,7 @@ namespace BoardGameShopAPI.Controllers
             Owner owner = await _ownerService.OwnerLogin(ownerName, password);
             if (owner == null)
             {
-                return NotFound();
+                return BadRequest("Invalid Username or Password!");
             }
             else
             {

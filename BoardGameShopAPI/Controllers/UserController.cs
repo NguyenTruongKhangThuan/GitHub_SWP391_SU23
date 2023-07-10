@@ -26,7 +26,7 @@ namespace BoardGameShopAPI.Controllers
             User user = await _userService.Login(username, password);
             if (user == null)
             {
-                return NotFound();
+                return BadRequest("Invalid Username or Password!");
             }
             else
             {
