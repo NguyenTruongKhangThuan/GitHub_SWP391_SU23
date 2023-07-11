@@ -47,6 +47,35 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
+        [HttpGet("authentication/{token}")]
+        public IActionResult Authentication(string token)
+        {
+            User user = _userService.ReadAuthToken(token);
+            if(user == null)
+            {
+                Owner owner = _ownerService.ReadOwnerToken(token);
+                if (owner == null)
+                {
+                    return BadRequest("Cannot Read Autheticated Token");
+                }
+                else
+                {
+                    return Ok("OWNER");
+                }
+            }
+            else
+            {
+                if (user.RoleId.Equals("RO01"))
+                {
+                    return Ok("ADMIN");
+                }
+                else
+                {
+                    return Ok("CUSTOMER");
+                }
+            }
+        }
+
         [HttpPut]
         public async Task<IActionResult> EditProfile([FromForm] User user)
         {

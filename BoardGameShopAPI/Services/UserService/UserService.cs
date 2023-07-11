@@ -54,23 +54,30 @@ namespace BoardGameShopAPI.Services.UserService
 
         public User ReadAuthToken(string authToken)
         {
-            var token = new JwtSecurityToken(jwtEncodedString: authToken);
-
-            User user = new User()
+            try
             {
-                UserId = token.Claims.First(c => c.Type == "userId").Value,
-                RoleId = token.Claims.First(c => c.Type == "roleId").Value,
-                Username = token.Claims.First(c => c.Type == "username").Value,
-                Password = token.Claims.First(c => c.Type == "password").Value,
-                Email = token.Claims.First(c => c.Type == "email").Value,
-                FullName = token.Claims.First(c => c.Type == "fullName").Value,
-                Birthday = DateTime.Parse(token.Claims.First(c => c.Type == "birthday").Value),
-                Gender = token.Claims.First(c => c.Type == "gender").Value,
-                Address = token.Claims.First(c => c.Type == "address").Value,
-                PhoneNumber = token.Claims.First(c => c.Type == "phoneNumber").Value,
-            };
+                var token = new JwtSecurityToken(jwtEncodedString: authToken);
 
-            return user;
+                User user = new User()
+                {
+                    UserId = token.Claims.First(c => c.Type == "userId").Value,
+                    RoleId = token.Claims.First(c => c.Type == "roleId").Value,
+                    Username = token.Claims.First(c => c.Type == "username").Value,
+                    Password = token.Claims.First(c => c.Type == "password").Value,
+                    Email = token.Claims.First(c => c.Type == "email").Value,
+                    FullName = token.Claims.First(c => c.Type == "fullName").Value,
+                    Birthday = DateTime.Parse(token.Claims.First(c => c.Type == "birthday").Value),
+                    Gender = token.Claims.First(c => c.Type == "gender").Value,
+                    Address = token.Claims.First(c => c.Type == "address").Value,
+                    PhoneNumber = token.Claims.First(c => c.Type == "phoneNumber").Value,
+                };
+
+                return user;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
         }
 
         //User Service
