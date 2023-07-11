@@ -47,7 +47,7 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
-        [HttpGet("authentication/{token}")]
+        [HttpGet("authentication")]
         public IActionResult Authentication(string token)
         {
             User user = _userService.ReadAuthToken(token);

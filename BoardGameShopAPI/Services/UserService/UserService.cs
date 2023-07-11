@@ -95,7 +95,8 @@ namespace BoardGameShopAPI.Services.UserService
                         .ToString(new string('0', n.Value.Length)));
 
                     user.UserId = createdId;
-                    user.RoleId = "RO01";
+                    user.RoleId = "RO02";
+                    user.Role = _context.Roles.Find("RO02");
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
                     return "Success";

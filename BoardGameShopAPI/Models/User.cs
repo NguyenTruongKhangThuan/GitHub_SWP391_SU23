@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BoardGameShopAPI.Models;
 
@@ -7,6 +8,7 @@ public partial class User
 {
     public string UserId { get; set; } = null!;
 
+    [ForeignKey("RoleId")]
     public string? RoleId { get; set; }
 
     public string? Username { get; set; }
