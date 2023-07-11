@@ -29,22 +29,6 @@ namespace BoardGameShopAPI.Controllers
         }
 
         //Owner Function
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> OwnerLogin(string ownerName, string password)
-        {
-            Owner owner = await _ownerService.OwnerLogin(ownerName, password);
-            if (owner == null)
-            {
-                return BadRequest("Invalid Username or Password!");
-            }
-            else
-            {
-                string ownerInfoToken = _ownerService.CreateOwnerToken(owner);
-                return Ok(ownerInfoToken);
-            }
-        }
-
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] Owner owner)
         {

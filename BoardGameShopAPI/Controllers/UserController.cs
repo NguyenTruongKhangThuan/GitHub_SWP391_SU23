@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Runtime.InteropServices;
+using BoardGameShopAPI.Services.OwnerService;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,9 +16,11 @@ namespace BoardGameShopAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IOwnerService _ownerService;
+        public UserController(IUserService userService, IOwnerService ownerService)
         {
             _userService = userService;
+            _ownerService = ownerService;
         }
 
         [HttpGet]
@@ -26,7 +29,16 @@ namespace BoardGameShopAPI.Controllers
             User user = await _userService.Login(username, password);
             if (user == null)
             {
-                return BadRequest("Invalid Username or Password!");
+                Owner owner = await _ownerService.OwnerLogin(username, password);
+                if(owner == null)
+                {
+                    return BadRequest("Invalid Username or Password!");
+                }
+                else
+                {
+                    string authenToken = _ownerService.CreateOwnerToken(owner);
+                    return Ok(authenToken);
+                }
             }
             else
             {
