@@ -36,6 +36,9 @@ namespace BoardGameShopAPI.Services.GamePackService
                     _firebaseCloundService.UploadImage(gamePack.ImageSrc, gamePack.Image, ModelName);
 
                     gamePack.GamePackId = createdId;
+                    gamePack.Owner = _context.Owners.Find(gamePack.OwnerId);
+                    gamePack.BoardGame = _context.BoardGames.Find(gamePack.BoardGameId);
+
                     _context.GamePacks.Add(gamePack);
                     await _context.SaveChangesAsync();
                     return "Success";

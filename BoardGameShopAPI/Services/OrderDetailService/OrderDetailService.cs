@@ -32,7 +32,10 @@ namespace BoardGameShopAPI.Services.OrderDetailService
                     Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value)+1)
                                     .ToString(new string('0', n.Value.Length)));
 
-                orderDetail.OrderId = createId;
+                orderDetail.OrderDetailId = createId;
+                orderDetail.Order = _context.Orders.Find(orderDetail.OrderId);
+                orderDetail.GamePack = _context.GamePacks.Find(orderDetail.GamePackId);
+
                 _context.OrderDetails.Add(orderDetail);
                 await _context.SaveChangesAsync();
                 return "Success";

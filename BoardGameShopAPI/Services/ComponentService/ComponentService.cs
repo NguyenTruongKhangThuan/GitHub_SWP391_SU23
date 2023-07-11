@@ -30,6 +30,8 @@ namespace BoardGameShopAPI.Services.ComponentService
                 _firebaseCloundService.UploadImage(component.ImageSrc, component.Image, ModelName);
 
                 component.ComponentId = createdId;
+                component.GamePack = _context.GamePacks.Find(component.GamePackId);
+
                 _context.Components.Add(component);
                 await _context.SaveChangesAsync();
                 return "Success";
