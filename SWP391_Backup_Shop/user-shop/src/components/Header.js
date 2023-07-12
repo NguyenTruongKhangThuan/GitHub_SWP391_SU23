@@ -22,20 +22,49 @@ const Header = () => {
   return (
     <header className={ `${isActive ?  'bg-white py-4 shadow-md' : 'bg-none py-6' } fixed w-full z-10 transition-all`}>
         <div className='container mx-auto flex items-center justify-between h-full'>
-          {/* Logo */}
-          <Link to={'/shop'}>
-            <div>
-              {/* Replace this image with an SVG of our project */}
-              <img src={Logo} alt='' className='w-[40px]'/>
+          <div className='flex justify-start gap-x-8'>
+            {/* Logo */}
+            <Link to={'/shop'}>
+              <div>
+                {/* Replace this image with an SVG of our project */}
+                <img src={Logo} alt='' className='w-[40px]'/>
+              </div>
+            </Link>
+            <div className='flex'>
+              {/* Category Filter */}
+              <select name='Categories' className='py-2 PX-3 outline-none b'>
+                <option>Family</option>
+                <option>Party</option>
+                <option>Easy</option>
+                <option>Advance</option>
+              </select>
+              <input
+                type='text'
+                placeholder='Search...'
+                className='px-3 py-2 w-[400px] border border-gray-400'
+              >
+              </input>
             </div>
-          </Link>
-          {/* Cart Quantity */}
-          <div onClick={()=> setIsOpen(!isOpen)} 
-                className='cursor-pointer flex relative max-w-[50px]'
-          >
-            <BsBag className='text-2xl'/>
-            <div className='bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] rounded-full flex justify-center items-center text-white text-center'>{itemAmount}</div>
           </div>
+          <div className='flex items-center justify-end gap-x-14'>
+            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:bg-[#F8E8EE]'>
+              <Link to={'/shop'} >Home</Link>
+            </div>
+            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:bg-[#F8E8EE]'>
+              <Link to={'/shop/category'}>Browse</Link>
+            </div>
+            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:bg-[#F8E8EE]'>
+              <Link to={'/shop/special'}>Special</Link>
+            </div>
+            {/* Cart Quantity */}
+            <div onClick={()=> setIsOpen(!isOpen)} 
+                  className='cursor-pointer flex relative max-w-[50px]'
+            >
+              <BsBag className='text-2xl'/>
+              <div className='bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] rounded-full flex justify-center items-center text-white text-center'>{itemAmount}</div>
+            </div>
+          </div>
+          
         </div>
     </header>
   );

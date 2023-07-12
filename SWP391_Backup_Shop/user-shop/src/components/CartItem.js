@@ -26,7 +26,7 @@ const CartItem = ({item}) => {
               <IoMdClose className='text-gray-500 hover:text-red-500 transition'/>
             </div>
           </div>
-          <div className='flex gap-x-2 h-[36px] text-sm'>
+          <div className='flex flex-row gap-x-2 h-[36px] text-sm'>
             <div className='flex flex-1 max-w-[100px] items-center h-full border text-primary font-medium'>
               <div 
                 onClick={() => decreaseAmount(id)}

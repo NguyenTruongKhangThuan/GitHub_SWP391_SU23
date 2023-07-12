@@ -16,8 +16,6 @@ const Sidebar = () => {
 
   const {cart, clearCart, total, itemAmount} = useContext(CartContext);
 
-
-
   return (
     <div 
       className={`${isOpen ? 'right-0': '-right-full'} 
@@ -49,8 +47,7 @@ const Sidebar = () => {
           </div>
         </div>
         {/* Please note this demo only has the View Cart */}
-        <Link to={'/'} className='bg-gray-200 flex p-4 justify-center items-center text-primary w-full font-medium'>View Cart</Link>
-        <Link to={'/'} className='bg-gray-700 flex p-4 justify-center items-center text-white w-full font-medium'>Checkout</Link>
+        <Link to={'/shop/checkout'} onClick={handleClose} className='bg-gray-700 flex p-4 justify-center items-center text-white w-full font-medium'>Checkout</Link>
       </div>
     </div>
     

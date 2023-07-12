@@ -8,6 +8,9 @@ import { ProductContext } from '../contexts/ProductContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const ProductDetails = () => {
   //Get the Product ID from the URL
   const{ id } = useParams();
@@ -20,6 +23,10 @@ const ProductDetails = () => {
   const product = products.find((item) => {
     return item.id === parseInt(id);
   })
+
+  const showSuccessMessage = () => {
+    toast.success("Product has been added to your cart!", {position: toast.POSITION.TOP_RIGHT});
+  }
 
   //Case: Product Not Found
   if(!product){
@@ -50,9 +57,13 @@ const ProductDetails = () => {
               <p className='mb-8'>{description}</p>
               <button
                 className='bg-primary py-4 px-8 text-white'
-                onClick={() => addToCart(product, product.id)}
+                onClick={() => {
+                  addToCart(product, product.id)
+                  showSuccessMessage();
+                }}
                 >Add To Cart</button>
             </div>
+            <ToastContainer/>
           </div>
         </div>
       </section>

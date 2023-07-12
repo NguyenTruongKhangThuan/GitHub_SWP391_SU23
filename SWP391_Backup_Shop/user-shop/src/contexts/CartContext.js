@@ -10,12 +10,12 @@ const CartProvider = ({children}) => {
   //update Item Quantity 
   useEffect(() => {
     if(cart)
-    {
-      const amount = cart.reduce((accumulator, currentItem) => {
-        return accumulator + currentItem.amount
-      }, 0);
-      setItemAmount(amount);
-    }
+      {
+        const amount = cart.reduce((accumulator, currentItem) => {
+          return accumulator + currentItem.amount
+        }, 0);
+        setItemAmount(amount);
+      }
   }, [cart]);
 
   //total price state
@@ -29,8 +29,6 @@ const CartProvider = ({children}) => {
   })
 
   const addToCart = (product, id)=>{
-
-    //Part 1: Add To Cart
     const newItem = {...product, amount: 1}
     
     const cartItem = cart.find(item => {
@@ -48,10 +46,14 @@ const CartProvider = ({children}) => {
         }
       });
       setCart(newCart)
+      
     }
     else {
-      setCart([...cart, newItem])
+      setCart([...cart, newItem]);
+
     }
+
+
   }
 
   //Toggle increaments in amount
