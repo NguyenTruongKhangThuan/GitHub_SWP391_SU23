@@ -23,11 +23,10 @@ namespace BoardGameShopAPI.Services.OwnerService
             {
                 if(_context.Owners.Where(ow => ow.OwnerName == owner.OwnerName).FirstOrDefault() == null)
                 {
-                    string tempId = _context.Owners.OrderBy(x => x.OwnerId).LastOrDefault()?.OwnerId;
-                    string createdId = tempId == null ?
+                    string createdId = _context.Owners.OrderBy(x => x.OwnerId).LastOrDefault() == null ?
                         "OW00000001" :
-                        Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
-                        .ToString(new string('0', n.Value.Length)));
+                        Regex.Replace(_context.Owners.OrderBy(x => x.OwnerId).LastOrDefault()?.OwnerId,
+                        "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                     owner.OwnerId = createdId;
                     _context.Owners.Add(owner);

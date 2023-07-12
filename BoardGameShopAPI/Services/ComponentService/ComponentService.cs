@@ -21,11 +21,10 @@ namespace BoardGameShopAPI.Services.ComponentService
         {
             try
             {
-                string tempId = _context.Components.OrderBy(x => x.ComponentId).LastOrDefault().ComponentId;
-                string createdId = tempId == null ?
+                string createdId = _context.Components.OrderBy(x => x.ComponentId).LastOrDefault() == null ?
                     "O00000001" :
-                    Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
-                                  .ToString(new string('0', n.Value.Length)));
+                    Regex.Replace(_context.Components.OrderBy(x => x.ComponentId).LastOrDefault().ComponentId,
+                    "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                 _firebaseCloundService.UploadImage(component.ImageSrc, component.Image, ModelName);
 

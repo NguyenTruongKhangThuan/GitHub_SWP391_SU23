@@ -26,7 +26,7 @@ namespace BoardGameShopAPI.Services.MomoService
         public async Task<MomoCreatePaymentResponseModel> CreatePaymentAsync(string userId, OrderInfoModel model)
         {
             //---------Modify after Successfully Test---------
-            model.OrderId = DateTime.UtcNow.Ticks.ToString();
+            model.OrderId = model.OrderId;
             //------------------------------------------------
             model.OrderInfo = "Khách hàng: " + model.FullName + ". Nội dung: " + model.OrderInfo;
             string extradata = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("{\"userId\": \""+userId+"\"}"));
@@ -63,7 +63,7 @@ namespace BoardGameShopAPI.Services.MomoService
             return JsonConvert.DeserializeObject<MomoCreatePaymentResponseModel>(response.Content);
         }
 
-        public MomoExecuteResponseModel PaymentExecuteAsync(IQueryCollection collection)
+        public async Task<MomoExecuteResponseModel> PaymentExecuteAsync(IQueryCollection collection)
         {
             //Take UserID
             var extradata = collection.First(s => s.Key == "extraData").Value;
@@ -89,8 +89,8 @@ namespace BoardGameShopAPI.Services.MomoService
                 AmountOfMoney = Convert.ToDouble(amount),
                 State = "Pending"
             };
-            _paymentService.CreatePayment(payment);
-
+            await _paymentService.CreatePayment(payment);
+            
             return new MomoExecuteResponseModel()
             {
                 Amount = amount,

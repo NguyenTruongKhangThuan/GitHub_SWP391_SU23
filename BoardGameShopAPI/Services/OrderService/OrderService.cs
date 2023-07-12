@@ -19,11 +19,10 @@ namespace BoardGameShopAPI.Services.OrderService
         {
             try
             {
-                string tempId = _context.Orders.OrderBy(x => x.OrderId).LastOrDefault().OrderId;
-                string createdId = tempId == null ?
+                string createdId = _context.Orders.OrderBy(x => x.OrderId).LastOrDefault() == null ?
                     "O00000001" :
-                    Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
-                                  .ToString(new string('0', n.Value.Length)));
+                    Regex.Replace(_context.Orders.OrderBy(x => x.OrderId).LastOrDefault().OrderId,
+                    "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                 order.OrderId = createdId;
                 _context.Orders.Add(order);

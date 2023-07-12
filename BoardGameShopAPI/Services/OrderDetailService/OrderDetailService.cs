@@ -26,11 +26,10 @@ namespace BoardGameShopAPI.Services.OrderDetailService
                     return res;
                 }
 
-                string tempId = _context.OrderDetails.OrderBy(x => x.OrderDetailId).LastOrDefault().OrderId;
-                string createId = tempId == null ?
+                string createId = _context.OrderDetails.OrderBy(x => x.OrderDetailId).LastOrDefault() == null ?
                     "OD00000001" : 
-                    Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value)+1)
-                                    .ToString(new string('0', n.Value.Length)));
+                    Regex.Replace(_context.OrderDetails.OrderBy(x => x.OrderDetailId).LastOrDefault().OrderId, 
+                    "\\d+", n => (int.Parse(n.Value)+1).ToString(new string('0', n.Value.Length)));
 
                 orderDetail.OrderDetailId = createId;
                 orderDetail.Order = _context.Orders.Find(orderDetail.OrderId);

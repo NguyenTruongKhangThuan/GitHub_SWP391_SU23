@@ -1,4 +1,4 @@
-﻿using BoardGameShopAPI.Models;
+﻿    using BoardGameShopAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -88,11 +88,10 @@ namespace BoardGameShopAPI.Services.UserService
                 User dbUser = _context.Users.Where(u => u.Username == user.Username).FirstOrDefault();
                 if(dbUser == null)
                 {
-                    string tempId = _context.Users.Where(u => u.RoleId != "RO01").OrderBy(x => x.UserId).LastOrDefault()?.UserId;
-                    string createdId = tempId == null ?
+                    string createdId = _context.Users.Where(u => u.RoleId != "RO01").OrderBy(x => x.UserId).LastOrDefault() == null ?
                         "U00000001" :
-                        Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
-                        .ToString(new string('0', n.Value.Length)));
+                        Regex.Replace(_context.Users.Where(u => u.RoleId != "RO01").OrderBy(x => x.UserId).LastOrDefault()?.UserId,
+                        "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                     user.UserId = createdId;
                     user.RoleId = "RO02";

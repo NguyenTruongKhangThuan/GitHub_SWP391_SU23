@@ -27,11 +27,10 @@ namespace BoardGameShopAPI.Services.GamePackService
                 GamePack dbGamePack = _context.GamePacks.Where(gp => gp.GamePackName == gamePack.GamePackName).FirstOrDefault();
                 if (dbGamePack == null)
                 {
-                    string tempId = _context.GamePacks.OrderBy(x => x.GamePackId).LastOrDefault().GamePackId;
-                    string createdId = tempId == null ?
+                    string createdId = _context.GamePacks.OrderBy(x => x.GamePackId).LastOrDefault() == null ?
                         "GP000001" :
-                        Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
-                                      .ToString(new string('0', n.Value.Length)));
+                        Regex.Replace(_context.GamePacks.OrderBy(x => x.GamePackId).LastOrDefault().GamePackId,
+                        "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                     _firebaseCloundService.UploadImage(gamePack.ImageSrc, gamePack.Image, ModelName);
 

@@ -21,13 +21,15 @@ namespace BoardGameShopAPI.Services.PaymentService
         {
             try
             {
-                string tempId = _context.Payments.OrderBy(x => x.PaymentId).LastOrDefault()?.PaymentId;
-                string createdId = tempId == null ?
+                string createdId = _context.Payments.OrderBy(x => x.PaymentId).LastOrDefault() == null ?
                     "PM00000001" :
-                    Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value)+1)
-                                  .ToString(new string('0', n.Value.Length)));
+                    Regex.Replace(_context.Payments.OrderBy(x => x.PaymentId).LastOrDefault()?.PaymentId,
+                    "\\d+", n => (int.Parse(n.Value)+1).ToString(new string('0', n.Value.Length)));
 
                 payment.PaymentId = createdId;
+                payment.User = _context.Users.Find(payment.UserId);
+                payment.Order = _context.Orders.Find(payment.OrderId);
+
                 _context.Payments.Add(payment);
                 await _context.SaveChangesAsync();
                 return "Success";

@@ -6,6 +6,6 @@ namespace BoardGameShopAPI.Services.MomoService
     public interface IMomoService
     {
         Task<MomoCreatePaymentResponseModel> CreatePaymentAsync(string userId, OrderInfoModel model);
-        MomoExecuteResponseModel PaymentExecuteAsync(IQueryCollection collection);
+        Task<MomoExecuteResponseModel> PaymentExecuteAsync(IQueryCollection collection);
     }
 }

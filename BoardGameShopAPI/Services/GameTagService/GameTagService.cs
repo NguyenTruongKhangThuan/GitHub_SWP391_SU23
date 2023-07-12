@@ -17,11 +17,10 @@ namespace BoardGameShopAPI.Services.GameTagService
         {
             try
             {
-                string tempId = _context.GameTags.OrderBy(x => x.GameTagId).LastOrDefault().GameTagName;
-                string createdId = tempId == null ?
+                string createdId = _context.GameTags.OrderBy(x => x.GameTagId).LastOrDefault() == null ?
                     "GT001" :
-                    Regex.Replace(tempId, "\\d+", n => (int.Parse(n.Value) + 1)
-                                  .ToString(new string('0', n.Value.Length)));
+                    Regex.Replace(_context.GameTags.OrderBy(x => x.GameTagId).LastOrDefault().GameTagName, 
+                    "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                 gameTag.GameTagId = createdId;
                 _context.GameTags.Add(gameTag);

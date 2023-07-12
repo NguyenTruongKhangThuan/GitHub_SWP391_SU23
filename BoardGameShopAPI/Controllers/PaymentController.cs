@@ -92,15 +92,14 @@ namespace BoardGameShopAPI.Controllers
         public async Task<IActionResult> CreatePaymentUrl(string userId, OrderInfoModel orderInfo)
         {
             var response = await _momoService.CreatePaymentAsync(userId, orderInfo);
-            //return Redirect(response.PayUrl);
             return Ok(response.PayUrl);
 
         }
 
         [HttpGet("momo")]
-        public IActionResult PaymentCallBack()
+        public async Task<IActionResult> PaymentCallBack()
         {
-            var response = _momoService.PaymentExecuteAsync(HttpContext.Request.Query);
+            var response = await _momoService.PaymentExecuteAsync(HttpContext.Request.Query);
             return Ok(HttpContext.Request.Query);
         }
     }
