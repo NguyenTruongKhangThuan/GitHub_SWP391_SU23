@@ -74,7 +74,7 @@ function Admin() {
           onClick={() => setOpen(!open)}
           title={open ? "Collapse Sidebar" : "Expand Sidebar"}
         />
-        <ul className="flex-col p-[38px]">
+        <ul className="flex-col p-[36px]">
           {Menu.map((menu, index) => (
             <>
             <li

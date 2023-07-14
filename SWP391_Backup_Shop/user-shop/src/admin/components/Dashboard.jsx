@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {BsCartCheckFill} from 'react-icons/bs';
 import {GrMoney} from 'react-icons/gr'
 import {FaInbox} from 'react-icons/fa'
@@ -10,6 +10,8 @@ import Highlight_3 from '../assets/TestImage_03.png'
 import Highlight_4 from '../assets/TestImage_04.png'
 import Highlight_5 from '../assets/TestImage_05.png'
 import AdminAccount from './AdminAccount';
+import { getStatisticUserAPI, getStatisticGamepacksAPI, getStatisticIncomeAPI } from '../../api/adminAPI';
+
 
 const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
   const gapX = isSidebarOpen ? '20' : '30';
@@ -86,6 +88,28 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
     ],
   }
 
+  const [numUsers, setNumUsers] = useState(0)
+  const [numProducts, setNumProducts] = useState(0)
+  const [numIncome, setNumIncome] = useState(0)
+
+  const valueNumUsers = () => {
+    getStatisticUserAPI(sessionStorage.getItem("accountToken"))
+        .then((data) => setNumUsers(data))
+        .catch((error) => console.log(error))
+  }
+
+  const valueNumProducts = () => {
+    getStatisticGamepacksAPI(sessionStorage.getItem("accountToken"))
+        .then((data) => setNumProducts(data))
+        .catch((error) => console.log(error))
+  }
+
+  const valueNumIncome = () => {
+    getStatisticIncomeAPI(sessionStorage.getItem("accountToken"))
+        .then((data) => setNumIncome(data))
+        .catch((error) => console.log(error))
+  }
+
   return (
     <div>
       <h2 className='font-bold text-2xl'>Dashboard</h2>
@@ -99,7 +123,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
               boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'
             }}>
               <FaInbox className='text-[60px]'/>
-              <h2>There are 300 products available</h2>
+              <h2 className='text-[16px]'>There are {numProducts} products available</h2>
             </div>
             <div className='bg-white bg-opacity-10 w-[300px] h-[200px] p-10 rounded-md flex justify-center items-center gap-x-[15px] mb-10 hover:scale-105 duration-300' 
             style={{
@@ -108,7 +132,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
               boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'
             }}>
               <BsCartCheckFill className='text-[80px]'/>
-              <h2>Over 20 users have visited the shop</h2>
+              <h2 className='text-[16px]'>{numUsers} users have visited the shop</h2>
             </div>
             <div className='bg-white bg-opacity-10 w-[300px] h-[200px] p-10 rounded-md flex justify-center items-center gap-x-[15px] mb-10 hover:scale-105 duration-300' 
             style={{
@@ -118,8 +142,8 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
             }}>
               <GrMoney className='text-[50px]'/>
               <div className='flex flex-col'>
-                <h2>Total revenue is:</h2>
-                <h1 className='text-[30px]'>$200</h1>
+                <h2 className='text-[16px]'>Total revenue is:</h2>
+                <h1 className='text-[24px]'>{numIncome} VND</h1>
               </div>
            </div>
           </div>
