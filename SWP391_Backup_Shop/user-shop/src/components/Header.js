@@ -3,7 +3,7 @@ import { SidebarContext } from '../contexts/SidebarContext';
 import { BsBag } from 'react-icons/bs';
 import { CartContext } from '../contexts/CartContext';
 import { Link } from 'react-router-dom';
-import Logo from '../img/logo.svg'
+import Logo from '../img/LogoCopy.svg'
 
 const Header = () => {
   const {isOpen, setIsOpen} = useContext(SidebarContext)
@@ -46,16 +46,20 @@ const Header = () => {
               </input>
             </div>
           </div>
-          <div className='flex items-center justify-end gap-x-14'>
-            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:bg-[#F8E8EE]'>
+          <div className='flex items-center justify-end gap-x-14 '>
+            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:underline'>
               <Link to={'/shop'} >Home</Link>
             </div>
-            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:bg-[#F8E8EE]'>
+            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:underline'>
               <Link to={'/shop/category'}>Browse</Link>
             </div>
-            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:bg-[#F8E8EE]'>
+            <div className='rounded-full w-[100px] px-3 py-2 text-center hover:underline'>
               <Link to={'/shop/special'}>Special</Link>
             </div>
+            <div className='hover:underline'>Hello {sessionStorage.getItem("account")}</div>
+            <Link to={'/auth'} className='hover:underline'>
+              <p>Logout</p>
+            </Link>
             {/* Cart Quantity */}
             <div onClick={()=> setIsOpen(!isOpen)} 
                   className='cursor-pointer flex relative max-w-[50px]'

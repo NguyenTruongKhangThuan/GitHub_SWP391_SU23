@@ -1,7 +1,6 @@
 import React from 'react';
 
-//import banners
-import WomanImg from '../img/woman_hero.png';
+import Hero_Image from '../img/Hero.png'
 
 import { Link } from 'react-router-dom';
 
@@ -24,9 +23,8 @@ const Hero = () => {
               Discover More
             </Link>
           </div>
-
           <div className='hidden lg:block'>
-            <img src={WomanImg} alt=''/>
+            <img src={Hero_Image} alt=''/>
           </div>
         </div>
       </section>

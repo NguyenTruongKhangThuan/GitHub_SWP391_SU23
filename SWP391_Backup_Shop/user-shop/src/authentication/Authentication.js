@@ -6,11 +6,13 @@ import useSessionStorageState from 'use-session-storage-state'
 function Authentication() {
     const [handleToggle, setHandleToggle] = useState(false);
     const [token, setToken] = useState(null);
+    const [usernameSession, setUsernameSession] = useState(null);
     const navigate = useNavigate();
     const toggleForms = () => {
         setHandleToggle(!handleToggle);
     }
     const [accountToken, setAccountToken] = useSessionStorageState("accountToken")
+    const [account, setAccount] = useSessionStorageState("account")
 
     //Login Form Here
     const LoginForm = () => {
@@ -22,7 +24,10 @@ function Authentication() {
 
             loginAPI(username,password)
                 .then(
-                    (res) => setToken(res)
+                    (res) => {
+                        setToken(res)
+                        setUsernameSession(username)
+                    }
                 )
                 .catch((error) => {
                     if(error.response.status === 400){
@@ -40,13 +45,16 @@ function Authentication() {
                         if(res === "ADMIN")
                         {
                             navigate('/admin')
+                            sessionStorage.setItem("account", usernameSession)
                         }
                         if(res === "CUSTOMER")
                         {
                             navigate('/shop')
+                            sessionStorage.setItem("account", usernameSession)
                         }
                         if(res === "OWNER"){
                             navigate('/shop/owner')
+                            sessionStorage.setItem("account", usernameSession)
                         }
                     }
                 )

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import Logo from '../admin/assets/Logo.svg'
 import Dashboard from '../admin/components/Dashboard'
-import User from '../admin/components/Users'
-import Product from './components/Product'
-import Transaction from '../admin/components/Transaction'
-import BoardgameInformation from '../admin/components/BoardgameInformation'
+import Users from '../admin/components/Users'
+import GamePackages from './components/GamePackages'
+import Transactions from '../admin/components/Transactions'
+import Boardgames from './components/Boardgames'
 import { MdGames, MdAddBusiness } from 'react-icons/md'
 import { BsArrowLeftCircleFill} from 'react-icons/bs'
 import { FaUserCircle, FaMoneyBillWave, FaTags } from 'react-icons/fa'
 import { GiCardRandom, GiRuleBook } from 'react-icons/gi'
 import { RiDashboardFill } from 'react-icons/ri'
-import Owner from "./components/Owner";
+import Publishers from "./components/Publishers";
 import AdminAccount from "./components/AdminAccount"
 import Tags from "./components/Tags";
 
@@ -26,27 +26,27 @@ function Admin() {
     },
     {
       title: "User",
-      page: User,
+      page: Users,
       icon: <FaUserCircle />
     },
     {
       title: "Publisher",
-      page: Owner,
+      page: Publishers,
       icon: <MdAddBusiness />
     },
     {
       title: "Game Packages",
-      page: Product,
+      page: GamePackages,
       icon: <GiCardRandom />
     },
     {
       title: "Boardgames",
-      page: BoardgameInformation,
+      page: Boardgames,
       icon: <MdGames/>
     },
     {
       title: "Transactions",
-      page: Transaction,
+      page: Transactions,
       icon: <FaMoneyBillWave />
     },
     {
