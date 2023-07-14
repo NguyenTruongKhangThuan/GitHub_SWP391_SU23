@@ -1,7 +1,6 @@
 ﻿using BoardGameShopAPI.Models;
 using BoardGameShopAPI.Services.PaymentService;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using Nancy.Json;
 using Newtonsoft.Json;
 using ProGCoder_MomoAPI.Models.Momo;
@@ -63,20 +62,12 @@ namespace BoardGameShopAPI.Services.MomoService
             return JsonConvert.DeserializeObject<MomoCreatePaymentResponseModel>(response.Content);
         }
 
-        public async Task<MomoExecuteResponseModel> PaymentExecuteAsync(IQueryCollection collection)
+        public async Task<MomoExecuteResponseModel> PaymentExecuteAsync(string extraData, string orderId, string orderInfo, string amount)
         {
-            //Take UserID
-            var extradata = collection.First(s => s.Key == "extraData").Value;
-
-            string jsonString = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(extradata));
+            string jsonString = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(extraData));
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             dynamic result = javaScriptSerializer.Deserialize<Object>(jsonString);
             string userId = result["userId"];
-
-            //Take payment infomation
-            var amount = collection.First(s => s.Key == "amount").Value;
-            var orderInfo = collection.First(s => s.Key == "orderInfo").Value;
-            var orderId = collection.First(s => s.Key == "orderId").Value;
 
             //Create payment data for storing
             Payment payment = new Payment()
@@ -90,12 +81,12 @@ namespace BoardGameShopAPI.Services.MomoService
                 State = "Pending"
             };
             await _paymentService.CreatePayment(payment);
-            
+
             return new MomoExecuteResponseModel()
             {
                 Amount = amount,
                 OrderId = orderId,
-                OrderInfo = orderInfo
+                OrderInfo = orderInfo,
             };
         }
 

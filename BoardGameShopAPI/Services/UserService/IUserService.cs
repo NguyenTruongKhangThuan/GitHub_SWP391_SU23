@@ -9,7 +9,7 @@ namespace BoardGameShopAPI.Services.UserService
 
         Task<User> ReadAuthToken(string authToken);
 
-        Task<string> SignInInputValidation(User user, string confirmPassword);
+        Task<string> SignUpInputValidation(User user, string confirmPassword);
 
         //Basic CRUD Method for User
         Task<List<User>> ReadUserList();

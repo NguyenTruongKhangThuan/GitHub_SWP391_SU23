@@ -32,7 +32,7 @@ namespace BoardGameShopAPI.Controllers
                 Owner owner = await _ownerService.OwnerLogin(username, password);
                 if(owner == null)
                 {
-                    return BadRequest("Invalid Username or Password!");
+                    return BadRequest("Incorrect Username or Password!");
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace BoardGameShopAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAccount([FromForm] User user, string confirmPassword)
         {
-            string validation = await _userService.SignInInputValidation(user, confirmPassword);
+            string validation = await _userService.SignUpInputValidation(user, confirmPassword);
             if (!validation.Equals("Accept"))
             {
                 return BadRequest(validation);

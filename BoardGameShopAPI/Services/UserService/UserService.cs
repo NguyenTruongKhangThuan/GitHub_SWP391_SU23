@@ -179,7 +179,7 @@ namespace BoardGameShopAPI.Services.UserService
         }
 
         //Validation 
-        public async Task<string> SignInInputValidation(User user, string confirmPassword)
+        public async Task<string> SignUpInputValidation(User user, string confirmPassword)
         {
             //Delete redundance space char
             user.Username = user.Username.Trim();
