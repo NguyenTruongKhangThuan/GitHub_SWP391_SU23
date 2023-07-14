@@ -14,6 +14,11 @@ import Authentication from './authentication/Authentication'
 
 import SideBar from './components/Sidebar'
 
+import AddPage from './publisher/page/AddPage'
+import ViewDetails from './publisher/page/ViewDetails';
+import HomePage from './publisher/page/HomePage';
+import UpdateDetails from './publisher/page/UpdateDetails';
+
 const App = () => {
   return (
     <div className='overflow-hidden'>
@@ -28,6 +33,10 @@ const App = () => {
           <Route path='/shop/special' element={<SpecialShop/>}/>
           <Route path='/shop/cart' element={<ViewCart/>}/>
           <Route path='/shop/checkout' element={<Checkout/>}/>
+          <Route path='/shop/publisher' element={<HomePage/>}/>
+          <Route path='/shop/publisher/product/:id' element={<ViewDetails/>}/>
+          <Route path='/shop/publisher/product/update/:id' element={<UpdateDetails/>}/>
+          <Route path='/shop/publisher/product/add' element={<AddPage/>}/>
         </Routes>
         <SideBar />
       </Router>

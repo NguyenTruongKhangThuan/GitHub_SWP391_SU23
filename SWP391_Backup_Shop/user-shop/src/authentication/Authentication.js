@@ -53,7 +53,7 @@ function Authentication() {
                             sessionStorage.setItem("account", usernameSession)
                         }
                         if(res === "OWNER"){
-                            navigate('/shop/owner')
+                            navigate('/shop/publisher')
                             sessionStorage.setItem("account", usernameSession)
                         }
                     }
