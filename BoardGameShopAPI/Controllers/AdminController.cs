@@ -72,59 +72,6 @@ namespace BoardGameShopAPI.Controllers
             return Ok(components);
         }
 
-        [HttpPost("components")]
-        public async Task<IActionResult> CreateComponent([FromForm] Component component)
-        {
-            string res = await _componentService.CreateComponent(component);
-            if (res.Equals("Success"))
-            {
-                return Ok("Create Successfully");
-            }
-            else
-            {
-                if (res.Equals("Duplicated"))
-                {
-                    return BadRequest("Duplicated Component's Name!");
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-            }
-        }
-
-        [HttpDelete("components")]
-        public async Task<IActionResult> DeleteListOfComponents(List<Component> components)
-        {
-            string res = await _componentService.DeleteListOfComponents(components);
-            if (res.Equals("Success"))
-            {
-                return Ok("Delete Successfully");
-            }
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-
-        [HttpPut("components")]
-        public async Task<IActionResult> UpdateComponent([FromForm] Component component)
-        {
-            string res = await _componentService.UpdateComponent(component);
-            if (res.Equals("Success"))
-            {
-                return Ok("Update Successfully");
-            }
-            else
-            {
-                if (res.Equals("NotFound"))
-                {
-                    return BadRequest("Component Is Not Found");
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-            }
-        }
-
         //--------------------------------------GamePack Management--------------------------------------
         [HttpGet("gamepacks")]
         public async Task<IActionResult> GetAllGamePack()
