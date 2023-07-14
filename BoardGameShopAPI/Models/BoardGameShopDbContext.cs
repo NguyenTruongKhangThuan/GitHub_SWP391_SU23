@@ -48,6 +48,7 @@ public partial class BoardGameShopDbContext : DbContext
             entity.Property(e => e.BoardGameId).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Image).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Component>(entity =>

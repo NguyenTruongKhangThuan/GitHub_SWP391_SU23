@@ -97,9 +97,10 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet("momo")]
-        public async Task<IActionResult> PaymentCallBack()
+        public async Task<IActionResult> PaymentCallBack(IQueryCollection query)
         {
-            var response = await _momoService.PaymentExecuteAsync(HttpContext.Request.Query);
+            //var response = await _momoService.PaymentExecuteAsync(HttpContext.Request.Query);
+            var response = await _momoService.PaymentExecuteAsync(query);
             return Ok(HttpContext.Request.Query);
         }
     }

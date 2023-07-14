@@ -5,9 +5,11 @@ namespace BoardGameShopAPI.Services.UserService
     public interface IUserService
     {
         //Authentication Method For Login
-        string CreateAuthToken(User user);
+        Task<string> CreateAuthToken(User user);
 
-        User ReadAuthToken(string authToken);
+        Task<User> ReadAuthToken(string authToken);
+
+        Task<string> SignInInputValidation(User user, string confirmPassword);
 
         //Basic CRUD Method for User
         Task<List<User>> ReadUserList();
@@ -19,6 +21,6 @@ namespace BoardGameShopAPI.Services.UserService
         Task<string> UpdateUserAccount(User user);
 
         //Statistic Calculation
-        int GetNumberOfUserAccount();
+        Task<int> GetNumberOfUserAccount();
     }
 }

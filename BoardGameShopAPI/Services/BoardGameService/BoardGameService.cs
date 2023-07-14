@@ -24,7 +24,7 @@ namespace BoardGameShopAPI.Services.BoardGameService
                 if (_context.BoardGames.Where(bg => bg.Name == boardGame.Name).FirstOrDefault() == null)
                 {
                     string createdId = _context.BoardGames.OrderBy(x => x.BoardGameId).LastOrDefault() == null ?
-                        "O00000001" :
+                        "BG00000001" :
                         Regex.Replace(_context.BoardGames.OrderBy(x => x.BoardGameId).LastOrDefault().BoardGameId,
                         "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 

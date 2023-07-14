@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using BoardGameShopAPI.Services.GameTagService;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,9 +30,11 @@ namespace BoardGameShopAPI.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IOrderService _orderService;
         private readonly IOrderDetailService _orderDetailService;
+        private readonly IGameTagService _gameTagService;
         public AdminController(IUserService userService, IComponentService componentService,
             IGamePackService gamePackService, IOwnerService ownerService, IBoardGameService boardGameService,
-            IPaymentService paymentService, IOrderService orderService, IOrderDetailService orderDetailService)
+            IPaymentService paymentService, IOrderService orderService, IOrderDetailService orderDetailService,
+            IGameTagService gameTagService)
         {
             _userService = userService;
             _componentService = componentService;
@@ -41,10 +44,11 @@ namespace BoardGameShopAPI.Controllers
             _paymentService = paymentService;
             _orderService = orderService;
             _orderDetailService = orderDetailService;
+            _gameTagService = gameTagService;
         }
 
 
-        //User Management
+        //--------------------------------------User Management--------------------------------------
         [HttpGet("users")]
         public async Task<IActionResult> GetUserList()
         {
@@ -56,7 +60,7 @@ namespace BoardGameShopAPI.Controllers
             return Ok(users);
         }
 
-        //Component Management
+        //--------------------------------------Component Management--------------------------------------
         [HttpGet("components")]
         public async Task<IActionResult> GetComponents(string gamePackId)
         {
@@ -121,7 +125,7 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
-        //GamePack Management
+        //--------------------------------------GamePack Management--------------------------------------
         [HttpGet("gamepacks")]
         public async Task<IActionResult> GetAllGamePack()
         {
@@ -133,7 +137,7 @@ namespace BoardGameShopAPI.Controllers
             return Ok(gamePacks);
         }
 
-        //BoardGame Management
+        //--------------------------------------BoardGame Management--------------------------------------
         [HttpGet("boardgames")]
         public async Task<IActionResult> GetAllBoardGame()
         {
@@ -208,7 +212,7 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
-        //Owner Management
+        //--------------------------------------Owner Management--------------------------------------
         [HttpGet("owners")]
         public async Task<IActionResult> GetAllOwner()
         {
@@ -262,7 +266,7 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
-        //Payment Management
+        //--------------------------------------Payment Management--------------------------------------
         [HttpGet("payments")]
         public async Task<IActionResult> GetAllPayment()
         {
@@ -274,7 +278,7 @@ namespace BoardGameShopAPI.Controllers
             return Ok(payments);
         }
 
-        //Order Management
+        //--------------------------------------Order Management--------------------------------------
         [HttpGet("orders")]
         public async Task<IActionResult> GetOrder(string orderId)
         {
@@ -291,7 +295,7 @@ namespace BoardGameShopAPI.Controllers
                 return Ok(order);
         }
 
-        //OrderDetail Management
+        //--------------------------------------OrderDetail Management--------------------------------------
         [HttpGet("orderdetails")]
         public async Task<IActionResult> GetAllOrderDetail(string orderId)
         {
@@ -303,11 +307,91 @@ namespace BoardGameShopAPI.Controllers
             return Ok(orderDetails);
         }
 
-        //Statistic Calculation
-        [HttpGet("statistics/users")]
-        public IActionResult GetCreatedAccount()
+        //--------------------------------------GameTag Management--------------------------------------
+        [HttpGet("gametags")]
+        public async Task<IActionResult> GetAllTag()
         {
-            int num = _userService.GetNumberOfUserAccount();
+            List<GameTag> gameTags = await _gameTagService.GetGameTag();
+            if (gameTags != null)
+            {
+                return Ok(gameTags);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet("gametags/{id}")]
+        public async Task<IActionResult> GetGameTagById(string id)
+        {
+            GameTag gameTag = await _gameTagService.GetGameTagById(id);
+            if (gameTag != null)
+            {
+                if (gameTag.GameTagId == null)
+                {
+                    return BadRequest("NotFound");
+                }
+                return Ok(gameTag);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPost("gametags")]
+        public async Task<IActionResult> CreateGameTag([FromForm] GameTag gameTag)
+        {
+            string res = await _gameTagService.AddNewGameTag(gameTag);
+            if (res.Equals("Success"))
+            {
+                return Ok("Create Successfully");
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+        [HttpPut("gametags")]
+        public async Task<IActionResult> UpdateGameTag([FromForm] GameTag gameTag)
+        {
+            string res = await _gameTagService.UpdateGameTag(gameTag);
+            if (res.Equals("Success"))
+            {
+                return Ok("Update Successfully");
+            }
+            else
+            {
+                if (res.Equals("NotFound"))
+                {
+                    return BadRequest("NotFound");
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpDelete("gametags")]
+        public async Task<IActionResult> DeleteGameTag(string id)
+        {
+            string res = await _gameTagService.DeleteGameTag(id);
+            if (res.Equals("Success"))
+            {
+                return Ok("Delete Successfully");
+            }
+            else
+            {
+                if (res.Equals("NotFound"))
+                {
+                    return BadRequest("NotFound");
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        //--------------------------------------Statistic Calculation--------------------------------------
+        [HttpGet("statistics/users")]
+        public async Task<IActionResult> GetCreatedAccount()
+        {
+            int num = await _userService.GetNumberOfUserAccount();
             if (num == int.MinValue)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -316,9 +400,9 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet("statistics/gamepacks")]
-        public IActionResult GetAvailableNumberOfGamePacks()
+        public async Task<IActionResult> GetAvailableNumberOfGamePacks()
         {
-            int num = _gamePackService.GetNumberOfAvailablePack();
+            int num = await _gamePackService.GetNumberOfAvailablePack();
             if (num == int.MinValue)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -327,10 +411,10 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet("statistics/income")]
-        public IActionResult GetTotalIncome()
+        public async Task<IActionResult> GetTotalIncome()
         {
-            float totalIncome = _paymentService.TotalIncome();
-            if (totalIncome == float.MinValue)
+            double totalIncome = await _paymentService.TotalIncome();
+            if (totalIncome == double.MinValue)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

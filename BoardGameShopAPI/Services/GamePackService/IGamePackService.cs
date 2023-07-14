@@ -27,6 +27,6 @@ namespace BoardGameShopAPI.Services.GamePackService
         Task<List<GamePack>> SearchGamePack(string searchValue, string boardGameName);
 
         //Statistic Calculation
-        int GetNumberOfAvailablePack();
+        Task<int> GetNumberOfAvailablePack();
     }
 }

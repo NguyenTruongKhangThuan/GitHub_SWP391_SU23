@@ -41,9 +41,10 @@ namespace BoardGameShopAPI.Controllers
         public async Task<IActionResult> CreateOrder([FromForm] Order order)
         {
             string res = await _orderService.CreateOrder(order);
-            if (res.Equals("Success"))
+            if (res.Contains("Success"))
             {
-                return Ok("Create Successfully");
+                string[] str = res.Split('/');
+                return Ok(str[1]);
             }
             else
             {

@@ -48,52 +48,5 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateGameTag([FromForm] GameTag gameTag)
-        {
-            string res = await _gameTagService.AddNewGameTag(gameTag);
-            if (res.Equals("Success"))
-            {
-                return Ok("Create Successfully");
-            }
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateGameTag([FromForm] GameTag gameTag)
-        {
-            string res = await _gameTagService.UpdateGameTag(gameTag);
-            if (res.Equals("Success"))
-            {
-                return Ok("Update Successfully");
-            }
-            else
-            {
-                if (res.Equals("NotFound"))
-                {
-                    return BadRequest("NotFound");
-                }
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteGameTag(string id)
-        {
-            string res = await _gameTagService.DeleteGameTag(id);
-            if (res.Equals("Success"))
-            {
-                return Ok("Delete Successfully");
-            }
-            else
-            {
-                if (res.Equals("NotFound"))
-                {
-                    return BadRequest("NotFound");
-                }
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
     }
 }

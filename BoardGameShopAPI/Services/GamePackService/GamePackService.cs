@@ -217,17 +217,18 @@ namespace BoardGameShopAPI.Services.GamePackService
             }
             else
             {
-                string boardGameId = _context.BoardGames.Where(bg => bg.Name ==  boardGameName).FirstOrDefault().BoardGameId;
+                string boardGameId = _context.BoardGames.Where(bg => bg.Name ==  boardGameName).FirstOrDefault() == null ? "" 
+                    : _context.BoardGames.Where(bg => bg.Name == boardGameName).FirstOrDefault().BoardGameId;
                 return await gamePacks.Where(gp => gp.BoardGameId ==  boardGameId).ToListAsync();
             }
         }
 
         //Statistic Calculation
-        public int GetNumberOfAvailablePack()
+        public async Task<int> GetNumberOfAvailablePack()
         {
             try
             {
-                return (int)GetPackList().Where(gp => gp.AvailableAmount >= 0).Sum(gp => gp.AvailableAmount);
+                return (int)await GetPackList().Where(gp => gp.AvailableAmount >= 0).SumAsync(gp => gp.AvailableAmount);
             }
             catch (Exception ex)
             {

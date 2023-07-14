@@ -18,7 +18,7 @@ namespace BoardGameShopAPI.Services.PaymentService
         Task<string> CreatePayment(Payment payment);
 
         //Statistic Calculation:
-        float TotalIncome();
+        Task<double> TotalIncome();
 
         Task<List<GamePack>> GetBestSeller();
     }

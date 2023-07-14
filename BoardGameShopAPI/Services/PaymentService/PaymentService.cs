@@ -133,17 +133,17 @@ namespace BoardGameShopAPI.Services.PaymentService
         }
 
         //Statistic Calculation
-        public float TotalIncome()
+        public async Task<double> TotalIncome()
         {
             try
             {
-                return (float)_context.Payments.Where(p => p.PaymentDate.Value.Year == DateTime.Now.Year
-                && p.PaymentDate.Value.Month == DateTime.Now.Month).Sum(p => p.AmountOfMoney);
+                return (double)await _context.Payments.Where(p => p.PaymentDate.Value.Year == DateTime.Now.Year
+                && p.PaymentDate.Value.Month == DateTime.Now.Month).SumAsync(p => p.AmountOfMoney);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return float.MinValue;
+                return double.MinValue;
             }
         }
 

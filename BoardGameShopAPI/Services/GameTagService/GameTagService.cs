@@ -19,7 +19,7 @@ namespace BoardGameShopAPI.Services.GameTagService
             {
                 string createdId = _context.GameTags.OrderBy(x => x.GameTagId).LastOrDefault() == null ?
                     "GT001" :
-                    Regex.Replace(_context.GameTags.OrderBy(x => x.GameTagId).LastOrDefault().GameTagName, 
+                    Regex.Replace(_context.GameTags.OrderBy(x => x.GameTagId).LastOrDefault().GameTagId, 
                     "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                 gameTag.GameTagId = createdId;

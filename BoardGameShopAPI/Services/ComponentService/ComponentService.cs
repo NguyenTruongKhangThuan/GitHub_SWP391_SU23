@@ -22,7 +22,7 @@ namespace BoardGameShopAPI.Services.ComponentService
             try
             {
                 string createdId = _context.Components.OrderBy(x => x.ComponentId).LastOrDefault() == null ?
-                    "O00000001" :
+                    "CO00000001" :
                     Regex.Replace(_context.Components.OrderBy(x => x.ComponentId).LastOrDefault().ComponentId,
                     "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 

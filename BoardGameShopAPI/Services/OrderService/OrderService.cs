@@ -27,7 +27,7 @@ namespace BoardGameShopAPI.Services.OrderService
                 order.OrderId = createdId;
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
-                return "Success";
+                return $"Success/{createdId}";
             }
             catch(Exception ex)
             {

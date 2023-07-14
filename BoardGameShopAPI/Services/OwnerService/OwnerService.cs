@@ -93,7 +93,7 @@ namespace BoardGameShopAPI.Services.OwnerService
         }
 
         //Token Generator
-        public string CreateOwnerToken(Owner owner)
+        public async Task<string> CreateOwnerToken(Owner owner)
         {
             List<Claim> claims = new List<Claim>()
             {
@@ -124,7 +124,7 @@ namespace BoardGameShopAPI.Services.OwnerService
             return jwt;
         }
 
-        public Owner ReadOwnerToken(string ownerToken)
+        public async Task<Owner> ReadOwnerToken(string ownerToken)
         {
             var token = new JwtSecurityToken(jwtEncodedString: ownerToken);
 

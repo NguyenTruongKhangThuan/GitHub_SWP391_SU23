@@ -36,24 +36,24 @@ namespace BoardGameShopAPI.Controllers
                 }
                 else
                 {
-                    string authenToken = _ownerService.CreateOwnerToken(owner);
+                    string authenToken = await _ownerService.CreateOwnerToken(owner);
                     return Ok(authenToken);
                 }
             }
             else
             {
-                string authToken = _userService.CreateAuthToken(user);
+                string authToken = await _userService.CreateAuthToken(user);
                 return Ok(authToken);
             }
         }
 
         [HttpGet("authentication")]
-        public IActionResult Authentication(string token)
+        public async Task<IActionResult> Authentication(string token)
         {
-            User user = _userService.ReadAuthToken(token);
+            User user = await _userService.ReadAuthToken(token);
             if(user == null)
             {
-                Owner owner = _ownerService.ReadOwnerToken(token);
+                Owner owner = await _ownerService.ReadOwnerToken(token);
                 if (owner == null)
                 {
                     return BadRequest("Cannot Read Autheticated Token");
@@ -98,8 +98,14 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAccount([FromForm] User user)
+        public async Task<IActionResult> CreateAccount([FromForm] User user, string confirmPassword)
         {
+            string validation = await _userService.SignInInputValidation(user, confirmPassword);
+            if (!validation.Equals("Accept"))
+            {
+                return BadRequest(validation);
+            }
+
             string res = await _userService.CreateUserAccount(user);
             if (res.Equals("Success"))
             {

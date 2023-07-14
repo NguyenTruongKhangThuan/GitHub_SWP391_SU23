@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BoardGameShopAPI.Services.UserService
 {
@@ -18,7 +20,7 @@ namespace BoardGameShopAPI.Services.UserService
         }
 
         //Authentication:
-        public string CreateAuthToken(User user)
+        public async Task<string> CreateAuthToken(User user)
         {
             List<Claim> claims = new List<Claim>()
             {
@@ -29,11 +31,11 @@ namespace BoardGameShopAPI.Services.UserService
                 new Claim("username", user.Username),
                 new Claim("password", user.Password),
                 new Claim("email", user.Email),
-                new Claim("fullName", user.FullName),
+                new Claim("fullName", user.FullName == null ? "empty" : user.FullName),
                 new Claim("birthday", user.Birthday.ToString()),
-                new Claim("gender", user.Gender),
-                new Claim("address", user.Address),
-                new Claim("phoneNumber", user.PhoneNumber),
+                new Claim("gender", user.Gender == null ? "empty" : user.Gender),
+                new Claim("address", user.Address == null ? "empty" : user.Address),
+                new Claim("phoneNumber", user.PhoneNumber == null ? "empty" : user.PhoneNumber),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8
@@ -52,7 +54,7 @@ namespace BoardGameShopAPI.Services.UserService
             return jwt;
         }
 
-        public User ReadAuthToken(string authToken)
+        public async Task<User> ReadAuthToken(string authToken)
         {
             try
             {
@@ -163,17 +165,101 @@ namespace BoardGameShopAPI.Services.UserService
         }
 
         //Statistic Calculation
-        public int GetNumberOfUserAccount()
+        public async Task<int> GetNumberOfUserAccount()
         {
             try
             {
-                return _context.Users.Count();
+                return await _context.Users.CountAsync();
             }
             catch(Exception ex)
             {
                 Console.WriteLine (ex.Message);
                 return int.MinValue;
             }
+        }
+
+        //Validation 
+        public async Task<string> SignInInputValidation(User user, string confirmPassword)
+        {
+            //Delete redundance space char
+            user.Username = user.Username.Trim();
+            user.Email = user.Email.Trim();
+
+            //Check inputs
+            if (user.Username == null || user.Username.Length == 0)
+            {
+                return "Invalid Input For Username";
+            }
+            else
+            {
+                if (!EmailValidation(user.Email)){
+                    return "Invalid Input For Email";
+                }
+                else
+                {
+                    if (PasswordValidation(user.Password))
+                    {
+                        return "Invalid Input For Password";
+                    }
+                    else
+                    {
+                        if(user.Password.Equals(confirmPassword))
+                        {
+                            return "Accept";
+                        }
+                        else
+                        {
+                            return "Confirm Password Is Not Matched";
+                        }
+                    }
+                }
+            }
+        }
+
+        private bool EmailValidation(string email)
+        {
+            var mail = new MailAddress(email);
+
+            if(mail.Host.Contains('.') && !mail.Host.EndsWith('.'))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool PasswordValidation(string password)
+        {
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+            var minLenght = 6;
+
+            if(password.Length >= minLenght)
+            {
+                if (!hasUpperChar.IsMatch(password))
+                {
+                    return false;
+                }
+                if (!hasLowerChar.IsMatch(password))
+                {
+                    return false;
+                }
+                if (!hasSymbols.IsMatch(password))
+                {
+                    return false;
+                }
+                if (!hasNumber.IsMatch(password))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
