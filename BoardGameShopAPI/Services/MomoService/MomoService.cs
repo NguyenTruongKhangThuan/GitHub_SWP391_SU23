@@ -27,7 +27,7 @@ namespace BoardGameShopAPI.Services.MomoService
             //---------Modify after Successfully Test---------
             model.OrderId = model.OrderId;
             //------------------------------------------------
-            model.OrderInfo = "Khách hàng: " + model.FullName + ". Nội dung: " + model.OrderInfo;
+            model.OrderInfo = "Customer: " + model.FullName + ".\n Detail: " + model.OrderInfo;
             string extradata = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("{\"userId\": \""+userId+"\"}"));
 
             var rawData =
