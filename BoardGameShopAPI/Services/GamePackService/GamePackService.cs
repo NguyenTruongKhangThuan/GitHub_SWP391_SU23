@@ -210,16 +210,17 @@ namespace BoardGameShopAPI.Services.GamePackService
         public async Task<List<GamePack>> SearchGamePack(string? searchValue, string? boardGameName)
         {
             IQueryable<GamePack> gamePacks = _context.GamePacks.Where(gp => gp.GamePackName.Contains(searchValue == null?"":searchValue));
+            await gamePacks.ForEachAsync((gp) => gp.ImageSrc = _firebaseCloundService.RetrieveImage(gp.Image, ModelName));
 
             if (boardGameName == null)
             {
-                return await gamePacks.ToListAsync();
+                return  gamePacks.ToList();
             }
             else
             {
                 //string boardGameId = _context.BoardGames.Where(bg => bg.Name ==  boardGameName).FirstOrDefault() == null ? "" 
                 //    : _context.BoardGames.Where(bg => bg.Name == boardGameName).FirstOrDefault().BoardGameId;
-                return await gamePacks.Where(gp => gp.BoardGame.Name ==  boardGameName).ToListAsync();
+                return  gamePacks.Where(gp => gp.BoardGame.Name ==  boardGameName).ToList();
             }
         }
 
