@@ -1,13 +1,24 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {nanoid} from 'nanoid'
 
+import { getGameTagsAPI, putGameTagsAPI, postGameTagsAPI, deleteGameTagsAPI } from '../../api/adminAPI';
+
 const Tags = () => {
-    const [data, setData] = useState([]);
+    const [gameTagsData, setGameTagsData] = useState([]);
     const [openAddForm, setOpenAddForm] = useState(false)
     const [addData,setAddData] = useState({
         tagName: ''
     })
 
+    useEffect(()=> {
+        refreshTagsList();
+    },[])
+
+    const refreshTagsList = async() => {
+        await getGameTagsAPI(sessionStorage.getItem("accountToken"))
+        .then((data) => setGameTagsData(data))
+        .catch((error) => console.log(error))
+    }
 
     const [openDetailsForm, setOpenDetailsForm] = useState(false)
     const [openUpdateForm, setOpenUpdateForm] = useState(false)
@@ -36,12 +47,16 @@ const Tags = () => {
             tagName: addData.tagName
         }
 
-        const newTagsData = [...data, newTag];
-        setData(newTag);
+        const newTagsData = [...gameTagsData, newTag];
+        setGameTagsData(newTagsData);
     }
 
     const toggleDetailsForm = () => {
         setOpenDetailsForm(!openDetailsForm)
+    }
+
+    const handleViewDetailsForm = () => {
+
     }
 
     const toggleUpdateForm = () => {
@@ -72,7 +87,7 @@ const Tags = () => {
                         className='grid grid-cols-2 w-[480px] gap-y-4 bg-white rounded-md'
                         onSubmit={handleAddFormSubmit}
                         >
-                        <label>Tag ID</label>
+                        <label>Game Tag ID</label>
                         <input 
                             disabled 
                             placeholder='Tag ID' 
@@ -80,7 +95,7 @@ const Tags = () => {
                             id='tagId'
                             
                         />
-                        <label>Tag Name</label>
+                        <label>Game Tag Name</label>
                         <input 
                             type='text' 
                             placeholder="Enter the Tag Name" 
@@ -88,51 +103,57 @@ const Tags = () => {
                             onChange={handleAddFormChange}
                             id='tagName'
                         />
+
                         <button type='submit' className='bg-purple-500'>Add Tag</button>
                         <button className='bg-pink-500' onClick={toggleAddForm}>Cancel</button>
                     </form>
                 )
 
                 }
-                <table>
+                <table className='mx-auto w-full'>
                     <thead>
                         <tr>
-                            <th>
+                            <th  className='text-left'>
                                 <input type='checkbox'></input>
                             </th>
-                            <th>Tag ID</th>
-                            <th>Tag Name</th>
+                            <th id='gameTagId'  className='text-left'>Tag ID</th>
+                            <th id='gameTagName'  className='text-left'>Tag Name</th>
+                            
                             <th colSpan={2}>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='w-full'>
                         {/* Replace with Call API here */}
-                        <tr>
-                            <td>
-                                <input type='checkbox'></input>
-                            </td>
-                            <td>T01</td>
-                            <td>Monopoly</td>
-                            <td>
-                                <button 
-                                    className='bg-green-500'
-                                    onClick={toggleDetailsForm}
-                                    >
-                                        Details
-                                </button>
-                            </td>
-                            <td>
-                                <button 
-                                    className='bg-yellow-500'
-                                    onClick={toggleUpdateForm}
-                                    >
-                                        Update
-                                </button>
-                            </td>
-                            <td>
-                                <button className='bg-red-500'>Delete</button>
-                            </td>
-                        </tr>
+                        {gameTagsData.map((gameTag) => (
+                            <tr>
+                                <td>
+                                    <input type='checkbox'></input>
+                                </td>
+                                <td>{gameTag.gameTagId}</td>
+                                <td>{gameTag.gameTagName}</td>
+                                
+                                <td>
+                                    <button 
+                                        className='bg-green-500'
+                                        onClick={toggleDetailsForm}
+                                        >
+                                            Details
+                                    </button>
+                                </td>
+                                <td>
+                                    <button 
+                                        className='bg-yellow-500'
+                                        onClick={toggleUpdateForm}
+                                        >
+                                            Update
+                                    </button>
+                                </td>
+                                <td>
+                                    <button className='bg-red-500'>Delete</button>
+                                </td>
+                            </tr>
+
+                        ))}
                     </tbody>
                 </table>
                 {openUpdateForm && (
@@ -164,12 +185,10 @@ const Tags = () => {
                     className='grid grid-cols-2 w-[480px] gap-y-4 bg-white rounded-md'
                 >
                         <label>Tag ID</label>
-                        <input 
-                            disabled 
+                        <input  
                             placeholder='Tag ID' 
                             className='border-gray-300 border-[1px] p-2'
                             id='tagId'
-                            
                         />
                         <label>Tag Name</label>
                         <input 
