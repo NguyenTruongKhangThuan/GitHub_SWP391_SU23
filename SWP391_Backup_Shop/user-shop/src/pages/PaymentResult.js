@@ -14,32 +14,30 @@ function PaymentResult() {
   const extraData = searchParams.get("extraData");
   const message = searchParams.get("message");
 
-  if (result === null) {
-    getMoMoResult(extraData, orderId, orderInfo, amount)
-      .then((res) => setResult(res))
-      .catch((err) => window.alert(err.response.data));
+  const displayResult = () => {
+    if (message === "Success") {
+      getMoMoResult(extraData, orderId, orderInfo, amount)
+        .then((res) => setResult(res))
+        .catch((err) => window.alert(err.response.data));
+    }
   }
 
-  if (orderDetail === null) {
-    getOrderDetailByOrderId(orderId)
-      .then((res) => setOrderDetail(res))
-      .catch((err) => window.alert(err.response.data));
-  }
+  displayResult()
 
   return (
     <div>
-      <Header/>
-      <div className="w-full h-screen flex justify-center items-center">
-        <sesion className="flex flex-col items-center gap-y-5  ">
-          <div>{message}</div>
-          <div className="flex items-center justify-between gap-x-[156px]">
-            <p>OrderID:</p> 
+      <Header />
+      <div className="bg-gray-100 h-screen flex justify-center items-center">
+        <section className="bg-white rounded-lg shadow-md p-8 flex flex-col items-center gap-y-5">
+          <div className="text-xl">{message}</div>
+          <div className="w-full flex justify-between gap-x-12">
+            <p className="font-semibold">Order ID:</p>
             <p>{orderId}</p>
           </div>
-          <div>{orderInfo}</div>
-          <div className="flex items-center justify-between gap-x-[180px]">
-            <p>Total Pay:</p>
-            <p>{amount}</p>
+          <div className="text-lg">{orderInfo}</div>
+          <div className="w-full flex justify-between gap-x-20">
+            <p className="font-semibold">Total Pay:</p>
+            <p>{amount} VND</p>
           </div>
           <Link
             to="/shop"
@@ -47,8 +45,7 @@ function PaymentResult() {
           >
             Go Back To Shop Page
           </Link>
-        </sesion>
-  
+        </section>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { CartContext } from "../contexts/CartContext";
 
@@ -19,6 +19,12 @@ const ProductDetails = () => {
   const { products } = useContext(ProductContext);
 
   const { addToCart } = useContext(CartContext);
+
+  const [showFullRule, setShowFullRule] = useState(false);
+
+  const toggleRuleVisibility = () => {
+    setShowFullRule(!showFullRule);
+  };
 
   const product = products.find((item) => {
     return item.gamePackId === id;
@@ -39,8 +45,6 @@ const ProductDetails = () => {
     );
   }
 
-  //destructure product
-  const { title, price, description, image } = product;
 
   return (
     <>
@@ -49,27 +53,79 @@ const ProductDetails = () => {
         <div className="container mx-auto lg:mx-0">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex flex-1 justify-center items-center mb-8 lg:mb-10">
-              <img src={image} alt="" className="max-w-[200px] lg:max-w-sm" />
+              <img src={product.imageSrc} alt="" className="max-w-[200px] lg:max-w-sm" />
             </div>
             <div className="flex-1 text-center lg:text-left">
               <h1 className="text-[26px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
-                {title}
+                {product.gamePackName}
               </h1>
               <div className="text-xl text-red-500 font-medium mb-6">
-                VND {price}
+                {product.price} VND 
               </div>
-              <p className="mb-8">{description}</p>
-              <button
-                className="bg-primary py-4 px-8 text-white"
-                onClick={() => {
-                  addToCart(product, product.gamePackId);
-                  showSuccessMessage();
-                }}
-              >
-                Add To Cart
-              </button>
+              <div className="flex gap-x-20">
+                <div className="flex flex-col gap-y-4">
+                  <div className="flex justify-between w-[240px]">
+                    <p className="font-semibold">Numbers of Players:</p>
+                    <p>{product.numberOfPlayer}</p>
+                  </div>
+                  <div className="flex justify-between w-[240px]">
+                    <p className="font-semibold">Appropriate Age:</p>
+                    <p>{product.age}</p>
+                  </div>
+                  <div className="flex justify-between w-[240px]">
+                    <p className="font-semibold">Average Duration Match:</p>
+                    <p>{product.gameDuration}</p>
+                  </div>
+                </div>
+                <div className="">
+                  <div className="flex justify-between w-[320px] mb-4">
+                    <p className="font-semibold">Origin:</p> 
+                    <p>{product.origin}</p>
+                  </div>
+                  <div className="flex justify-between w-[320px] mb-4">
+                    <p className="font-semibold">Weight:</p> 
+                    <p>{product.weight}</p>
+                  </div>
+                  <div className="flex justify-between w-[320px] mb-4">
+                    <p className="font-semibold">Size:</p> 
+                    <p>{product.size}</p>
+                  </div>
+                  <div className="flex justify-between w-[320px] mb-4">
+                    <p className="font-semibold">Material:</p> 
+                    <p>{product.material}</p>
+                  </div>
+                </div>
+              </div>
+              {product.gameRule.length > 0 && (
+                <div className={`mb-8 ${product.gameRule.length > 250 ? 'text-[13px]': 'text-[14px]'} w-[800px]`}>
+                  <p>{showFullRule ? product.gameRule : `${product.gameRule.slice(0, 100)}...`}</p>
+                  {product.gameRule.length > 200 && (
+                    <button className="text-blue-500 mt-2" onClick={toggleRuleVisibility}>
+                      {showFullRule ? "View Less" : "View More"}
+                    </button>
+                  )}
+                </div>
+              )}
+              <div className="flex gap-x-10">
+                <button
+                  className="bg-primary py-4 px-8 text-white"
+                  onClick={() => {
+                    addToCart(product, product.gamePackId);
+                    showSuccessMessage();
+                  }}
+                >
+                  Add To Cart
+                </button>
+                <Link to={'/shop'}>
+                  <button
+                    className="bg-primary py-4 px-8 text-white"
+                  >
+                    Return and Continue Shopping
+                  </button>
+                </Link>
+              </div>
             </div>
-            <ToastContainer />
+            <ToastContainer className={'mt-14 bg-no-repeat'}/>
           </div>
         </div>
       </section>

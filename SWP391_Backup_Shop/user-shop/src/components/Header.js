@@ -29,7 +29,7 @@ const Header = (props) => {
     getBoardGameAPI()
       .then((res) => setCategories(res))
       .catch((err) => console.log(err.response));
-  });
+  },[]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -76,7 +76,7 @@ const Header = (props) => {
             </button>
           </div>
         </div>
-        <div className="flex items-center justify-end gap-x-14 ">
+        <div className="flex items-center justify-end gap-x-[30px] ">
           <div className="rounded-full w-[100px] px-3 py-2 text-center hover:underline">
             <Link to={"/shop"}>Home</Link>
           </div>
@@ -89,7 +89,10 @@ const Header = (props) => {
           <div className="hover:underline">
             Hello {sessionStorage.getItem("account")}
           </div>
-          <Link to={"/auth"} className="hover:underline">
+          <Link to={"/auth"} className="hover:underline" 
+            onClick={() => {
+              sessionStorage.removeItem("account")}
+          }>
             <p>Logout</p>
           </Link>
           {/* Cart Quantity */}
