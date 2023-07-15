@@ -9,6 +9,7 @@ const END_POINT = {
   PAYMENTS: "admin/api/payments",
   ORDERS: "admin/api/orders",
   ORDERDETAILS: "admin/api/orderdetails",
+  TAGS:"admin/api/gametags",
   STATISTICUSER: "admin/api/statistics/users",
   STATISTICGAMEPACK: "admin/api/statistics/gamepacks",
   STATISTICINCOME: "admin/api/statistics/income",
@@ -122,6 +123,36 @@ export const deleteBoardgameAPI = (token, id) => {
     },
   });
 };
+
+//GameTagsAPI
+export const getGameTagsAPI = (token) => {
+  return axiosClient.get(`${END_POINT.TAGS}`,
+      {headers: {
+          Authorization:  `bearer ${token}`
+      }}
+  )
+}
+
+export const postGameTagsAPI = (token, gametag) => {
+  return axiosClient.post(`${END_POINT.TAGS}`,gametag,
+  {headers: {
+      Authorization: `bearer ${token}`,
+  }});
+}
+
+export const putGameTagsAPI = (token, gametag) => {
+  return axiosClient.post(`${END_POINT.TAGS}`,gametag,
+  {headers: {
+      Authorization: `bearer ${token}`,
+  }});
+}
+
+export const deleteGameTagsAPI = (token, id) => {
+  return axiosClient.post(`${END_POINT.TAGS}/${id}`,
+  {headers: {
+      Authorization: `bearer ${token}`,
+  }});
+}
 
 //PaymentsAPI
 export const getPaymentAPI = (token) => {

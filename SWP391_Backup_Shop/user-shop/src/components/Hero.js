@@ -13,11 +13,11 @@ const Hero = () => {
           <div className='flex flex-col justify-center'>
             {/* Pre Title */}
             <div className='font-semibold flex items-center uppercase'>
-              <div className='w-10 h-[2px] mr-3 bg-red-400'></div>New Trend
+              <div className='w-10 h-[2px] mr-3 bg-pink-400'></div>New Trend
             </div>
-            <h1 className='text-[70px] leading-[1.1] font-light mb-4'>
-              AUTUMN SALE STYLISH <br/>
-              <span>WOMENS</span>
+            <h1 className='text-[64px] leading-[1.1] font-light mb-4'>
+              CHILL OUT AND HAVE FUN<br/>
+              <span className='text-[48px] font-semibold'>BOARDGAMES</span>
             </h1>
             <Link to={'/shop/special'} className='self-start uppercase font-semibold border-b-2 border-primary'>
               Discover More
