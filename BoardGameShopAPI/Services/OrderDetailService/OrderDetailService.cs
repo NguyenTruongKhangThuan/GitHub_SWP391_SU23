@@ -28,7 +28,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
 
                 string createId = _context.OrderDetails.OrderBy(x => x.OrderDetailId).LastOrDefault() == null ?
                     "OD00000001" : 
-                    Regex.Replace(_context.OrderDetails.OrderBy(x => x.OrderDetailId).LastOrDefault().OrderId, 
+                    Regex.Replace(_context.OrderDetails.OrderBy(x => x.OrderDetailId).LastOrDefault().OrderDetailId, 
                     "\\d+", n => (int.Parse(n.Value)+1).ToString(new string('0', n.Value.Length)));
 
                 orderDetail.OrderDetailId = createId;
@@ -36,6 +36,12 @@ namespace BoardGameShopAPI.Services.OrderDetailService
                 orderDetail.GamePack = _context.GamePacks.Find(orderDetail.GamePackId);
 
                 _context.OrderDetails.Add(orderDetail);
+                if(_context.OrderDetails.Find(createId) != null)
+                {
+                    orderDetail.OrderDetailId = Regex.Replace(_context.OrderDetails.OrderBy(x => x.OrderDetailId).LastOrDefault().OrderDetailId,
+                    "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
+                }
+
                 await _context.SaveChangesAsync();
                 return "Success";
             }
