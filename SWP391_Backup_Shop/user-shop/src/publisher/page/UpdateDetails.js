@@ -17,7 +17,7 @@ const UpdateDetails = () => {
         <div>
             <Header />
             <div className='w-full h-screen flex justify-center items-center'>
-                <div className="w-full p-8 h-fit  bg-[#ffffffc2] rounded-lg">
+                <div className="w-full p-8 h-fit rounded-lg">
                 <form className="h-fit px-[20px] gap-[10px]">
                         <div className='grid grid-cols-4 gap-5 mb-5'>
                             <div className="flex flex-col gap-y-3">
@@ -35,6 +35,16 @@ const UpdateDetails = () => {
                                     type="text"
                                     id="update-gpdescription"
                                     placeholder='Enter Game Package Description'
+                                    
+                                    className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-y-3">
+                                <label className='font-bold mb-1'>Game Package Price</label>
+                                <input
+                                    type="number"
+                                    id="update-gpdescription"
+                                    placeholder='Enter Game Package Price'
                                     
                                     className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
                                 />
@@ -170,7 +180,7 @@ const UpdateDetails = () => {
                             </div>
                         </div>
                         <div className='flex justify-center items-center'>
-                            <Link to={`/shop/publisher/product/${id}`}
+                            <Link to={`/shop/publisher`}
                                     className=" border w-1/3 rounded-full font-bold mx-8 my-5 py-2 bg-[#0e6486] hover:bg-[#28c4dc]  text-white text-center"
                             >
                             

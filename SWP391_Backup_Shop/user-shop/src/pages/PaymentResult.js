@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getMoMoResult, getOrderDetailByOrderId } from "../api/orderAPI";
 import { Link, useSearchParams } from "react-router-dom";
+import Header from "../components/Header";
 
 function PaymentResult() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,17 +28,28 @@ function PaymentResult() {
 
   return (
     <div>
-      <div>{message}</div>
-      <div>{orderId}</div>
-      <div>{orderInfo}</div>
-      <div>{amount}</div>
-
-      <Link
-        to="/shop"
-        className="bg-gray-700 flex p-4 justify-center items-center text-white w-[300px] font-medium"
-      >
-        Go Back To Shop Page
-      </Link>
+      <Header/>
+      <div className="w-full h-screen flex justify-center items-center">
+        <sesion className="flex flex-col items-center gap-y-5  ">
+          <div>{message}</div>
+          <div className="flex items-center justify-between gap-x-[156px]">
+            <p>OrderID:</p> 
+            <p>{orderId}</p>
+          </div>
+          <div>{orderInfo}</div>
+          <div className="flex items-center justify-between gap-x-[180px]">
+            <p>Total Pay:</p>
+            <p>{amount}</p>
+          </div>
+          <Link
+            to="/shop"
+            className="bg-gray-700 flex p-4 justify-center items-center text-white w-[300px] font-medium"
+          >
+            Go Back To Shop Page
+          </Link>
+        </sesion>
+  
+      </div>
     </div>
   );
 }

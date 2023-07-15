@@ -27,14 +27,21 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+
           <Route path="/auth" element={<Authentication />} />
+
           <Route path="/admin" element={<Admin />} />
+
+          {/* Shop - User */}
           <Route path="/shop" element={<Home />} />
           <Route path="/shop/product/:id" element={<ProductDetails />} />
           <Route path="/shop/category" element={<CategoryShop />} />
           <Route path="/shop/special" element={<SpecialShop />} />
           <Route path="/shop/cart" element={<ViewCart />} />
           <Route path="/shop/checkout" element={<Checkout />} />
+          <Route path="/shop/paymentresult" element={<PaymentResult />} />
+
+          {/* Shop - Publisher */}
           <Route path="/shop/publisher" element={<HomePage />} />
           <Route path="/shop/publisher/product/:id" element={<ViewDetails />} />
           <Route
@@ -42,7 +49,6 @@ const App = () => {
             element={<UpdateDetails />}
           />
           <Route path="/shop/publisher/product/add" element={<AddPage />} />
-          <Route path="/shop/paymentresult" element={<PaymentResult />} />
         </Routes>
         <SideBar />
       </Router>

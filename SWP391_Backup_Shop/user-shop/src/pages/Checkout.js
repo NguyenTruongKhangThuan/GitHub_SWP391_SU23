@@ -115,7 +115,7 @@ function Checkout() {
             {!isOrderMade && (
               <div
                 to={"/shop/category"}
-                className="bg-gray-700 flex p-[18px] justify-center items-center text-white w-[300px] font-medium rounded-md"
+                className="bg-gray-700 flex p-[18px] justify-center items-center text-white w-[300px] font-medium rounded-md cursor-pointer"
                 onClick={() => {
                   createOrder();
                   setIsOrderMade(true);
@@ -128,13 +128,13 @@ function Checkout() {
             {isOrderMade && (
               <Link className="bg-[#D82D8B] flex justify-center items-center text-white w-[300px] font-medium rounded-md">
                 <button
-                  className="flex justify-center p-3 "
+                  className="flex items-center justify-center p-3 "
                   onClick={() => {
                     momoPayMethod(orderId);
                   }}
                 >
-                  <img src={Momo} alt="" className="w-[40px]" />
-                  <p className="flex items-center text-center">Pay with Momo</p>
+                  <img src={Momo} alt="" className="w-[40px] " />
+                  <p className="flex items-center text-center mx-auto">Pay with Momo</p>
                 </button>
               </Link>
             )}
