@@ -28,7 +28,7 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet("searchmethods")]
-        public async Task<IActionResult> SearchGamePackByName(string searchValue, string boardGameName)
+        public async Task<IActionResult> SearchGamePackByName(string? searchValue, string? boardGameName)
         {
             List<GamePack> gamePacks = await _gamePackService.SearchGamePack(searchValue, boardGameName);
             return Ok(gamePacks);

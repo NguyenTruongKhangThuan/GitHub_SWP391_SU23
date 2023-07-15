@@ -24,7 +24,7 @@ namespace BoardGameShopAPI.Services.GamePackService
 
         void IncreaseGamePackAmount(string gamePackId, int? amount);
 
-        Task<List<GamePack>> SearchGamePack(string searchValue, string boardGameName);
+        Task<List<GamePack>> SearchGamePack(string? searchValue, string? boardGameName);
 
         //Statistic Calculation
         Task<int> GetNumberOfAvailablePack();

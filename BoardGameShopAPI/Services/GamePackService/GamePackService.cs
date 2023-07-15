@@ -207,19 +207,19 @@ namespace BoardGameShopAPI.Services.GamePackService
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<GamePack>> SearchGamePack(string searchValue, string boardGameName)
+        public async Task<List<GamePack>> SearchGamePack(string? searchValue, string? boardGameName)
         {
-            IQueryable<GamePack> gamePacks = _context.GamePacks.Where(gp => gp.GamePackName.Contains(searchValue));
+            IQueryable<GamePack> gamePacks = _context.GamePacks.Where(gp => gp.GamePackName.Contains(searchValue == null?"":searchValue));
 
-            if (boardGameName.Equals("All"))
+            if (boardGameName == null)
             {
                 return await gamePacks.ToListAsync();
             }
             else
             {
-                string boardGameId = _context.BoardGames.Where(bg => bg.Name ==  boardGameName).FirstOrDefault() == null ? "" 
-                    : _context.BoardGames.Where(bg => bg.Name == boardGameName).FirstOrDefault().BoardGameId;
-                return await gamePacks.Where(gp => gp.BoardGameId ==  boardGameId).ToListAsync();
+                //string boardGameId = _context.BoardGames.Where(bg => bg.Name ==  boardGameName).FirstOrDefault() == null ? "" 
+                //    : _context.BoardGames.Where(bg => bg.Name == boardGameName).FirstOrDefault().BoardGameId;
+                return await gamePacks.Where(gp => gp.BoardGame.Name ==  boardGameName).ToListAsync();
             }
         }
 
