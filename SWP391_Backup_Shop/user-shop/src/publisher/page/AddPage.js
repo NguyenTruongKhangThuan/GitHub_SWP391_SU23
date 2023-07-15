@@ -30,6 +30,16 @@ const AddPage = () => {
                                 />
                             </div>
                             <div className="flex flex-col gap-y-3">
+                                <label className='font-bold mb-1'>Game Package Price</label>
+                                <input
+                                    type="number"
+                                    id="update-gpdescription"
+                                    placeholder='Enter Game Package Price'
+                                    
+                                    className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-y-3">
                                 <label className='font-bold mb-1'>Appropriate Age</label>
                                 <input
                                     type="text"

@@ -19,10 +19,6 @@ import {
   createOrderDetailAPI,
 } from "../api/orderAPI";
 
-import { readUserInfoAPI } from "../api/userAPI";
-import { useEffect } from "react";
-import { Result } from "postcss";
-
 function Checkout() {
   const { cart, clearCart, total, itemAmount } = useContext(CartContext);
   const [orderId, setOrderId] = useState(null);
@@ -48,7 +44,7 @@ function Checkout() {
       formData.append("orderDetailId", "temp");
       formData.append("orderId", orderId);
       formData.append("gamePackId", item.gamePackId);
-      formData.append("amount", itemAmount);
+      formData.append("amount", item.amount);
       formData.append("price", item.price);
       formData.append("order.orderId", "temp");
       formData.append("gamePack.gamePackId", "temp");

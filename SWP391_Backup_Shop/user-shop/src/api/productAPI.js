@@ -3,7 +3,7 @@ import axiosClient from "../api/axiosClient";
 const END_POINT = {
   GAMEPACK: "api/gamepacks",
   BOARDGAME: "api/boardgames",
-  SEARCH: "api/gamepacks",
+  SEARCH: "api/gamepacks/searchmethods",
   COMPONENTS: "api/components",
 };
 
