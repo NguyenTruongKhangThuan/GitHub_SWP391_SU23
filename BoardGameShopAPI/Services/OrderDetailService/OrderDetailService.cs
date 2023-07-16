@@ -8,9 +8,9 @@ namespace BoardGameShopAPI.Services.OrderDetailService
 {
     public class OrderDetailService : IOrderDetailService
     {
-        private readonly BoardGameShopDbContext _context;
+        private readonly DbA9bc42BoardgameshopdbContext _context;
         private readonly IGamePackService _gamePackService;
-        public OrderDetailService(BoardGameShopDbContext context, IGamePackService gamePackService)
+        public OrderDetailService(DbA9bc42BoardgameshopdbContext context, IGamePackService gamePackService)
         {
             _context = context;
             _gamePackService = gamePackService;

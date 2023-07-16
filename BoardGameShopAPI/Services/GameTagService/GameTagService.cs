@@ -6,8 +6,8 @@ namespace BoardGameShopAPI.Services.GameTagService
 {
     public class GameTagService : IGameTagService
     {
-        private readonly BoardGameShopDbContext _context;
-        public GameTagService(BoardGameShopDbContext context)
+        private readonly DbA9bc42BoardgameshopdbContext _context;
+        public GameTagService(DbA9bc42BoardgameshopdbContext context)
         {
             _context = context;
         }

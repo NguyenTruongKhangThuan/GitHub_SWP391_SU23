@@ -13,8 +13,8 @@ namespace BoardGameShopAPI.Services.GamePackService
         private readonly string ModelName = "GamePacks";
 
         private readonly IFirebaseCloundService _firebaseCloundService;
-        private readonly BoardGameShopDbContext _context;
-        public GamePackService(BoardGameShopDbContext context, IFirebaseCloundService firebaseCloundService)
+        private readonly DbA9bc42BoardgameshopdbContext _context;
+        public GamePackService(DbA9bc42BoardgameshopdbContext context, IFirebaseCloundService firebaseCloundService)
         {
             _context = context;
             _firebaseCloundService = firebaseCloundService;

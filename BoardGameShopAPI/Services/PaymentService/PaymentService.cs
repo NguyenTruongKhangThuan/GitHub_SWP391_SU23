@@ -9,9 +9,9 @@ namespace BoardGameShopAPI.Services.PaymentService
 {
     public class PaymentService : IPaymentService
     {
-        private readonly BoardGameShopDbContext _context;
+        private readonly DbA9bc42BoardgameshopdbContext _context;
         private readonly IGamePackService _gamePackService;
-        public PaymentService(BoardGameShopDbContext context, IGamePackService gamePackService)
+        public PaymentService(DbA9bc42BoardgameshopdbContext context, IGamePackService gamePackService)
         {
             _context = context;
             _gamePackService = gamePackService;

@@ -9,9 +9,9 @@ namespace BoardGameShopAPI.Services.BoardGameService
     {
         private readonly string ModelName = "BoardGames";
 
-        private readonly BoardGameShopDbContext _context;
+        private readonly DbA9bc42BoardgameshopdbContext _context;
         private readonly IFirebaseCloundService _firebaseCloundService;
-        public BoardGameService(BoardGameShopDbContext context, IFirebaseCloundService firebaseCloundService)
+        public BoardGameService(DbA9bc42BoardgameshopdbContext context, IFirebaseCloundService firebaseCloundService)
         {
             _context = context;
             _firebaseCloundService = firebaseCloundService;

@@ -64,7 +64,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 //DataBase
-builder.Services.AddDbContext<BoardGameShopDbContext>(options =>
+builder.Services.AddDbContext<DbA9bc42BoardgameshopdbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BoardGameShopDB"));
 });

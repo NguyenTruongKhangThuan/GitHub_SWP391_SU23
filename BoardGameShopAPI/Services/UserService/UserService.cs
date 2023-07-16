@@ -11,9 +11,9 @@ namespace BoardGameShopAPI.Services.UserService
 {
     public class UserService : IUserService
     {
-        private readonly BoardGameShopDbContext _context;
+        private readonly DbA9bc42BoardgameshopdbContext _context;
         private readonly IConfiguration _configuration;
-        public UserService(BoardGameShopDbContext context, IConfiguration configuration)
+        public UserService(DbA9bc42BoardgameshopdbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;

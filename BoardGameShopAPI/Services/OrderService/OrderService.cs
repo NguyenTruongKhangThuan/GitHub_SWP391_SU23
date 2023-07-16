@@ -7,9 +7,9 @@ namespace BoardGameShopAPI.Services.OrderService
 {
     public class OrderService : IOrderService
     {
-        private readonly BoardGameShopDbContext _context;
+        private readonly DbA9bc42BoardgameshopdbContext _context;
         private readonly IOrderDetailService _orderDetailService;
-        public OrderService(BoardGameShopDbContext context, IOrderDetailService orderDetail)
+        public OrderService(DbA9bc42BoardgameshopdbContext context, IOrderDetailService orderDetail)
         {
             _context = context;
             _orderDetailService = orderDetail;

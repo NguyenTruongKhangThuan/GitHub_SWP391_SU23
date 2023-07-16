@@ -9,9 +9,9 @@ namespace BoardGameShopAPI.Services.ComponentService
     {
         private readonly string ModelName = "Components";
 
-        private readonly BoardGameShopDbContext _context;
+        private readonly DbA9bc42BoardgameshopdbContext _context;
         private readonly IFirebaseCloundService _firebaseCloundService;
-        public ComponentService(BoardGameShopDbContext context, IFirebaseCloundService firebaseCloundService)
+        public ComponentService(DbA9bc42BoardgameshopdbContext context, IFirebaseCloundService firebaseCloundService)
         {
             _context = context;
             _firebaseCloundService = firebaseCloundService;

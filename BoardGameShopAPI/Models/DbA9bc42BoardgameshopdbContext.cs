@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using BoardGameShopAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameShopAPI.Models;
 
-public partial class BoardGameShopDbContext : DbContext
+public partial class DbA9bc42BoardgameshopdbContext : DbContext
 {
-    public BoardGameShopDbContext()
+    public DbA9bc42BoardgameshopdbContext()
     {
     }
 
-    public BoardGameShopDbContext(DbContextOptions<BoardGameShopDbContext> options)
+    public DbA9bc42BoardgameshopdbContext(DbContextOptions<DbA9bc42BoardgameshopdbContext> options)
         : base(options)
     {
     }
@@ -40,7 +39,7 @@ public partial class BoardGameShopDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("workstation id=BoardGameShopDB.mssql.somee.com;packet size=4096;user id=HNTDuong_SQLLogin_1;pwd=12345678;data source=BoardGameShopDB.mssql.somee.com;persist security info=False;initial catalog=BoardGameShopDB;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Data Source=SQL5080.site4now.net;Initial Catalog=db_a9bc42_boardgameshopdb;User Id=db_a9bc42_boardgameshopdb_admin;Password=Shop!12345");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

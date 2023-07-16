@@ -10,9 +10,9 @@ namespace BoardGameShopAPI.Services.OwnerService
 {
     public class OwnerService : IOwnerService
     {
-        private readonly BoardGameShopDbContext _context;
+        private readonly DbA9bc42BoardgameshopdbContext _context;
         private readonly IConfiguration _configuration;
-        public OwnerService(BoardGameShopDbContext context, IConfiguration configuration)
+        public OwnerService(DbA9bc42BoardgameshopdbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;

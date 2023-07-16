@@ -4,8 +4,8 @@ namespace BoardGameShopAPI.Services.TagInPackService
 {
     public class TagInPackService : ITagInPackService
     {
-        private readonly BoardGameShopDbContext _context;
-        public TagInPackService(BoardGameShopDbContext context)
+        private readonly DbA9bc42BoardgameshopdbContext _context;
+        public TagInPackService(DbA9bc42BoardgameshopdbContext context)
         {
             _context = context;
         }
