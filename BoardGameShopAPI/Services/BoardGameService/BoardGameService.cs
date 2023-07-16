@@ -28,7 +28,6 @@ namespace BoardGameShopAPI.Services.BoardGameService
                         Regex.Replace(_context.BoardGames.OrderBy(x => x.BoardGameId).LastOrDefault().BoardGameId,
                         "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
-                    //Upload Image
                     _firebaseCloundService.UploadImage(boardGame.ImageSrc, boardGame.Image, ModelName);
                     //Create BoardGame
                     boardGame.BoardGameId = createdId;
