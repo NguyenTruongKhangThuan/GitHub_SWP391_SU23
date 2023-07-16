@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BoardGameShopAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameShopAPI.Models;
@@ -33,6 +34,8 @@ public partial class BoardGameShopDbContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<TagInPack> TagInPacks { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -47,8 +50,8 @@ public partial class BoardGameShopDbContext : DbContext
 
             entity.Property(e => e.BoardGameId).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("text");
-            entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Image).HasMaxLength(100);
+            entity.Property(e => e.Name).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Component>(entity =>
@@ -91,25 +94,6 @@ public partial class BoardGameShopDbContext : DbContext
             entity.HasOne(d => d.Owner).WithMany(p => p.GamePacks)
                 .HasForeignKey(d => d.OwnerId)
                 .HasConstraintName("FK_GamePack_Owner");
-
-            entity.HasMany(d => d.GameTags).WithMany(p => p.GamePacks)
-                .UsingEntity<Dictionary<string, object>>(
-                    "TagInPack",
-                    r => r.HasOne<GameTag>().WithMany()
-                        .HasForeignKey("GameTagId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_TagInPack_GameTag"),
-                    l => l.HasOne<GamePack>().WithMany()
-                        .HasForeignKey("GamePackId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_TagInPack_GamePack"),
-                    j =>
-                    {
-                        j.HasKey("GamePackId", "GameTagId");
-                        j.ToTable("TagInPack");
-                        j.IndexerProperty<string>("GamePackId").HasMaxLength(50);
-                        j.IndexerProperty<string>("GameTagId").HasMaxLength(50);
-                    });
         });
 
         modelBuilder.Entity<GameTag>(entity =>
@@ -186,6 +170,25 @@ public partial class BoardGameShopDbContext : DbContext
 
             entity.Property(e => e.RoleId).HasMaxLength(50);
             entity.Property(e => e.RoleName).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TagInPack>(entity =>
+        {
+            entity.ToTable("TagInPack");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.GamePackId).HasMaxLength(50);
+            entity.Property(e => e.GameTagId).HasMaxLength(50);
+
+            entity.HasOne(d => d.GamePack).WithMany(p => p.TagInPacks)
+                .HasForeignKey(d => d.GamePackId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TagInPack_GamePack");
+
+            entity.HasOne(d => d.GameTag).WithMany(p => p.TagInPacks)
+                .HasForeignKey(d => d.GameTagId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TagInPack_GameTag");
         });
 
         modelBuilder.Entity<User>(entity =>

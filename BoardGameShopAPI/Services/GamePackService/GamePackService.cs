@@ -32,6 +32,9 @@ namespace BoardGameShopAPI.Services.GamePackService
                         Regex.Replace(_context.GamePacks.OrderBy(x => x.GamePackId).LastOrDefault().GamePackId,
                         "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
+                    string imageName = gamePack.Image.Split(".")[0];
+                    gamePack.Image = imageName;
+
                     _firebaseCloundService.UploadImage(gamePack.ImageSrc, gamePack.Image, ModelName);
 
                     gamePack.GamePackId = createdId;
@@ -123,8 +126,11 @@ namespace BoardGameShopAPI.Services.GamePackService
         {
             try
             {
-                return await GetPackList().Where(gp => gp.OwnerId == ownerId)
-                    .OrderBy(gp => gp.GamePackId).ToListAsync();
+                IQueryable<GamePack> gamePacks = _context.GamePacks.Where(gp => gp.OwnerId == ownerId)
+                    .OrderBy(gp => gp.GamePackId);
+                await gamePacks.ForEachAsync((gp) => gp.ImageSrc = _firebaseCloundService.RetrieveImage(gp.Image, ModelName));
+
+                return gamePacks.ToList();
             }
             catch (Exception)
             {
@@ -188,7 +194,7 @@ namespace BoardGameShopAPI.Services.GamePackService
         public async Task<string> DecreaseGamePackAmount(string gamePackId, int? amount)
         {
             GamePack gamePack = _context.GamePacks.Find(gamePackId);
-            if (gamePack.AvailableAmount > amount)
+            if (gamePack.AvailableAmount >= amount)
             {
                 gamePack.AvailableAmount -= amount;
                 await _context.SaveChangesAsync();
@@ -212,7 +218,7 @@ namespace BoardGameShopAPI.Services.GamePackService
             IQueryable<GamePack> gamePacks = _context.GamePacks.Where(gp => gp.GamePackName.Contains(searchValue == null?"":searchValue));
             await gamePacks.ForEachAsync((gp) => gp.ImageSrc = _firebaseCloundService.RetrieveImage(gp.Image, ModelName));
 
-            if (boardGameName == null)
+            if (boardGameName == null || boardGameName == "All")
             {
                 return  gamePacks.ToList();
             }

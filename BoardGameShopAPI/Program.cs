@@ -18,6 +18,7 @@ using System.Text;
 using BoardGameShopAPI.Services.MomoService;
 using ProGCoder_MomoAPI.Models.Momo;
 using BoardGameShopAPI.Services.GameTagService;
+using BoardGameShopAPI.Services.TagInPackService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,6 +82,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFirebaseCloundService, FirebaseCloundService>(); 
 builder.Services.AddScoped<IMomoService, MomoService>();
 builder.Services.AddScoped<IGameTagService, GameTagService>();
+builder.Services.AddScoped<ITagInPackService, TagInPackService>();
 
 var app = builder.Build();
 

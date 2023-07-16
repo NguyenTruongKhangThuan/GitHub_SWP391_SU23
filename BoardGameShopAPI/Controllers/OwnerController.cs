@@ -12,7 +12,7 @@ using System.Data;
 
 namespace BoardGameShopAPI.Controllers
 {
-    [Route("api/owner")]
+    [Route("api/owners")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Owner")]
     public class OwnerController : ControllerBase
@@ -50,10 +50,12 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
-        [HttpGet("{token}")]
+        [HttpGet]
         public IActionResult GetOwnerInfo(string token)
         {
-            return Ok(_ownerService.ReadOwnerToken(token));
+            //return Ok(_ownerService.ReadOwnerToken(token));
+            string id = _ownerService.ReadOwnerToken(token).Result.OwnerId;
+            return Ok(id);
         }
 
         //GamePack Function

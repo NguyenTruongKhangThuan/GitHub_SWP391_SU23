@@ -174,6 +174,12 @@ namespace BoardGameShopAPI.Controllers
         [HttpPost("owners")]
         public async Task<IActionResult> CreateOwnerAccount([FromForm] Owner owner)
         {
+            string validation = await _ownerService.CreateValidation(owner);
+            if(!validation.Equals("Accept"))
+            {
+                return BadRequest(validation);
+            }
+
             string res = await _ownerService.CreateOwner(owner);
             if (res.Equals("Success"))
             {

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
@@ -140,6 +141,83 @@ namespace BoardGameShopAPI.Services.OwnerService
             };
 
             return owner;
+        }
+
+        //Authentication
+        public async Task<string> CreateValidation(Owner owner)
+        {
+            //Delete redundance white space
+            owner.OwnerName = owner.OwnerName.Trim();
+            owner.Email = owner.Email.Trim();
+
+            if(owner.OwnerName.Length == 0 || owner.OwnerName == null)
+            {
+                return "Invalid Input For Ownername";
+            }
+            else
+            {
+                if (!EmailValidation(owner.Email))
+                {
+                    return "Invalid Input For Email";
+                }
+                else
+                {
+                    if(!PasswordValidation(owner.Password))
+                    {
+                        return "Invalid Input For Password";
+                    }
+                    else
+                    {
+                        return "Accept";
+                    }
+                }
+            }
+        }
+
+        private bool EmailValidation(string email)
+        {
+            var mail = new MailAddress(email);
+
+            if (mail.Host.Contains('.') && !mail.Host.EndsWith('.'))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool PasswordValidation(string password)
+        {
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+            var minLenght = 6;
+
+            if (password.Length >= minLenght)
+            {
+                if (!hasUpperChar.IsMatch(password))
+                {
+                    return false;
+                }
+                if (!hasLowerChar.IsMatch(password))
+                {
+                    return false;
+                }
+                if (!hasSymbols.IsMatch(password))
+                {
+                    return false;
+                }
+                if (!hasNumber.IsMatch(password))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

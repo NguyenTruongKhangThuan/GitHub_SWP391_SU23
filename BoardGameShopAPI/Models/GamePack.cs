@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BoardGameShopAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -49,5 +50,5 @@ public partial class GamePack
 
     public virtual Owner? Owner { get; set; }
 
-    public virtual ICollection<GameTag> GameTags { get; set; } = new List<GameTag>();
+    public virtual ICollection<TagInPack> TagInPacks { get; set; } = new List<TagInPack>();
 }

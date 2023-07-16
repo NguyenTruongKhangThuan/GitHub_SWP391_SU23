@@ -48,6 +48,10 @@ namespace BoardGameShopAPI.Controllers
             }
             else
             {
+                if (res.Equals("Fail"))
+                {
+                    return BadRequest("Fail To Create");
+                }
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

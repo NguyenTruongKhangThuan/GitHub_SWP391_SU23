@@ -30,9 +30,13 @@ namespace BoardGameShopAPI.Services.PaymentService
                 payment.User = _context.Users.Find(payment.UserId);
                 payment.Order = _context.Orders.Find(payment.OrderId);
 
-                _context.Payments.Add(payment);
-                await _context.SaveChangesAsync();
-                return "Success";
+                if(!_context.Payments.Where(p => p.OrderId == payment.OrderId).Any())
+                {
+                    _context.Payments.Add(payment);
+                    await _context.SaveChangesAsync();
+                    return "Success";
+                }
+                return "Fail";
             }
             catch (Exception ex)
             {

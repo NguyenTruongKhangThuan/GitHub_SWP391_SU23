@@ -15,5 +15,8 @@ namespace BoardGameShopAPI.Services.OwnerService
         Task<string> CreateOwnerToken(Owner owner);
 
         Task<Owner> ReadOwnerToken(string ownerToken);
+
+        //Authentication
+        Task<string> CreateValidation(Owner owner);
     }
 }
