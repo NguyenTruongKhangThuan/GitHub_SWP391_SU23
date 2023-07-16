@@ -1,191 +1,71 @@
-import React, {useState} from 'react'
-import {nanoid} from 'nanoid'
+import React, { useState, useEffect } from 'react'
+import { getGameTagsAPI } from '../../api/adminAPI'
 
 const Tags = () => {
-    const [data, setData] = useState([]);
-    const [openAddForm, setOpenAddForm] = useState(false)
-    const [addData,setAddData] = useState({
-        tagName: ''
-    })
+    const [gameTags, setGameTags] = useState([])
 
+    useEffect(() => {
+        refreshGameTagsList();
+    }, [])
 
-    const [openDetailsForm, setOpenDetailsForm] = useState(false)
-    const [openUpdateForm, setOpenUpdateForm] = useState(false)
-
-    const toggleAddForm = () => {
-        setOpenAddForm(!openAddForm)
-    }
-
-    const handleAddFormChange = (event) => {
-        event.preventDefault();
-
-        const fieldName = event.target.getAttribute("id");
-        const fieldValue = event.target.value;
-
-        const newData = {...addData}
-        newData[fieldName] = fieldValue;
-
-        setAddData(newData)
-    }
-
-    const handleAddFormSubmit = (event) => {
-        event.preventDefault();
-
-        const newTag = {
-            id: nanoid(),
-            tagName: addData.tagName
-        }
-
-        const newTagsData = [...data, newTag];
-        setData(newTag);
-    }
-
-    const toggleDetailsForm = () => {
-        setOpenDetailsForm(!openDetailsForm)
-    }
-
-    const toggleUpdateForm = () => {
-        setOpenUpdateForm(!openUpdateForm)
-    }
-
-    const switchingUpdateFormAndDetailsForm = () => {
-        setOpenDetailsForm(!openDetailsForm)
-        setOpenUpdateForm(!openUpdateForm)
-    }
-
-    const handleDeleteClick = () => {
-        
+    const refreshGameTagsList = async () => {
+        await getGameTagsAPI(sessionStorage.getItem("accountToken"))
+            .then((data) => setGameTags(data))
+            .catch((error) => console.log(error))
     }
 
     return (
         <div>
-            <div>
-                <h2 className='text-[24px] font-bold'>Boardgame Tags</h2>
-                <button 
-                    className='bg-blue-500 flex justify-end'
-                    onClick={toggleAddForm}
-                    >
-                        Add
-                </button>
-                {openAddForm && (
-                    <form 
-                        className='grid grid-cols-2 w-[480px] gap-y-4 bg-white rounded-md'
-                        onSubmit={handleAddFormSubmit}
-                        >
-                        <label>Tag ID</label>
-                        <input 
-                            disabled 
-                            placeholder='Tag ID' 
-                            className='border-gray-300 border-[1px] p-2'
-                            id='tagId'
-                            
-                        />
-                        <label>Tag Name</label>
-                        <input 
-                            type='text' 
-                            placeholder="Enter the Tag Name" 
-                            className='border-gray-300 border-[1px] p-2'
-                            onChange={handleAddFormChange}
-                            id='tagName'
-                        />
-                        <button type='submit' className='bg-purple-500'>Add Tag</button>
-                        <button className='bg-pink-500' onClick={toggleAddForm}>Cancel</button>
-                    </form>
-                )
+            <div className='flex justify-between'>
+                <h2>Tags Management</h2>
+                <button
+                    className='bg-blue-500 flex justify-center w-[120px] p-2 rounded-md'
 
-                }
-                <table>
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type='checkbox'></input>
-                            </th>
-                            <th>Tag ID</th>
-                            <th>Tag Name</th>
-                            <th colSpan={2}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* Replace with Call API here */}
-                        <tr>
-                            <td>
-                                <input type='checkbox'></input>
-                            </td>
-                            <td>T01</td>
-                            <td>Monopoly</td>
-                            <td>
-                                <button 
-                                    className='bg-green-500'
-                                    onClick={toggleDetailsForm}
-                                    >
-                                        Details
-                                </button>
-                            </td>
-                            <td>
-                                <button 
-                                    className='bg-yellow-500'
-                                    onClick={toggleUpdateForm}
-                                    >
-                                        Update
-                                </button>
-                            </td>
-                            <td>
-                                <button className='bg-red-500'>Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                {openUpdateForm && (
-                    <form
-                        className='grid grid-cols-2 w-[480px] gap-y-4 bg-white rounded-md'
-                    >
-                        <label>Tag ID</label>
-                        <input 
-                            disabled 
-                            placeholder='Tag ID' 
-                            className='border-gray-300 border-[1px] p-2'
-                            id='tagId'
-                            
-                        />
-                        <label>Tag Name</label>
-                        <input 
-                            type='text' 
-                            placeholder="Enter the Tag Name" 
-                            className='border-gray-300 border-[1px] p-2'
-                            onChange={handleAddFormChange}
-                            id='tagName'
-                        />
-                        <button type='submit' className='bg-purple-500'>Add Tag</button>
-                        <button className='bg-pink-500' onClick={toggleUpdateForm}>Cancel</button>
-                    </form>
-                )}
-                {openDetailsForm && (
-                    <form
-                    className='grid grid-cols-2 w-[480px] gap-y-4 bg-white rounded-md'
                 >
-                        <label>Tag ID</label>
-                        <input 
-                            disabled 
-                            placeholder='Tag ID' 
-                            className='border-gray-300 border-[1px] p-2'
-                            id='tagId'
-                            
-                        />
-                        <label>Tag Name</label>
-                        <input 
-                            type='text' 
-                            placeholder="Enter the Tag Name" 
-                            className='border-gray-300 border-[1px] p-2'
-                            onChange={handleAddFormChange}
-                            id='tagName'
-                        />
-                        <button className='bg-purple-500' onClick={toggleDetailsForm}>Cancel View Details</button>
-                        <button className='bg-pink-500' onClick={switchingUpdateFormAndDetailsForm}>Update Tags</button>
-                    </form>
-                )}
+                    Add
+                </button>
             </div>
+            <table className='mt-[10px]'>
+                <thead>
+                    <tr className='text-[16px]'>
+                        <th className='border-[2px] border-gray-500 pr-5 px-3'>Tag ID</th>
+                        <th className='border-[2px] border-gray-500 pr-5 px-3'>Tag Name</th>
+                        <th className='border-[2px] border-gray-500 pr-5 px-3' colSpan={3}>Actions</th>
+                    </tr>
+                </thead>
+                <tbody className='bg-gray-200'>
+                    {gameTags.map((gameTag, index) => (
+                        <tr className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-300'} text-[16px]`}>
+                            <td className='border-[2px] border-gray-500 pr-5 pl-2'>{gameTag.gameTagId}</td>
+                            <td className='border-[2px] border-gray-500 pr-5 pl-2'>{gameTag.gameTagName}</td>
+                            <td className='border-l-[2px] border-b-[2px] border-r-none border-gray-500 pr-5 pl-2'>
+                                <button
+                                    className='bg-green-400 hover:bg-green-600 w-[160px] p-4 text-[18px] font-bold rounded-md'
 
-            
+                                >
+                                    View Details
+                                </button>
+                            </td>
+                            <td className='border-b-[2px] border-gray-500 pr-5 pl-2'>
+                                <button
+                                    className='bg-yellow-400 hover:bg-yellow-500 w-[160px] p-4 text-[18px] font-bold rounded-md'
+
+                                >
+                                    Update
+                                </button>
+                            </td>
+                            <td className='border-r-[2px] border-b-[2px] border-gray-500 pr-5 pl-2'>
+                                <button
+                                    className='bg-red-400 hover:bg-red-500 w-[160px] p-4 text-[18px] font-bold rounded-md'
+
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 }
