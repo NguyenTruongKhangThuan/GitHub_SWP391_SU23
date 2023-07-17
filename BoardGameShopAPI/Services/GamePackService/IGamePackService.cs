@@ -18,7 +18,7 @@ namespace BoardGameShopAPI.Services.GamePackService
 
         Task<string> UpdateGamePack(GamePack gamePack);
 
-        Task<GamePack> GetGamePack(string gamePackId);
+        string GetGamePack(string gamePackId);
 
         Task<string> DecreaseGamePackAmount(string  gamePackId, int? amount);
 
