@@ -8,6 +8,7 @@ import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { useEffect } from "react";
 
+
 const StepOneForm = (props) => {
   const { getPackData, boardGames, gameTags, packData } = props;
 
@@ -414,6 +415,6 @@ const AddPage = () => {
       </div>
     </div>
   );
-};
+};   
 
 export default AddPage;

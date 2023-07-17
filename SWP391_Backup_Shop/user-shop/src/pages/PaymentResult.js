@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { getMoMoResult, getOrderDetailByOrderId } from "../api/orderAPI";
+import { getMoMoResult, deleteOrderAPI } from "../api/orderAPI";
 import { Link, useSearchParams } from "react-router-dom";
 import Header from "../components/Header";
 
 function PaymentResult() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [result, setResult] = useState(null);
-  const [orderDetail, setOrderDetail] = useState(null);
 
   const orderId = searchParams.get("orderId");
   const orderInfo = searchParams.get("orderInfo");
@@ -14,24 +12,26 @@ function PaymentResult() {
   const extraData = searchParams.get("extraData");
   const message = searchParams.get("message");
 
-  const displayResult = () => {
+  function PaymentRequest() {
     if (message === "Success") {
-      getMoMoResult(extraData, orderId, orderInfo, amount)
-        .then((res) => setResult(res))
-        .catch((err) => window.alert(err.response.data));
+      getMoMoResult(extraData, orderId, orderInfo, amount).catch((err) =>
+        window.alert(err.response.data)
+      );
+    } else {
+      deleteOrderAPI(orderId)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err.data.response));
     }
   }
-
-  displayResult()
 
   return (
     <div>
       <Header />
-      <div className="bg-gray-100 h-screen flex justify-center items-center">
-        <section className="bg-white rounded-lg shadow-md p-8 flex flex-col items-center gap-y-5">
-          <div className="text-xl">{message}</div>
-          <div className="w-full flex justify-between gap-x-12">
-            <p className="font-semibold">Order ID:</p>
+      <div className="w-full h-screen flex justify-center items-center">
+        <sesion className="flex flex-col items-center gap-y-5  ">
+          <div>{message}</div>
+          <div className="flex items-center justify-between gap-x-[156px]">
+            <p>OrderID:</p>
             <p>{orderId}</p>
           </div>
           <div className="text-lg">{orderInfo}</div>
@@ -42,10 +42,11 @@ function PaymentResult() {
           <Link
             to="/shop"
             className="bg-gray-700 flex p-4 justify-center items-center text-white w-[300px] font-medium"
+            onClick={PaymentRequest}
           >
             Go Back To Shop Page
           </Link>
-        </section>
+        </sesion>
       </div>
     </div>
   );

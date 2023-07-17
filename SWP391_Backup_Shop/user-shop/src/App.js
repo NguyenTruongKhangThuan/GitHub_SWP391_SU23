@@ -7,6 +7,7 @@ import CategoryShop from "./pages/CategoryShops";
 import SpecialShop from "./pages/SpecialShop";
 import ViewCart from "./pages/ViewCart";
 import Checkout from "./pages/Checkout";
+
 import Admin from "./admin/Admin";
 
 import LandingPage from "./landing-page/LandingPage";

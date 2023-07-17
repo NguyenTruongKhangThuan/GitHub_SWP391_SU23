@@ -43,7 +43,6 @@ const CategoryShops = () => {
                   return <Product product={product} key={product.gamePackId} />;
                 })
               : searchedProduct.map((product) => {
-                  console.log("alo");
                   return <Product product={product} key={product.gamePackId} />;
                 })}
           </div>

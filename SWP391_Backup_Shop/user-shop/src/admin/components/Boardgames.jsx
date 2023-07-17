@@ -6,7 +6,6 @@ const BoardgameInformation = () => {
   const [openDetailsForm, setOpenDetailsForm] = useState(false);
   const [deleteItem, setDeleteItem] = useState(0); //delete according to the index
 
-  const [boardgames,setBoardgames] = useState([]);
 
   const [imageSrc, setImageSrc] = useState('');
 
@@ -68,6 +67,9 @@ const BoardgameInformation = () => {
     })
 
   }
+
+  
+
 
   return (
     <div className='mt-[20px]'>

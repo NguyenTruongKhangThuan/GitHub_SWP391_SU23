@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import Header from "../components/Header";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ProductContext } from "../../contexts/ProductContext";
 
 import { getBoardGameAPI, getGameTagsAPI } from "../../api/productAPI";
 import { createGamePackAPI } from "../../api/publisherAPI";
@@ -52,10 +53,6 @@ const StepOneForm = (props) => {
         </div>
         <div
           className="flex flex-col gap-y-3"
-          onLoad={
-            (document.getElementById("boardGameId").value =
-              document.getElementById(packData.boardGameId))
-          }
         >
           <label className="font-bold mb-1">
             Game Package Based Boardgame Tag
