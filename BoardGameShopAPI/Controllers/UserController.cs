@@ -124,7 +124,7 @@ namespace BoardGameShopAPI.Controllers
             }
         }
 
-        [HttpGet("{token}")]
+        [HttpGet("info")]
         public IActionResult GetUserData(string token)
         {
             return Ok(_userService.ReadAuthToken(token));
