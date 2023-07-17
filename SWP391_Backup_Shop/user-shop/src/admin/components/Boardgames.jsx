@@ -5,7 +5,8 @@ const BoardgameInformation = () => {
   const [openAddForm, setOpenAddForm] = useState(false);
   const [openDetailsForm, setOpenDetailsForm] = useState(false);
   const [deleteItem, setDeleteItem] = useState(0); //delete according to the index
-
+  const [openUpdateForm, setOpenUpdateForm] = useState(false)
+  const [boardgames, setBoardgames] = useState([])
 
   const [imageSrc, setImageSrc] = useState('');
 
@@ -68,7 +69,20 @@ const BoardgameInformation = () => {
 
   }
 
-  
+  const toggleViewDetails = () => {
+    setOpenDetailsForm(!openDetailsForm)
+  }
+
+  const toggleUpdate = () => {
+    setOpenUpdateForm(!openUpdateForm)
+  }
+
+  const toggleViewOrUpdate = () => {
+    //rotate between view details and update
+    if(openDetailsForm) setOpenUpdateForm(false);
+    else setOpenUpdateForm(true);
+    
+  }
 
 
   return (
@@ -105,7 +119,7 @@ const BoardgameInformation = () => {
                 <td className='border-l-[2px] border-b-[2px] border-r-none border-gray-500 pr-5 pl-2'>
                   <button 
                       className='bg-green-400 hover:bg-green-600 w-[160px] p-4 text-[18px] font-bold rounded-md'
-                      
+                      onClick={toggleViewDetails}
                   >
                     View Details
                   </button>
@@ -113,7 +127,7 @@ const BoardgameInformation = () => {
                 <td className='border-b-[2px] border-gray-500 pr-5 pl-2'>
                   <button 
                       className='bg-yellow-400 hover:bg-yellow-500 w-[160px] p-4 text-[18px] font-bold rounded-md'
-                      
+                      onClick={toggleUpdate}
                   >
                         Update
                   </button>
@@ -183,6 +197,115 @@ const BoardgameInformation = () => {
                     </form>
                 </div>
             )}
+          {openDetailsForm && (
+            <div className='flex justify-center'>
+            <form className='w-[840px]'>
+                <div className='grid grid-cols-2 mt-4'>
+                    <div className='flex flex-col w-[400px]'>
+                        <div className='flex flex-col mt-4'>
+                            <label className='mb-3'>Boardgame Name</label>
+                            <input 
+                                type='text' 
+                                id='boardgameName' 
+                                placeholder='Enter Boardgame Name'
+                                className='p-2 rounded-md'
+                            />
+                        </div>
+                        <div className='flex flex-col mt-4'>
+                            <label className='mb-3'>Boardgame Image</label>
+                            <input 
+                                type='file'
+                                accept={'.png' || '.jpg' || '.webp'}
+                                id='boardgameImageSrc'
+                                placeholder='Import Boardgame Image' 
+                                className='p-2 rounded-md'/>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div className='flex flex-col w-[400px]'>
+                        <div className='flex flex-col mt-4'>
+                            <label className='mb-3'>Boardgame Description</label>
+                            <input 
+                                type='text' 
+                                id='boardgameDescription' 
+                                placeholder='Enter Boardgame Description'
+                                className='p-2 rounded-md'/>
+                        </div>
+                        <div className=' flex justify-end items-center gap-x-6'>
+                            <button 
+                                onClick={toggleViewOrUpdate}
+                                className='bg-yellow-300 hover:bg-yellow-600 items-center mt-4 p-4 w-[240px] text-[16px] rounded-md'>
+                                Update Boardgames
+                            </button>
+                            <button 
+                                className='bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] text-[16px] rounded-md'
+                                onClick={toggleViewDetails}
+                                >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+          )}
+          {openUpdateForm && (
+             <div className='flex justify-center'>
+             <form className='w-[840px]'>
+                 <div className='grid grid-cols-2 mt-4'>
+                     <div className='flex flex-col w-[400px]'>
+                         <div className='flex flex-col mt-4'>
+                             <label className='mb-3'>Boardgame Name</label>
+                             <input 
+                                 type='text' 
+                                 id='boardgameName' 
+                                 placeholder='Enter Boardgame Name'
+                                 className='p-2 rounded-md'
+                             />
+                         </div>
+                         <div className='flex flex-col mt-4'>
+                             <label className='mb-3'>Boardgame Image</label>
+                             <input 
+                                 type='file'
+                                 accept={'.png' || '.jpg' || '.webp'}
+                                 id='boardgameImageSrc'
+                                 placeholder='Import Boardgame Image' 
+                                 className='p-2 rounded-md'/>
+                         </div>
+                         <div></div>
+                     </div>
+                     <div className='flex flex-col w-[400px]'>
+                         <div className='flex flex-col mt-4'>
+                             <label className='mb-3'>Boardgame Description</label>
+                             <input 
+                                 type='text' 
+                                 id='boardgameDescription' 
+                                 placeholder='Enter Boardgame Description'
+                                 className='p-2 rounded-md'/>
+                         </div>
+                         <div className=' flex justify-end items-center gap-x-6'>
+                             <button 
+                                 onClick={() => {
+                                    toggleUpdate();
+                                    //Add a
+                                 }}
+                                 className='bg-blue-300 hover:bg-blue-600 items-center mt-4 p-4 w-[120px] rounded-md'>
+                                 Add
+                             </button>
+                             <button 
+                                 className='bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] rounded-md'
+                                 onClick={toggleAddForm}
+                                 >
+                                 Cancel
+                             </button>
+                         </div>
+                     </div>
+                     
+                 </div>
+             </form>
+         </div>
+          )}
     </div>
   )
 }

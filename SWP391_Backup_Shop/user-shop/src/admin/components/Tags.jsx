@@ -4,6 +4,27 @@ import { getGameTagsAPI } from '../../api/adminAPI'
 const Tags = () => {
     const [gameTags, setGameTags] = useState([])
 
+    const [openAddForm, setOpenAddForm] = useState(false)
+    const [openDetailsForm, setOpenDetailsForm] = useState(false)
+    const [openUpdateForm, setOpenUpdateForm] = useState(false)
+
+    const toggleAddForm = () => {
+        setOpenAddForm(!openAddForm)
+    }
+
+    const toggleViewDetailsForm = () => {
+        setOpenDetailsForm(!openDetailsForm)
+    }
+
+    const toggleUpdateForm = () => {
+        setOpenUpdateForm(!openUpdateForm)
+    }
+
+    const toggleViewDetailsOrUpdate = () => {
+        if (openDetailsForm) setOpenUpdateForm(false)
+        else setOpenUpdateForm(true)
+    }
+
     useEffect(() => {
         refreshGameTagsList();
     }, [])
@@ -20,7 +41,7 @@ const Tags = () => {
                 <h2>Tags Management</h2>
                 <button
                     className='bg-blue-500 flex justify-center w-[120px] p-2 rounded-md'
-
+                    onClick={toggleAddForm}
                 >
                     Add
                 </button>
@@ -41,7 +62,7 @@ const Tags = () => {
                             <td className='border-l-[2px] border-b-[2px] border-r-none border-gray-500 pr-5 pl-2'>
                                 <button
                                     className='bg-green-400 hover:bg-green-600 w-[160px] p-4 text-[18px] font-bold rounded-md'
-
+                                    onClick={toggleViewDetailsForm}
                                 >
                                     View Details
                                 </button>
@@ -66,6 +87,90 @@ const Tags = () => {
                     ))}
                 </tbody>
             </table>
+            {
+                openAddForm && (
+                    <div className='flex justify-center'>
+                    <form className='w-[840px]'>
+                        <div className='flex flex-col w-[400px]'>
+                          <div className='flex flex-col mt-4'>
+                            <label className='mb-3'>Tag Name</label>
+                            <input
+                              type='text'
+                              id=''
+                              placeholder=''
+                              className='p-2 rounded-md'
+                            />
+                          </div>
+                        </div>
+                        <button className='bg-green-500 px-4 py-2 rounded-md w-[120px] text-[16px]'>Add</button>
+                        <button className='bg-red-500 px-4 py-2 rounded-md w-[120px] text-[16px]'
+                                onClick={toggleAddForm}
+                        >
+                            Cancel
+                        </button>
+                    </form>
+                  </div>
+                )
+            }
+            {
+                openDetailsForm && (
+                    <div className='flex justify-center'>
+                    <form className='w-[840px]'>
+                        <div className='flex flex-col w-[400px]'>
+                          <div className='flex flex-col mt-4'>
+                            <label className='mb-3'>Tag Name</label>
+                            <input
+                              type='text'
+                              id=''
+                              placeholder=''
+                              className='p-2 rounded-md'
+                            />
+                          </div>
+                        </div>
+                    </form>
+                    <button 
+                        className='bg-yellow-500 px-4 py-2 rounded-md w-[140px] text-[16px]'
+                        onClick={toggleViewDetailsOrUpdate}
+                        >
+                            Update Tag
+                    </button>
+                    <button className='bg-red-500 px-4 py-2 rounded-md w-[120px] text-[16px]'
+                            onClick={toggleViewDetailsForm}
+                    >
+                        Cancel
+                    </button>
+                  </div>
+                )
+            }
+            {
+                openUpdateForm && (
+                    <div className='flex justify-center'>
+                    <form className='w-[840px]'>
+                        <div className='flex flex-col w-[400px]'>
+                          <div className='flex flex-col mt-4'>
+                            <label className='mb-3'>Tag Name</label>
+                            <input
+                              type='text'
+                              id=''
+                              placeholder=''
+                              className='p-2 rounded-md'
+                            />
+                          </div>
+                        </div>
+                        <button 
+                            className='bg-yellow-500 px-4 py-2 rounded-md w-[140px] text-[16px]'
+                            >
+                                Update Tag
+                        </button>
+                        <button className='bg-red-500 px-4 py-2 rounded-md w-[120px] text-[16px]'
+                                onClick={toggleViewDetailsForm}
+                        >
+                            Cancel
+                        </button>
+                    </form>
+                  </div>
+                )
+            }
         </div>
     )
 }
