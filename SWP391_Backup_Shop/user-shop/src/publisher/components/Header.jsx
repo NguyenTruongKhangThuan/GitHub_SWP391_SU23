@@ -32,6 +32,9 @@ const Header = () => {
               <Link to={'/shop/publisher'} >Home</Link>
             </div>
             <div className='rounded-full w-[120px] px-3 py-2 text-center hover:underline'>
+              <Link to={'/shop/publisher/viewsales'}>Sales</Link>
+            </div>
+            <div className='rounded-full w-[120px] px-3 py-2 text-center hover:underline'>
               <Link to={'/shop/publisher/product/add'}>Add Items</Link>
             </div>
             <div className='hover:underline'>Hello {sessionStorage.getItem("account")}</div>

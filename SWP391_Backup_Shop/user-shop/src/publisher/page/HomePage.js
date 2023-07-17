@@ -12,6 +12,7 @@ import {
 import useSessionStorageState from "use-session-storage-state";
 import { useState } from "react";
 import { useEffect } from "react";
+import Footer from "../../components/Footer";
 
 const HomePage = () => {
   const [publisherId, setPublisherId] = useSessionStorageState("publisherId");
@@ -59,6 +60,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

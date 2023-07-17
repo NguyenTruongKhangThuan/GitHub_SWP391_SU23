@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { BsBag } from "react-icons/bs";
 import { CartContext } from "../contexts/CartContext";
@@ -17,6 +17,13 @@ const Header = (props) => {
 
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("");
+
+  //Account State
+  const [dropdown, setDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdown(!dropdown);
+  };
 
   //Event Listener
   useEffect(() => {
@@ -94,12 +101,35 @@ const Header = (props) => {
           <div className="rounded-full w-[100px] px-3 py-2 text-center hover:underline">
             <Link to={"/shop/special"}>Special</Link>
           </div>
-          <Link to="">
-            <div className="hover:underline">
-              Hello {sessionStorage.getItem("account")}
+          <div
+            className="hover:underline cursor-pointer"
+            onClick={toggleDropdown}
+          >
+            Hello {sessionStorage.getItem("account")}
+          </div>
+          {dropdown && (
+            <div className="dropdown absolute right-[230px] top-[56px] mt-2 h-full bg-white rounded-lg shadow-lg">
+              <div className="flex flex-col justify-center items-center gap-y-4">
+                <Link to={"/shop/user/profile"}>
+                  <button className="mt-1 px-4 py-2 text-sm text-center flex justify-center items-center text-gray-800 hover:bg-gray-100 hover:rounded-md">
+                    My Profile
+                  </button>
+                </Link>
+                <Link to={"/shop/user/paymentdetails"}>
+                  <button className="px-4 py-2 text-sm text-center flex justify-center items-center text-gray-800 hover:bg-gray-100 hover:rounded-md">
+                    My Order
+                  </button>
+                </Link>
+              </div>
             </div>
-          </Link>
-          <Link to={"/auth"} className="hover:underline">
+          )}
+          <Link
+            to={"/auth"}
+            className="hover:underline"
+            onClick={() => {
+              sessionStorage.removeItem("account");
+            }}
+          >
             <p>Logout</p>
           </Link>
           {/* Cart Quantity */}

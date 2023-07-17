@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { getBoardGameAPI, getGameTagsAPI } from "../../api/productAPI";
 import { createGamePackAPI } from "../../api/publisherAPI";
@@ -50,13 +50,7 @@ const StepOneForm = (props) => {
             onChange={(e) => getPackData(e.currentTarget.id, e.target.value)}
           />
         </div>
-        <div
-          className="flex flex-col gap-y-3"
-          // onLoad={
-          //   (document.getElementById("boardGameId").value =
-          //     document.getElementById(packData.boardGameId))
-          // }
-        >
+        <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">
             Game Package Based Boardgame Tag
           </label>
@@ -69,7 +63,7 @@ const StepOneForm = (props) => {
               getPackData(e.currentTarget.id, option);
             }}
           >
-            {/* <option>{"(None)"}</option>  */}
+            <option>{"(None)"}</option>
             {boardGames.map((item) => (
               <option id={item.boardGameId}>{item.name}</option>
             ))}

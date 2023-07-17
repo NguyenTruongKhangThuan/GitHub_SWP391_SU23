@@ -99,25 +99,25 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
     getStatisticUserAPI(sessionStorage.getItem("accountToken"))
       .then((data) => setNumUsers(data))
       .catch((error) => console.log(error));
+
+    return numUsers;
   };
 
   const valueNumProducts = () => {
     getStatisticGamepacksAPI(sessionStorage.getItem("accountToken"))
       .then((data) => setNumProducts(data))
       .catch((error) => console.log(error));
+
+    return numProducts;
   };
 
   const valueNumIncome = () => {
     getStatisticIncomeAPI(sessionStorage.getItem("accountToken"))
       .then((data) => setNumIncome(data))
       .catch((error) => console.log(error));
-  };
 
-  useEffect(() => {
-    valueNumIncome();
-    valueNumProducts();
-    valueNumUsers();
-  }, []);
+    return numIncome;
+  };
 
   return (
     <div>
@@ -141,7 +141,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
             >
               <FaInbox className="text-[60px]" />
               <h2 className="text-[16px]">
-                There are {numProducts} products available
+                There are {valueNumProducts()} products available
               </h2>
             </div>
             <div
@@ -154,7 +154,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
             >
               <BsCartCheckFill className="text-[80px]" />
               <h2 className="text-[16px]">
-                {numUsers} users have visited the shop
+                {valueNumUsers()} users have visited the shop
               </h2>
             </div>
             <div
@@ -168,7 +168,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
               <GrMoney className="text-[50px]" />
               <div className="flex flex-col">
                 <h2 className="text-[16px]">Total revenue is:</h2>
-                <h1 className="text-[24px]">{numIncome} VND</h1>
+                <h1 className="text-[24px]">{valueNumIncome()} VND</h1>
               </div>
             </div>
           </div>
