@@ -35,9 +35,7 @@ function Authentication() {
           setUsernameSession(username);
         })
         .catch((error) => {
-          if (error.response.status === 400) {
             window.alert(error.response.data);
-          }
         });
     };
     if (token !== null) {

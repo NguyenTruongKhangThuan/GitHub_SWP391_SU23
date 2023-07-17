@@ -7,7 +7,7 @@ const Owner = () => {
 
   useEffect(() => {
     refreshPublishersList();
-  }, []);
+  });
 
   const refreshPublishersList = async () => {
     await getOwnerAPI(sessionStorage.getItem("accountToken"))

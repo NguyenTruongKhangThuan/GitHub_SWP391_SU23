@@ -34,10 +34,10 @@ function PaymentResult() {
             <p>OrderID:</p>
             <p>{orderId}</p>
           </div>
-          <div>{orderInfo}</div>
-          <div className="flex items-center justify-between gap-x-[180px]">
-            <p>Total Pay:</p>
-            <p>{amount}</p>
+          <div className="text-lg">{orderInfo}</div>
+          <div className="w-full flex justify-between gap-x-20">
+            <p className="font-semibold">Total Pay:</p>
+            <p>{amount} VND</p>
           </div>
           <Link
             to="/shop"

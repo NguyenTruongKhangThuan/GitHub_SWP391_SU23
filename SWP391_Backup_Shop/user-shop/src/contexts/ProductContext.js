@@ -5,8 +5,6 @@ export const ProductContext = createContext();
 
 const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
-  //This is FAKE API
-  //Replace this with the real API
   useEffect(() => {
     const fetchProducts = async () => {
       const res = await getAvailableGamePackAPI();

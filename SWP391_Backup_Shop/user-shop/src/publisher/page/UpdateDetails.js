@@ -29,9 +29,7 @@ const UpdateDetails = () => {
             />
           </div>
           <div className="flex flex-col gap-y-3">
-            <label className="font-bold mb-1">
-              Game Package Description
-            </label>
+            <label className="font-bold mb-1">Game Package Description</label>
             <input
               type="text"
               id="update-gpdescription"
@@ -59,9 +57,7 @@ const UpdateDetails = () => {
             </select>
           </div>
           <div className="flex flex-col gap-y-3">
-            <label className="font-bold mb-1">
-              Game Package Other Tags
-            </label>
+            <label className="font-bold mb-1">Game Package Other Tags</label>
             <select>
               <option>Family</option>
               <option>Party</option>
@@ -79,8 +75,8 @@ const UpdateDetails = () => {
           </div>
         </form>
       </div>
-    )
-  }
+    );
+  };
 
   const stepTwoForm = () => {
     return (
@@ -144,8 +140,8 @@ const UpdateDetails = () => {
           </div>
         </form>
       </div>
-    )
-  }
+    );
+  };
 
   const finalStepForm = () => {
     return (
@@ -182,9 +178,7 @@ const UpdateDetails = () => {
             />
           </div>
           <div className="flex flex-col gap-y-3">
-            <label className="font-bold mb-1">
-              Game Package Components
-            </label>
+            <label className="font-bold mb-1">Game Package Components</label>
             <input
               type="file"
               accept={".xlsx" || ".xls"}
@@ -195,8 +189,8 @@ const UpdateDetails = () => {
           </div>
         </form>
       </div>
-    )
-  }
+    );
+  };
 
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -211,7 +205,7 @@ const UpdateDetails = () => {
   const handleFormSubmit = () => {
     // Perform form validation and submission logic
     console.log("Updated!");
-    navigate('/shop/publisher')
+    navigate("/shop/publisher");
   };
   return (
     <div>
@@ -219,15 +213,9 @@ const UpdateDetails = () => {
       <div className="w-full h-screen flex justify-center items-center">
         <div className="w-full p-8 h-fit rounded-lg">
           <form className="h-fit px-[20px] gap-[10px]">
-            {currentStep === 1 && (
-              <stepOneForm />
-            )}
-            {currentStep === 2 && (
-              <stepTwoForm />
-            )}
-            {currentStep === 3 && (
-              <finalStepForm />
-            )}
+            {currentStep === 1 && <stepOneForm />}
+            {currentStep === 2 && <stepTwoForm />}
+            {currentStep === 3 && <finalStepForm />}
             <div className="flex justify-center items-center">
               {currentStep > 1 && (
                 <button
