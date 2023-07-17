@@ -30,6 +30,12 @@ namespace BoardGameShopAPI.Controllers
             return Ok(gamePacks);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetGamePackById(string id)
+        {
+            return Ok(await _gamePackService.GetGamePack(id));
+        }
+
         [HttpGet("searchmethods")]
         public async Task<IActionResult> SearchGamePackByName(string? searchValue, string? boardGameName)
         {
