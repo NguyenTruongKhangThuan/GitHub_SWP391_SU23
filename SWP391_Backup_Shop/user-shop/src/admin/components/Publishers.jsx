@@ -3,11 +3,21 @@ import { getOwnerAPI, postOwnersAPI, putOwnersAPI } from "../../api/adminAPI";
 import AdminAccount from "./AdminAccount";
 
 const Owner = () => {
+  const [publishers, setPublishers] = useState([]);
+
+  useEffect(() => {
+    refreshPublishersList();
+  }, []);
+
+  const refreshPublishersList = async () => {
+    await getOwnerAPI(sessionStorage.getItem("accountToken"))
+      .then((data) => setPublishers(data))
+      .catch((error) => console.log(error));
+  };
   const [openAddForm, setOpenAddForm] = useState(false);
   const [openDetailsForm, setOpenDetailsForm] = useState(false);
   const [deleteItem, setDeleteItem] = useState(0); //delete according to the index
 
-  const [publishers, setPublishers] = useState([]);
   const Dropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -60,12 +70,6 @@ const Owner = () => {
   useEffect(() => {
     refreshPublishersList();
   }, []);
-
-  const refreshPublishersList = async () => {
-    await getOwnerAPI(sessionStorage.getItem("accountToken"))
-      .then((data) => setPublishers(data))
-      .catch((error) => console.log(error));
-  };
 
   const toggleAddForm = () => {
     setOpenAddForm(!openAddForm);

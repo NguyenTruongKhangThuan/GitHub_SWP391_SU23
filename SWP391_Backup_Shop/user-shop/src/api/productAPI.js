@@ -24,6 +24,10 @@ export const searchGamePackAPI = (searchValue, boardGameName) => {
   );
 };
 
+export const getGamePackBasedOnIDAPI = (gamePackId) => {
+  return axiosClient.get(`${END_POINT.GAMEPACK}/${gamePackId}`);
+};
+
 //Components in relative Game Pack
 export const getRelativeComponentsAPI = (gamePackId) => {
   return axiosClient.get(`${END_POINT.COMPONENTS}?gamePackId=${gamePackId}`);

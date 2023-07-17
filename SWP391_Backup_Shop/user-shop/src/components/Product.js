@@ -54,7 +54,7 @@ const Product = ({ product }) => {
           </Link>
         </div>
       </div>
-      <ToastContainer className={'mt-14'}/>
+      <ToastContainer className={"mt-14"} />
       <div>
         <div className="text-sm capitalize text-gray-500">{gameTags}</div>
         <Link to={`/shop/product/${gamePackId}`}>
