@@ -2,8 +2,14 @@ import React, {useEffect, useState} from 'react'
 import { getBoardgamesAPI, postBoardgamesAPI, putBoardgameAPI, deleteBoardgameAPI } from '../../api/adminAPI';
 
 const BoardgameInformation = () => {
+  const [openAddForm, setOpenAddForm] = useState(false);
+  const [openDetailsForm, setOpenDetailsForm] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(0); //delete according to the index
 
   const [boardgames,setBoardgames] = useState([]);
+
+  const [imageSrc, setImageSrc] = useState('');
+
 
   useEffect(() => {
     refreshBoardgamesList();
@@ -15,7 +21,53 @@ const BoardgameInformation = () => {
           .catch((error) => console.log(error))
   }
 
+  const toggleAddForm = () => {
+      setOpenAddForm(!openAddForm)
+      if(openAddForm === true) {
+          console.log("Form opened!");
+      }
+      else {
+          console.log("Form closed!");
+      }
+  }
 
+  const addFormSubmission = (e) => {
+    e.preventDefault();
+
+    let boardgameName = document.getElementById("boardgameName").value
+    let boardgameDescription = document.getElementById("boardgameDescription").value
+    let boardgameImageInput = document.getElementById("boardgameImageSrc");
+    let boardgameImageName = boardgameImageInput.files[0].name;
+
+    if (boardgameImageInput.files && boardgameImageInput.files[0]) {
+      let reader = new FileReader();
+
+      reader.onload = function (event) {
+        setImageSrc(event.target.result)
+      };
+
+      reader.readAsDataURL(boardgameImageInput.files[0]);
+    }
+
+    
+    var formData = new FormData();
+    formData.append("boardGameId", "empty");
+    formData.append('name', boardgameName);
+    formData.append('description', boardgameDescription);
+    formData.append('imageSrc', imageSrc);
+    formData.append('image', boardgameImageName.split('.')[0]);
+
+    postBoardgamesAPI(sessionStorage.getItem("accountToken"), formData)
+    .then((res) => {
+      window.alert(res);
+      refreshBoardgamesList();
+    })
+    .catch((error) => {
+      console.log(error)
+      window.alert("Cannot add boardgame")
+    })
+
+  }
 
   return (
     <div className='mt-[20px]'>
@@ -23,7 +75,7 @@ const BoardgameInformation = () => {
         <h2>Boardgames Management</h2>
         <button 
             className='bg-blue-500 flex justify-center w-[120px] p-2 rounded-md'
-            
+            onClick={toggleAddForm}
         >
           Add
         </button>
@@ -76,6 +128,59 @@ const BoardgameInformation = () => {
             ))}
           </tbody>
       </table>
+      {openAddForm && (
+                <div className='flex justify-center'>
+                    <form className='w-[840px]'>
+                        <div className='grid grid-cols-2 mt-4'>
+                            <div className='flex flex-col w-[400px]'>
+                                <div className='flex flex-col mt-4'>
+                                    <label className='mb-3'>Boardgame Name</label>
+                                    <input 
+                                        type='text' 
+                                        id='boardgameName' 
+                                        placeholder='Enter Boardgame Name'
+                                        className='p-2 rounded-md'
+                                    />
+                                </div>
+                                <div className='flex flex-col mt-4'>
+                                    <label className='mb-3'>Boardgame Image</label>
+                                    <input 
+                                        type='file'
+                                        accept={'.png' || '.jpg' || '.webp'}
+                                        id='boardgameImageSrc'
+                                        placeholder='Import Boardgame Image' 
+                                        className='p-2 rounded-md'/>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div className='flex flex-col w-[400px]'>
+                                <div className='flex flex-col mt-4'>
+                                    <label className='mb-3'>Boardgame Description</label>
+                                    <input 
+                                        type='text' 
+                                        id='boardgameDescription' 
+                                        placeholder='Enter Boardgame Description'
+                                        className='p-2 rounded-md'/>
+                                </div>
+                                <div className=' flex justify-end items-center gap-x-6'>
+                                    <button 
+                                        onClick={addFormSubmission}
+                                        className='bg-blue-300 hover:bg-blue-600 items-center mt-4 p-4 w-[120px] rounded-md'>
+                                        Add
+                                    </button>
+                                    <button 
+                                        className='bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] rounded-md'
+                                        onClick={toggleAddForm}
+                                        >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+            )}
     </div>
   )
 }

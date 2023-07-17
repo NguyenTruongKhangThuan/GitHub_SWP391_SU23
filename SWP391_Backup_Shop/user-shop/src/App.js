@@ -20,6 +20,10 @@ import HomePage from "./publisher/page/HomePage";
 import UpdateDetails from "./publisher/page/UpdateDetails";
 
 import PaymentResult from "./pages/PaymentResult";
+import UserProfile from "./pages/UserProfile";
+import UserPaymentDetails from "./pages/UserPaymentDetails";
+import UserOrderDetails from "./pages/UserOrderDetails";
+import Sales from "./publisher/page/Sales";
 
 const App = () => {
   return (
@@ -41,6 +45,11 @@ const App = () => {
           <Route path="/shop/checkout" element={<Checkout />} />
           <Route path="/shop/paymentresult" element={<PaymentResult />} />
 
+          {/* User - Information */}
+          <Route path="/shop/user/profile" element={<UserProfile/>}/>
+          <Route path="/shop/user/paymentdetails" element={<UserPaymentDetails/>}/>
+          <Route path="/shop/user/orderdetails" element={<UserOrderDetails/>}/>
+
           {/* Shop - Publisher */}
           <Route path="/shop/publisher" element={<HomePage />} />
           <Route path="/shop/publisher/product/:id" element={<ViewDetails />} />
@@ -49,6 +58,7 @@ const App = () => {
             element={<UpdateDetails />}
           />
           <Route path="/shop/publisher/product/add" element={<AddPage />} />
+          <Route path="/shop/publisher/viewsales" element={<Sales/>}/>
         </Routes>
         <SideBar />
       </Router>

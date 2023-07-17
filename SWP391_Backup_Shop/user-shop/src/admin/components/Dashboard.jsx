@@ -96,18 +96,24 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
     getStatisticUserAPI(sessionStorage.getItem("accountToken"))
         .then((data) => setNumUsers(data))
         .catch((error) => console.log(error))
+
+    return numUsers;
   }
 
   const valueNumProducts = () => {
     getStatisticGamepacksAPI(sessionStorage.getItem("accountToken"))
         .then((data) => setNumProducts(data))
         .catch((error) => console.log(error))
+
+        return numProducts
   }
 
   const valueNumIncome = () => {
     getStatisticIncomeAPI(sessionStorage.getItem("accountToken"))
         .then((data) => setNumIncome(data))
         .catch((error) => console.log(error))
+
+        return numIncome
   }
 
   return (
@@ -123,7 +129,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
               boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'
             }}>
               <FaInbox className='text-[60px]'/>
-              <h2 className='text-[16px]'>There are {numProducts} products available</h2>
+              <h2 className='text-[16px]'>There are {valueNumProducts()} products available</h2>
             </div>
             <div className='bg-white bg-opacity-10 w-[300px] h-[200px] p-10 rounded-md flex justify-center items-center gap-x-[15px] mb-10 hover:scale-105 duration-300' 
             style={{
@@ -132,7 +138,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
               boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'
             }}>
               <BsCartCheckFill className='text-[80px]'/>
-              <h2 className='text-[16px]'>{numUsers} users have visited the shop</h2>
+              <h2 className='text-[16px]'>{valueNumUsers()} users have visited the shop</h2>
             </div>
             <div className='bg-white bg-opacity-10 w-[300px] h-[200px] p-10 rounded-md flex justify-center items-center gap-x-[15px] mb-10 hover:scale-105 duration-300' 
             style={{
@@ -143,7 +149,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
               <GrMoney className='text-[50px]'/>
               <div className='flex flex-col'>
                 <h2 className='text-[16px]'>Total revenue is:</h2>
-                <h1 className='text-[24px]'>{numIncome} VND</h1>
+                <h1 className='text-[24px]'>{valueNumIncome()} VND</h1>
               </div>
            </div>
           </div>
