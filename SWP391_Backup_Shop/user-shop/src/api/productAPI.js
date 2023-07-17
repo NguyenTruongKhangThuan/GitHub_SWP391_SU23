@@ -5,6 +5,7 @@ const END_POINT = {
   BOARDGAME: "api/boardgames",
   SEARCH: "api/gamepacks/searchmethods",
   COMPONENTS: "api/components",
+  GAMETAG: "api/gametags",
 };
 
 //BoardGame API
@@ -26,4 +27,9 @@ export const searchGamePackAPI = (searchValue, boardGameName) => {
 //Components in relative Game Pack
 export const getRelativeComponentsAPI = (gamePackId) => {
   return axiosClient.get(`${END_POINT.COMPONENTS}?gamePackId=${gamePackId}`);
+};
+
+//Game Tags API
+export const getGameTagsAPI = () => {
+  return axiosClient.get(`${END_POINT.GAMETAG}`);
 };

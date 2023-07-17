@@ -32,10 +32,15 @@ function Checkout() {
       "orderDate",
       moment(new Date()).format("Y-MM-DD HH:mm:ss.SSS")
     );
-    await createOrderAPI(formData).then((result) => {
-      setOrderId(result);
-      createOrderDetail(result);
-    });
+    await createOrderAPI(formData)
+      .then((result) => {
+        setOrderId(result);
+        createOrderDetail(result);
+      })
+      .catch((err) => {
+        window.alert(err.response.data);
+        setIsOrderMade(false);
+      });
   };
 
   const createOrderDetail = (orderId) => {
@@ -63,7 +68,7 @@ function Checkout() {
     var userName = sessionStorage.getItem("account");
     var orderInfo = {
       fullName: `${userName}`,
-      orderId: orderId,
+      orderId: `${orderId}`,
       orderInfo: `Buy ${cart.length} items`,
       amount: total,
     };
@@ -72,7 +77,7 @@ function Checkout() {
       .then((res) => {
         window.location.replace(res);
       })
-      .catch((err) => window.alert(err.response));
+      .catch((err) => window.alert(err.response.data));
   };
 
   return (
@@ -130,7 +135,9 @@ function Checkout() {
                   }}
                 >
                   <img src={Momo} alt="" className="w-[40px] " />
-                  <p className="flex items-center text-center mx-auto">Pay with Momo</p>
+                  <p className="flex items-center text-center mx-auto">
+                    Pay with Momo
+                  </p>
                 </button>
               </Link>
             )}

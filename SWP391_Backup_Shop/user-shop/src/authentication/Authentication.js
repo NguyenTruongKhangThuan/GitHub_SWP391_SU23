@@ -20,8 +20,14 @@ function Authentication() {
   const LoginForm = () => {
     const authenLogin = (e) => {
       e.preventDefault();
-      let username = document.getElementById("lg-username").value;
-      let password = document.getElementById("lg-password").value;
+      let username =
+        document.getElementById("lg-username").value === ""
+          ? "empty"
+          : document.getElementById("lg-username").value;
+      let password =
+        document.getElementById("lg-password").value === ""
+          ? "empty"
+          : document.getElementById("lg-password").value;
 
       loginAPI(username, password)
         .then((res) => {

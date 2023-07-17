@@ -12,6 +12,10 @@ export const createOrderAPI = (data) => {
   return axiosClient.post(`${END_POINT.ORDER}`, data);
 };
 
+export const deleteOrderAPI = (orderId) => {
+  return axiosClient.delete(`${END_POINT.ORDER}?orderId=${orderId}`);
+};
+
 //OrderDetail API
 export const createOrderDetailAPI = async (data) => {
   return axiosClient.post(`${END_POINT.ORDERDETAIL}`, data);

@@ -29,11 +29,15 @@ const Header = (props) => {
     getBoardGameAPI()
       .then((res) => setCategories(res))
       .catch((err) => console.log(err.response));
-  });
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
     searchFunction(searchValue, category);
+  };
+
+  const handleFilter = (value) => {
+    searchFunction(value, "");
   };
 
   return (
@@ -56,8 +60,12 @@ const Header = (props) => {
             <select
               id="categories"
               className="py-2 PX-3 outline-none b border border-gray-400"
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                handleFilter(e.target.value);
+              }}
             >
+              <option>All</option>
               {categories &&
                 categories.map((item) => <option>{item.name}</option>)}
             </select>
@@ -69,7 +77,7 @@ const Header = (props) => {
               onChange={(e) => setSearchValue(e.target.value)}
             ></input>
             <button
-              className="px-3 py-2 w-[100px] border border-gray-400"
+              className="px-3 py-2 w-[100px] border border-gray-400 bg-[#ffffff]"
               onClick={handleSearch}
             >
               Search
@@ -86,9 +94,11 @@ const Header = (props) => {
           <div className="rounded-full w-[100px] px-3 py-2 text-center hover:underline">
             <Link to={"/shop/special"}>Special</Link>
           </div>
-          <div className="hover:underline">
-            Hello {sessionStorage.getItem("account")}
-          </div>
+          <Link to="">
+            <div className="hover:underline">
+              Hello {sessionStorage.getItem("account")}
+            </div>
+          </Link>
           <Link to={"/auth"} className="hover:underline">
             <p>Logout</p>
           </Link>
