@@ -26,6 +26,7 @@ import UserPaymentDetails from "./pages/UserPaymentDetails";
 import UserOrderDetails from "./pages/UserOrderDetails";
 import Sales from "./publisher/page/Sales";
 
+
 const App = () => {
   return (
     <div className="overflow-hidden">

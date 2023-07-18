@@ -9,10 +9,11 @@ const END_POINT = {
   PAYMENTS: "admin/api/payments",
   ORDERS: "admin/api/orders",
   ORDERDETAILS: "admin/api/orderdetails",
-  TAGS:"admin/api/gametags",
+  TAGS: "admin/api/gametags",
   STATISTICUSER: "admin/api/statistics/users",
   STATISTICGAMEPACK: "admin/api/statistics/gamepacks",
   STATISTICINCOME: "admin/api/statistics/income",
+  STATISTICBESTSELLER: "admin/api/statistics/bestseller",
 };
 
 //OwnerAPI
@@ -40,9 +41,24 @@ export const putOwnersAPI = (token) => {
   });
 };
 
+export const banOwnerAPI = (token, ownerId) => {
+  return axiosClient.delete(`${END_POINT.OWNER}?ownerId=${ownerId}`, {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  });
+};
 //UserAPI
 export const getUserAPI = (token) => {
   return axiosClient.get(`${END_POINT.USER}`, {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  });
+};
+
+export const getSingleUserAPI = (token, id) => {
+  return axiosClient.get(`${END_POINT.USER}/${id}`, {
     headers: {
       Authorization: `bearer ${token}`,
     },
@@ -126,33 +142,36 @@ export const deleteBoardgameAPI = (token, id) => {
 
 //GameTagsAPI
 export const getGameTagsAPI = (token) => {
-  return axiosClient.get(`${END_POINT.TAGS}`,
-      {headers: {
-          Authorization:  `bearer ${token}`
-      }}
-  )
-}
+  return axiosClient.get(`${END_POINT.TAGS}`, {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  });
+};
 
 export const postGameTagsAPI = (token, gametag) => {
-  return axiosClient.post(`${END_POINT.TAGS}`,gametag,
-  {headers: {
+  return axiosClient.post(`${END_POINT.TAGS}`, gametag, {
+    headers: {
       Authorization: `bearer ${token}`,
-  }});
-}
+    },
+  });
+};
 
 export const putGameTagsAPI = (token, gametag) => {
-  return axiosClient.post(`${END_POINT.TAGS}`,gametag,
-  {headers: {
+  return axiosClient.put(`${END_POINT.TAGS}`, gametag, {
+    headers: {
       Authorization: `bearer ${token}`,
-  }});
-}
+    },
+  });
+};
 
 export const deleteGameTagsAPI = (token, id) => {
-  return axiosClient.post(`${END_POINT.TAGS}/${id}`,
-  {headers: {
+  return axiosClient.delete(`${END_POINT.TAGS}?id=${id}`, {
+    headers: {
       Authorization: `bearer ${token}`,
-  }});
-}
+    },
+  });
+};
 
 //PaymentsAPI
 export const getPaymentAPI = (token) => {
@@ -202,6 +221,15 @@ export const getStatisticGamepacksAPI = (token) => {
 //StatisticIncome
 export const getStatisticIncomeAPI = (token) => {
   return axiosClient.get(`${END_POINT.STATISTICINCOME}`, {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  });
+};
+
+//BestSeller
+export const getBestSellerAPI = (token) => {
+  return axiosClient.get(`${END_POINT.STATISTICBESTSELLER}`, {
     headers: {
       Authorization: `bearer ${token}`,
     },

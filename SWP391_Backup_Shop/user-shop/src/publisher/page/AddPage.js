@@ -8,6 +8,10 @@ import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { useEffect } from "react";
 
+//import firebase
+import storage from "../../firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 const StepOneForm = (props) => {
   const { getPackData, boardGames, gameTags, packData } = props;
 
@@ -185,17 +189,12 @@ const StepTwoForm = (props) => {
 };
 
 const FinalStepForm = (props) => {
-  const { getPackData, getPackImage } = props;
+  const { getPackData } = props;
 
   const getImageData = (e) => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = (x) => {
-        getPackImage(file.name, x.target.result);
-      };
-      reader.readAsDataURL(file);
+      getPackData("imageFile", file);
     }
   };
 
@@ -237,7 +236,7 @@ const FinalStepForm = (props) => {
           <label className="font-bold mb-1">Game Package Image</label>
           <input
             type="file"
-            accept={".jpg" || ".png" || ".webp"}
+            accept={"image/*"}
             id="image"
             placeholder="Enter Game Package Price"
             className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
@@ -275,10 +274,14 @@ const initalPackData = {
   material: "",
   gameRule: "",
   availableAmount: 0,
-  imageSrc: "",
+  imageFile: null,
 };
 
 const AddPage = () => {
+  const [percent, setPercent] = useState(0);
+
+  const [packData, setPackData] = useState(initalPackData);
+
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
 
@@ -291,14 +294,34 @@ const AddPage = () => {
   };
 
   const handleFormSubmit = (e) => {
-    // Perform form validation and submission logic
     e.preventDefault();
+    const storageRef = ref(storage, `/files/${packData.imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, packData.imageFile);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const percent = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setPercent(percent);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          AddGamePack(url);
+        });
+      }
+    );
+  };
+
+  const AddGamePack = (url) => {
     const formData = new FormData();
     formData.append("gamePackId", packData.gamePackId);
     formData.append("boardGameId", packData.boardGameId);
     formData.append("ownerId", sessionStorage.getItem("publisherId"));
     formData.append("gamePackName", packData.gamePackName);
-    formData.append("image", packData.image);
+    formData.append("image", url);
     formData.append("description", packData.description);
     formData.append("price", packData.price);
     formData.append("age", packData.age);
@@ -310,7 +333,6 @@ const AddPage = () => {
     formData.append("material", packData.material);
     formData.append("gameRule", packData.gameRule);
     formData.append("availableAmount", packData.availableAmount);
-    formData.append("imageSrc", packData.imageSrc);
     formData.append("owner.ownerId", "temp");
     formData.append("boardGame.boardGameId", "temp");
     createGamePackAPI(sessionStorage.getItem("accountToken"), formData)
@@ -320,20 +342,10 @@ const AddPage = () => {
     navigate("/shop/publisher");
   };
 
-  const [packData, setPackData] = useState(initalPackData);
-
   const getPackData = (name, value) => {
     setPackData({
       ...packData,
       [name]: value,
-    });
-  };
-
-  const getPackImage = (name, source) => {
-    setPackData({
-      ...packData,
-      image: name,
-      imageSrc: source,
     });
   };
 
@@ -372,11 +384,7 @@ const AddPage = () => {
               <StepTwoForm getPackData={getPackData} packData={packData} />
             )}
             {currentStep === 3 && (
-              <FinalStepForm
-                getPackData={getPackData}
-                getPackImage={getPackImage}
-                packData={packData}
-              />
+              <FinalStepForm getPackData={getPackData} packData={packData} />
             )}
             <div className="flex justify-center items-center">
               {currentStep > 1 && (

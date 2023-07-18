@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { BsPlus, BsEyeFill } from "react-icons/bs";
 
 const Product = ({ product }) => {
-  const { gamePackId, imageSrc, category, gamePackName, price } = product;
+  const { gamePackId, image, category, gamePackName, price } = product;
 
   return (
     <div>
@@ -13,7 +13,7 @@ const Product = ({ product }) => {
         <div className="w-full h-full flex justify-center items-center">
           <div className="w-[200px] mx-auto flex justify-center items-center">
             <img
-              src={imageSrc}
+              src={image}
               alt=""
               className="max-h-[160px] group-hover:scale-110 transition duration-300"
             ></img>

@@ -13,6 +13,8 @@ import useSessionStorageState from "use-session-storage-state";
 import { useState } from "react";
 import { useEffect } from "react";
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const HomePage = () => {
   const [publisherId, setPublisherId] = useSessionStorageState("publisherId");
   const [products, setProducts] = useState([]);
@@ -25,7 +27,7 @@ const HomePage = () => {
 
   useEffect(() => {
     loadCreatedGamePack();
-  });
+  }, []);
 
   const loadCreatedGamePack = () => {
     getCreatedGamePackAPI(

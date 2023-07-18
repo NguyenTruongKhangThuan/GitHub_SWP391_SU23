@@ -4,6 +4,8 @@ const END_POINT = {
   PUBLISHER: "api/owners",
   PUBLISHEDGAMEPACK: "api/owners/gamepacks",
   PUBLISHEDCOMPONENT: "api/owners/components",
+  BESTSELLER: "api/owners/statistic/bestsellers",
+  SOLDNUM: "api/owners/statistic/soldnumbers",
 };
 
 //Publisher API
@@ -75,6 +77,23 @@ export const updateComponentAPI = (token, data) => {
 
 export const deleteComponentAPI = (token, id) => {
   return axiosClient.delete(`${END_POINT.PUBLISHEDCOMPONENT}/${id}`, {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  });
+};
+
+//Statistic API
+export const getBestSellerOfPubAPI = (token) => {
+  return axiosClient.get(`${END_POINT.BESTSELLER}?token=${token}`, {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  });
+};
+
+export const getSoldNumberAPI = (token) => {
+  return axiosClient.get(`${END_POINT.SOLDNUM}?token=${token}`, {
     headers: {
       Authorization: `bearer ${token}`,
     },

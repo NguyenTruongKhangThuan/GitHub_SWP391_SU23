@@ -4,10 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ProductContext } from "../../contexts/ProductContext";
 
 import { getBoardGameAPI, getGameTagsAPI } from "../../api/productAPI";
-import { createGamePackAPI } from "../../api/publisherAPI";
+import { createGamePackAPI, updateGamePackAPI } from "../../api/publisherAPI";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { useEffect } from "react";
+
+//import firebase
+import storage from "../../firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const StepOneForm = (props) => {
   const { getPackData, boardGames, gameTags, packData } = props;
@@ -191,12 +195,7 @@ const FinalStepForm = (props) => {
   const getImageData = (e) => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = (x) => {
-        getPackImage(file.name, x.target.result);
-      };
-      reader.readAsDataURL(file);
+      getPackImage(file);
     }
   };
 
@@ -238,7 +237,7 @@ const FinalStepForm = (props) => {
           <label className="font-bold mb-1">Game Package Image</label>
           <input
             type="file"
-            accept={".jpg" || ".png" || ".webp"}
+            accept={"image/*"}
             id="image"
             placeholder="Enter Game Package Price"
             className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
@@ -260,26 +259,18 @@ const FinalStepForm = (props) => {
   );
 };
 
-const initalPackData = {
-  gamePackId: "GP",
-  boardGameId: "",
-  gamePackName: "",
-  image: "",
-  description: "",
-  price: 0,
-  age: 0,
-  numberOfPlayer: "",
-  gameDuration: 0,
-  origin: "",
-  weight: 0,
-  size: "",
-  material: "",
-  gameRule: "",
-  availableAmount: 0,
-  imageSrc: "",
-};
-
 const UpdatePage = () => {
+  const { id } = useParams();
+  const { products } = useContext(ProductContext);
+  const product = products.find((item) => {
+    return item.gamePackId === id;
+  });
+
+  const [percent, setPercent] = useState(0);
+  const [file, setFile] = useState();
+
+  const [packData, setPackData] = useState(product);
+
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
 
@@ -292,14 +283,34 @@ const UpdatePage = () => {
   };
 
   const handleFormSubmit = (e) => {
-    // Perform form validation and submission logic
     e.preventDefault();
+    const storageRef = ref(storage, `/files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const percent = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setPercent(percent);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          AddGamePack(url);
+        });
+      }
+    );
+  };
+
+  const AddGamePack = (url) => {
     const formData = new FormData();
     formData.append("gamePackId", packData.gamePackId);
     formData.append("boardGameId", packData.boardGameId);
     formData.append("ownerId", sessionStorage.getItem("publisherId"));
     formData.append("gamePackName", packData.gamePackName);
-    formData.append("image", packData.image);
+    formData.append("image", url);
     formData.append("description", packData.description);
     formData.append("price", packData.price);
     formData.append("age", packData.age);
@@ -311,31 +322,25 @@ const UpdatePage = () => {
     formData.append("material", packData.material);
     formData.append("gameRule", packData.gameRule);
     formData.append("availableAmount", packData.availableAmount);
-    formData.append("imageSrc", packData.imageSrc);
     formData.append("owner.ownerId", "temp");
     formData.append("boardGame.boardGameId", "temp");
-    createGamePackAPI(sessionStorage.getItem("accountToken"), formData)
+    updateGamePackAPI(sessionStorage.getItem("accountToken"), formData)
       .then((res) => window.alert(res))
       .catch((err) => window.alert(err.data));
 
     navigate("/shop/publisher");
   };
 
-  const [packData, setPackData] = useState(initalPackData);
-
   const getPackData = (name, value) => {
-    setPackData({
-      ...packData,
-      [name]: value,
-    });
+    if (value)
+      setPackData({
+        ...packData,
+        [name]: value,
+      });
   };
 
-  const getPackImage = (name, source) => {
-    setPackData({
-      ...packData,
-      image: name,
-      imageSrc: source,
-    });
+  const getPackImage = (imageFile) => {
+    if (imageFile) setFile(imageFile);
   };
 
   const [boardGames, setBoardGames] = useState([]);

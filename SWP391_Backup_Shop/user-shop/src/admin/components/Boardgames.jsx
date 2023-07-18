@@ -10,11 +10,20 @@ import {
 import storage from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
+const initalData = {
+  boardGameId: "temp",
+  name: "",
+  description: "",
+  image: "",
+};
+
 const BoardgameInformation = () => {
   const [openAddForm, setOpenAddForm] = useState(false);
   const [openDetailsForm, setOpenDetailsForm] = useState(false);
   const [deleteItem, setDeleteItem] = useState(0); //delete according to the index
   const [boardgames, setBoardgames] = useState();
+  const [openUpdateForm, setOpenUpdateForm] = useState(false);
+  const [boardGameInfo, setBoardGameInfo] = useState();
 
   //Upload File
   const [file, setFile] = useState("");
@@ -37,6 +46,67 @@ const BoardgameInformation = () => {
     } else {
       console.log("Form closed!");
     }
+  };
+
+  const updateFormSubmission = (e) => {
+    e.preventDefault();
+
+    //Take Value In Document
+
+    if (file) {
+      const storageRef = ref(storage, `/files/${file.name}`);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const percent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+
+          setPercent(percent);
+        },
+        (err) => console.log(err),
+        () => {
+          //downloadUrl
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            UpdateBoardGame(url);
+          });
+        }
+      );
+    }
+  };
+
+  const [updatedBoardGame, setUpdatedBoardGame] = useState();
+  // const [updatedBoardGameData, setUpdatedBoardGameData] =
+  //   useState(updatedBoardGame);
+
+  const [updatedName, setUpdatedName] = useState();
+  const [updatedDescription, setUpdatedDescription] = useState();
+
+  // const getUpdatedBoardGameData = (name, value) => {
+  //   setUpdatedBoardGameData({
+  //     ...updatedBoardGameData,
+  //     [name]: value,
+  //   });
+  // };
+
+  const UpdateBoardGame = (imageUrl) => {
+    var formData = new FormData();
+    formData.append("boardGameId", updatedBoardGame.boardGameId);
+    formData.append("name", updatedName);
+    formData.append("description", updatedDescription);
+    formData.append("image", imageUrl);
+
+    putBoardgameAPI(sessionStorage.getItem("accountToken"), formData)
+      .then((res) => {
+        window.alert(res);
+        refreshBoardgamesList();
+      })
+      .catch((error) => {
+        console.log(error);
+        window.alert("Cannot add boardgame");
+      });
   };
 
   const addFormSubmission = (e) => {
@@ -68,18 +138,21 @@ const BoardgameInformation = () => {
     }
   };
 
+  const [boardGameData, setBoardGameData] = useState(initalData);
+  const getBoardGameData = (name, value) => {
+    setBoardGameData({
+      ...boardGameData,
+      [name]: value,
+    });
+  };
+
   const addNewBoardGame = (imageUrl) => {
-    let boardgameName = document.getElementById("boardgameName").value;
-    let boardgameDescription = document.getElementById(
-      "boardgameDescription"
-    ).value;
     var formData = new FormData();
     formData.append("boardGameId", "empty");
-    formData.append("name", boardgameName);
-    formData.append("description", boardgameDescription);
+    formData.append("name", boardGameData.name);
+    formData.append("description", boardGameData.description);
     formData.append("image", imageUrl);
 
-    window.alert(imageUrl);
     postBoardgamesAPI(sessionStorage.getItem("accountToken"), formData)
       .then((res) => {
         window.alert(res);
@@ -89,6 +162,36 @@ const BoardgameInformation = () => {
         console.log(error);
         window.alert("Cannot add boardgame");
       });
+  };
+
+  const toggleViewDetails = () => {
+    setOpenDetailsForm(!openDetailsForm);
+  };
+
+  const toggleUpdate = () => {
+    setOpenUpdateForm(!openUpdateForm);
+  };
+
+  const toggleViewOrUpdate = () => {
+    //rotate between view details and update
+    if (openDetailsForm) setOpenUpdateForm(false);
+    else setOpenUpdateForm(true);
+  };
+
+  const [deleteBoardGameId, setDeleteBoardGameId] = useState();
+  const deleteBoardGame = (e) => {
+    // e.preventDefault();
+    if (deleteBoardGameId) {
+      deleteBoardgameAPI(
+        sessionStorage.getItem("accountToken"),
+        deleteBoardGameId
+      )
+        .then((res) => {
+          window.alert(res);
+          refreshBoardgamesList();
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -138,23 +241,46 @@ const BoardgameInformation = () => {
                   {boardgame.name}
                 </td>
                 <td className="border-[2px] border-gray-500 pr-5 pl-2">
-                  <img src={boardgame.image} alt="" className="w-[160px] p-4" />
+                  <img
+                    src={boardgame.image}
+                    alt={boardgame.image}
+                    className="w-[160px] p-4"
+                  />
                 </td>
                 <td className="border-[2px] border-gray-500 pr-5 pl-2">
                   {boardgame.description}
                 </td>
                 <td className="border-l-[2px] border-b-[2px] border-r-none border-gray-500 pr-5 pl-2">
-                  <button className="bg-green-400 hover:bg-green-600 w-[160px] p-4 text-[18px] font-bold rounded-md">
+                  <button
+                    className="bg-green-400 hover:bg-green-600 w-[160px] p-4 text-[18px] font-bold rounded-md"
+                    onClick={() => {
+                      toggleViewDetails();
+                      setBoardGameInfo(boardgame);
+                    }}
+                  >
                     View Details
                   </button>
                 </td>
                 <td className="border-b-[2px] border-gray-500 pr-5 pl-2">
-                  <button className="bg-yellow-400 hover:bg-yellow-500 w-[160px] p-4 text-[18px] font-bold rounded-md">
+                  <button
+                    className="bg-yellow-400 hover:bg-yellow-500 w-[160px] p-4 text-[18px] font-bold rounded-md"
+                    onClick={() => {
+                      toggleUpdate();
+                      setUpdatedBoardGame(boardgame);
+                    }}
+                  >
                     Update
                   </button>
                 </td>
                 <td className="border-r-[2px] border-b-[2px] border-gray-500 pr-5 pl-2">
-                  <button className="bg-red-400 hover:bg-red-500 w-[160px] p-4 text-[18px] font-bold rounded-md">
+                  <button
+                    className="bg-red-400 hover:bg-red-500 w-[160px] p-4 text-[18px] font-bold rounded-md"
+                    onClick={(e) => {
+                      // window.alert("test");
+                      setDeleteBoardGameId(boardgame.boardGameId);
+                      deleteBoardGame(e);
+                    }}
+                  >
                     Delete
                   </button>
                 </td>
@@ -174,13 +300,14 @@ const BoardgameInformation = () => {
                     id="boardgameName"
                     placeholder="Enter Boardgame Name"
                     className="p-2 rounded-md"
+                    onChange={(e) => getBoardGameData("name", e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col mt-4">
                   <label className="mb-3">Boardgame Image</label>
                   <input
                     type="file"
-                    accept={"/image/*"}
+                    accept={"image/*"}
                     id="boardgameImageSrc"
                     placeholder="Import Boardgame Image"
                     className="p-2 rounded-md"
@@ -197,11 +324,147 @@ const BoardgameInformation = () => {
                     id="boardgameDescription"
                     placeholder="Enter Boardgame Description"
                     className="p-2 rounded-md"
+                    onChange={(e) =>
+                      getBoardGameData("description", e.target.value)
+                    }
                   />
                 </div>
                 <div className=" flex justify-end items-center gap-x-6">
                   <button
                     onClick={addFormSubmission}
+                    className="bg-blue-300 hover:bg-blue-600 items-center mt-4 p-4 w-[120px] rounded-md"
+                  >
+                    Add
+                  </button>
+                  <button
+                    className="bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] rounded-md"
+                    onClick={toggleAddForm}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
+      {openDetailsForm && boardGameInfo && (
+        <div className="flex justify-center">
+          <form className="w-[840px]">
+            <div className="grid grid-cols-2 mt-4">
+              <div className="flex flex-col w-[400px]">
+                <div className="flex flex-col mt-4">
+                  <label className="mb-3">Boardgame Name</label>
+                  <input
+                    type="text"
+                    id="boardgameName"
+                    placeholder="Enter Boardgame Name"
+                    className="p-2 rounded-md"
+                    value={boardGameInfo.name}
+                  />
+                </div>
+                <div className="flex flex-col mt-4">
+                  <label className="mb-3">Boardgame Image</label>
+                  {/* <input
+                    type="file"
+                    accept={"/image/*"}
+                    id="boardgameImageSrc"
+                    placeholder="Import Boardgame Image"
+                    className="p-2 rounded-md"
+                  /> */}
+                  <img
+                    src={boardGameInfo.image}
+                    alt={boardGameInfo.name}
+                    id="boardgameImage"
+                    className="p-2 rounded-md"
+                  />
+                </div>
+                <div></div>
+              </div>
+              <div className="flex flex-col w-[400px]">
+                <div className="flex flex-col mt-4">
+                  <label className="mb-3">Boardgame Description</label>
+                  <input
+                    type="text"
+                    id="boardgameDescription"
+                    placeholder="Enter Boardgame Description"
+                    className="p-2 rounded-md"
+                    value={boardGameInfo.description}
+                  />
+                </div>
+                <div className=" flex justify-end items-center gap-x-6">
+                  <button
+                    onClick={toggleViewOrUpdate}
+                    className="bg-yellow-300 hover:bg-yellow-600 items-center mt-4 p-4 w-[240px] text-[16px] rounded-md"
+                  >
+                    Update Boardgames
+                  </button>
+                  <button
+                    className="bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] text-[16px] rounded-md"
+                    onClick={toggleViewDetails}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
+      {openUpdateForm && updatedBoardGame && (
+        <div className="flex justify-center">
+          <form className="w-[840px]">
+            <div className="grid grid-cols-2 mt-4">
+              <div className="flex flex-col w-[400px]">
+                <div className="flex flex-col mt-4">
+                  <label className="mb-3">Boardgame Name</label>
+                  <input
+                    type="text"
+                    id="boardgameName"
+                    placeholder="Enter Boardgame Name"
+                    className="p-2 rounded-md"
+                    // value={updatedBoardGame.name}
+                    onChange={(e) =>
+                      // getUpdatedBoardGameData("name", e.target.value)
+                      setUpdatedName(e.target.value)
+                    }
+                  />
+                </div>
+                <div className="flex flex-col mt-4">
+                  <label className="mb-3">Boardgame Image</label>
+                  <input
+                    type="file"
+                    accept={"image/*"}
+                    id="boardgameImageSrc"
+                    placeholder="Import Boardgame Image"
+                    className="p-2 rounded-md"
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
+                </div>
+                <div></div>
+              </div>
+              <div className="flex flex-col w-[400px]">
+                <div className="flex flex-col mt-4">
+                  <label className="mb-3">Boardgame Description</label>
+                  <input
+                    type="text"
+                    id="boardgameDescription"
+                    placeholder="Enter Boardgame Description"
+                    className="p-2 rounded-md"
+                    // value={updatedBoardGame.description}
+                    onChange={(e) =>
+                      // getUpdatedBoardGameData("description", e.target.value)
+                      setUpdatedDescription(e.target.value)
+                    }
+                  />
+                </div>
+                <div className=" flex justify-end items-center gap-x-6">
+                  <button
+                    onClick={(e) => {
+                      updateFormSubmission(e);
+                      toggleUpdate();
+                      //Add a
+                    }}
                     className="bg-blue-300 hover:bg-blue-600 items-center mt-4 p-4 w-[120px] rounded-md"
                   >
                     Add

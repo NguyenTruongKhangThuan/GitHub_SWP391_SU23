@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getOwnerAPI, postOwnersAPI, putOwnersAPI } from "../../api/adminAPI";
+import {
+  getOwnerAPI,
+  postOwnersAPI,
+  putOwnersAPI,
+  banOwnerAPI,
+} from "../../api/adminAPI";
 import AdminAccount from "./AdminAccount";
 
 const Owner = () => {
@@ -17,6 +22,7 @@ const Owner = () => {
   const [openAddForm, setOpenAddForm] = useState(false);
   const [openDetailsForm, setOpenDetailsForm] = useState(false);
   const [deleteItem, setDeleteItem] = useState(0); //delete according to the index
+  const [publisherData, setPublisherData] = useState();
 
   const Dropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,9 +40,18 @@ const Owner = () => {
         setOpenDetailsForm(true);
         toggleDropdown(false);
       } else {
-        setDeleteItem();
+        handleBan();
         toggleDropdown(false);
       }
+    };
+
+    const handleBan = () => {
+      banOwnerAPI(sessionStorage.getItem("accountToken"), deleteItem)
+        .then((res) => {
+          console.log(res);
+          refreshPublishersList();
+        })
+        .catch((err) => console.log(err));
     };
 
     return (
@@ -169,7 +184,13 @@ const Owner = () => {
               <td className="border-[2px] border-gray-500 pr-5 pl-2">
                 {publisher.phoneNumber}
               </td>
-              <td className="border-[2px] border-gray-500 pr-5 pl-2">
+              <td
+                className="border-[2px] border-gray-500 pr-5 pl-2"
+                onClick={() => {
+                  setDeleteItem(publisher.ownerId);
+                  setPublisherData(publisher);
+                }}
+              >
                 {" "}
                 <Dropdown />{" "}
               </td>
@@ -177,17 +198,26 @@ const Owner = () => {
           ))}
         </tbody>
       </table>
-      {openDetailsForm && (
+      {openDetailsForm && publisherData && (
         <div className="flex justify-center">
           <form className="w-[840px]">
             <div className="grid grid-cols-2 mt-4">
               <div className="flex flex-col w-[400px]">
                 <div className="flex flex-col mt-4">
+                  <label className="mb-3">Publisher ID</label>
+                  <input
+                    type="text"
+                    id="ownerId"
+                    value={publisherData.ownerId}
+                    className="p-2 rounded-md"
+                  />
+                </div>
+                <div className="flex flex-col mt-4">
                   <label className="mb-3">Publisher Username</label>
                   <input
                     type="text"
                     id="ownerUsername"
-                    value
+                    value={publisherData.ownerName}
                     className="p-2 rounded-md"
                   />
                 </div>
@@ -196,7 +226,7 @@ const Owner = () => {
                   <input
                     type="password"
                     id="ownerPassword"
-                    value
+                    value={publisherData.password}
                     className="p-2 rounded-md"
                   />
                 </div>
@@ -208,7 +238,7 @@ const Owner = () => {
                   <input
                     type="text"
                     id="ownerFullName"
-                    value
+                    value={publisherData.fullName}
                     className="p-2 rounded-md"
                   />
                 </div>
@@ -217,7 +247,7 @@ const Owner = () => {
                   <input
                     type="text"
                     id="ownerEmail"
-                    value
+                    value={publisherData.email}
                     className="p-2 rounded-md"
                   />
                 </div>
@@ -226,7 +256,7 @@ const Owner = () => {
                   <input
                     type="text"
                     id="ownerPhoneNumber"
-                    value
+                    value={publisherData.phoneNumber}
                     className="p-2 rounded-md"
                   />
                 </div>

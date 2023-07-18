@@ -14,6 +14,7 @@ import {
   getStatisticUserAPI,
   getStatisticGamepacksAPI,
   getStatisticIncomeAPI,
+  getBestSellerAPI,
 } from "../../api/adminAPI";
 
 const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
@@ -94,6 +95,13 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
   const [numUsers, setNumUsers] = useState();
   const [numProducts, setNumProducts] = useState();
   const [numIncome, setNumIncome] = useState();
+  const [bestSeller, setBestSeller] = useState([]);
+
+  useEffect(() => {
+    getBestSellerAPI(sessionStorage.getItem("accountToken"))
+      .then((res) => setBestSeller(res))
+      .catch((err) => console.log(err));
+  }, []);
 
   const valueNumUsers = () => {
     getStatisticUserAPI(sessionStorage.getItem("accountToken"))
@@ -195,21 +203,14 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
         >
           <h2 className="mb-8">Highlighted Items</h2>
           <div className="flex flex-col gap-y-8">
-            <HighlightedItems
-              header={"Test Header"}
-              content={"Test Content"}
-              imgSrc={Highlight_1}
-            />
-            <HighlightedItems
-              header={"Test Header"}
-              content={"Test Content"}
-              imgSrc={Highlight_2}
-            />
-            <HighlightedItems
-              header={"Test Header"}
-              content={"Test Content"}
-              imgSrc={Highlight_3}
-            />
+            {bestSeller &&
+              bestSeller.map((product) => (
+                <HighlightedItems
+                  header={product.gamePackName}
+                  content={product.price}
+                  imgSrc={product.image}
+                />
+              ))}
           </div>
         </div>
       </div>

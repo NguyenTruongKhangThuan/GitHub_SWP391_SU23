@@ -32,7 +32,7 @@ const ViewDetails = () => {
   }
 
   //destructure product
-  const { title, price, description, image } = product;
+  // const { title, price, description, image } = product;
 
   return (
     <>
@@ -42,7 +42,7 @@ const ViewDetails = () => {
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex flex-1 justify-center items-center mb-8 lg:mb-10">
               <img
-                src={product.imageSrc}
+                src={product.image}
                 alt=""
                 className="max-w-[200px] lg:max-w-sm"
               />

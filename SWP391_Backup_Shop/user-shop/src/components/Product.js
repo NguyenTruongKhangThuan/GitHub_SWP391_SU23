@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Product = ({ product }) => {
   const { addToCart } = useContext(CartContext);
-  const { gamePackId, imageSrc, gameTags, gamePackName, price } = product;
+  const { gamePackId, image, gameTags, gamePackName, price } = product;
 
   const showSuccessMessage = () => {
     toast.success("Product has been added to your cart!", {
@@ -26,7 +26,7 @@ const Product = ({ product }) => {
         <div className="w-full h-full flex justify-center items-center">
           <div className="w-[200px] mx-auto flex justify-center items-center">
             <img
-              src={imageSrc}
+              src={image}
               alt=""
               className="max-h-[160px] group-hover:scale-110 transition duration-300"
             ></img>
