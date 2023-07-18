@@ -8,6 +8,11 @@ const UserOrderDetails = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [PackName, setPackName] = useState([]);
 
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
   // useEffect(()=> {
   //     refreshOrderDetailsList();
   // },[])
@@ -87,13 +92,13 @@ const UserOrderDetails = () => {
                       ))}
                     </td>
                     <td className="border-[2px] border-gray-600 px-4 py-2">
-                      {orderDetail.price}
+                      {VND.format(orderDetail.price)}
                     </td>
                     <td className="border-[2px] border-gray-600 px-4 py-2">
                       {orderDetail.amount}
                     </td>
                     <td className="border-[2px] border-gray-600 px-4 py-2">
-                      {orderDetail.price * orderDetail.amount}
+                      {VND.format(orderDetail.price * orderDetail.amount)}
                     </td>
                   </tr>
                 ))}
@@ -102,7 +107,7 @@ const UserOrderDetails = () => {
           <div className="flex justify-end mt-4">
             <Link to={"/shop/user/paymentdetails"}>
               <button
-                className="bg-red-500 rounded-md px-4 py-2"
+                className="bg-red-400 hover:bg-red-500 rounded-md font-bold px-4 py-2"
                 onClick={() => {
                   sessionStorage.removeItem("orderId");
                   console.log(PackName);

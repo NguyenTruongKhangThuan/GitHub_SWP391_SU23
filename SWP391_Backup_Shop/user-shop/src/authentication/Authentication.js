@@ -16,6 +16,40 @@ function Authentication() {
     useSessionStorageState("accountToken");
   const [account, setAccount] = useSessionStorageState("account");
 
+  const loginRedirect = (username, password) => {
+    loginAPI(username, password)
+        .then((res) => {
+          setToken(res);
+          setUsernameSession(username);
+        })
+        .catch((error) => {
+            window.alert(error.response.data);
+        });
+    };
+    if (token !== null) {
+      sessionStorage.setItem("accountToken", token);
+      authenticationAPI(token)
+        .then((res) => {
+          if (res === "ADMIN") {
+            navigate("/admin");
+            sessionStorage.setItem("account", usernameSession);
+          }
+          if (res === "CUSTOMER") {
+            navigate("/shop");
+            sessionStorage.setItem("account", usernameSession);
+          }
+          if (res === "OWNER") {
+            navigate("/shop/publisher");
+            sessionStorage.setItem("account", usernameSession);
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            window.alert(error.response.data);
+          }
+        });
+  }
+
   //Login Form Here
   const LoginForm = () => {
     const authenLogin = (e) => {
@@ -146,7 +180,7 @@ function Authentication() {
       signUpAPI(formData, confirmPassword)
         .then((res) => {
           window.alert(res);
-          toggleForms();
+          loginRedirect(username, password);
         })
         .catch((err) => {
           window.alert(err.response.data);
@@ -201,7 +235,7 @@ function Authentication() {
                   </label>
                   <input
                     type="password"
-                    id="sp-password"
+                    id="sp-confirmPassword"
                     placeholder="Enter your Password"
                     required
                     className="border-b-2 border-solid p-2 "
@@ -211,7 +245,7 @@ function Authentication() {
               <div className="flex items-center justify-center">
                 <button
                   className=" border w-1/3 rounded-full font-bold mx-8 my-5 text-white py-2 bg-[#0A4D68] hover:bg-[#05BFDB]"
-                  onClick={authenSignUp}
+                  onClick={(e) => authenSignUp(e)}
                 >
                   Sign Up
                 </button>

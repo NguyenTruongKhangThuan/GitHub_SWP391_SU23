@@ -24,6 +24,11 @@ function Checkout() {
   const [orderId, setOrderId] = useState(null);
   const [isOrderMade, setIsOrderMade] = useState(false);
 
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
   //Create order payment:
   const createOrder = async () => {
     var formData = new FormData();
@@ -94,9 +99,9 @@ function Checkout() {
         </div>
         <div className="flex flex-col gap-y-3 py-4 mt-3">
           <div className="flex w-full justify-between items-center">
-            <div className="uppercase font-semibold">
-              <span className="mr-2">Total:</span>VND{" "}
-              {parseFloat(total).toFixed(2)}
+            <div className="uppercase font-semibold text-[16px]">
+              <span className="mr-2">Total:</span>{" "}
+              {VND.format(parseInt(total))}
             </div>
             <div
               onClick={clearCart}

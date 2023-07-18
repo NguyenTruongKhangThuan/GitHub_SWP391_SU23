@@ -28,7 +28,7 @@ function ViewCart() {
           <div className="flex w-full justify-between items-center">
             <div className="uppercase font-semibold">
               <span className="mr-2">Total:</span>VND{" "}
-              {parseFloat(total).toFixed(2)}
+              {parseInt(total)}
             </div>
             <div
               onClick={clearCart}

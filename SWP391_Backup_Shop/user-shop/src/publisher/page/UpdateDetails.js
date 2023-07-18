@@ -106,7 +106,7 @@ const StepTwoForm = (props) => {
       <h2 className="font-semibold mb-8 text-[32px]">
         Step 2: Additional Information
       </h2>
-      <form className="h-fit px-[20px] grid grid-cols-3 gap-x-[20px] gap-y-[24px]">
+      <form className="h-fit px-[20px] grid grid-cols-3 gap-x-[40px] gap-y-[24px]">
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Appropriate Age</label>
           <input
@@ -121,7 +121,7 @@ const StepTwoForm = (props) => {
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Numbers of Players Required</label>
           <input
-            type="number"
+            type="text"
             id="numberOfPlayer"
             placeholder="Enter Numbers of Players Required"
             className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
@@ -143,7 +143,7 @@ const StepTwoForm = (props) => {
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Average Match Duration</label>
           <input
-            type="number"
+            type="text"
             id="gameDuration"
             placeholder="Enter Average Match Duration"
             className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"

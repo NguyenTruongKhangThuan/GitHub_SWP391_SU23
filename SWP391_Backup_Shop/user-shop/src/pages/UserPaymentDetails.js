@@ -6,6 +6,11 @@ import { Link } from 'react-router-dom';
 const UserPaymentDetails = () => {
     const [payments, setPayments] = useState([]);
 
+    const VND = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+      });
+
     useEffect(() => {
         getAccountID();
         // refreshPaymentList();
@@ -37,23 +42,23 @@ const UserPaymentDetails = () => {
             <table className='w-full mt-5'>
                 <thead>
                     <tr>
-                        <th className='border-[2px] border-gray-600 px-4 py-2'>Payment ID</th>
-                        <th className='border-[2px] border-gray-600 px-4 py-2'>Order ID</th>
-                        <th className='border-[2px] border-gray-600 px-4 py-2'>Payment Date</th>
-                        <th className='border-[2px] border-gray-600 px-4 py-2'>Payment Method</th>
-                        <th className='border-[2px] border-gray-600 px-4 py-2'>Total Pay</th>
-                        <th className='border-[2px] border-gray-600 px-4 py-2'>Action</th>
+                        <th className='border-[2px] border-gray-300 px-4 py-2'>Payment ID</th>
+                        <th className='border-[2px] border-gray-300 px-4 py-2'>Order ID</th>
+                        <th className='border-[2px] border-gray-300 px-4 py-2'>Payment Date</th>
+                        <th className='border-[2px] border-gray-300 px-4 py-2'>Payment Method</th>
+                        <th className='border-[2px] border-gray-300 px-4 py-2'>Total Pay</th>
+                        <th className='border-[2px] border-gray-300 px-4 py-2'>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {payments.map((payment, index) => (
-                        <tr className={`${index % 2 === 0 ? 'bg-gray-200': 'bg-gray-400'}`}>
-                            <td className='border-[2px] border-gray-600 px-4 py-2'>{payment.paymentId}</td>
-                            <td className='border-[2px] border-gray-600 px-4 py-2'>{payment.orderId}</td>
-                            <td className='border-[2px] border-gray-600 px-4 py-2'>{payment.paymentDate}</td>
-                            <td className='border-[2px] border-gray-600 px-4 py-2'>{payment.method}</td>
-                            <td className='border-[2px] border-gray-600 px-4 py-2'>{payment.amountOfMoney}</td>
-                            <td className='border-[2px] border-gray-600 px-4 py-2'>
+                        <tr className={`${index % 2 === 0 ? 'bg-gray-100': 'bg-gray-200'}`}>
+                            <td className='border-[2px] border-gray-300 px-4 py-2'>{payment.paymentId}</td>
+                            <td className='border-[2px] border-gray-300 px-4 py-2'>{payment.orderId}</td>
+                            <td className='border-[2px] border-gray-300 px-4 py-2'>{payment.paymentDate}</td>
+                            <td className='border-[2px] border-gray-300 px-4 py-2'>{payment.method}</td>
+                            <td className='border-[2px] border-gray-300 px-4 py-2'>{VND.format(payment.amountOfMoney)}</td>
+                            <td className='border-[2px] border-gray-300 px-4 py-2'>
                                 <Link to={"/shop/user/orderdetails"}>
                                     <div className=' flex items-center justify-center'>
                                         <button    
@@ -70,6 +75,15 @@ const UserPaymentDetails = () => {
                     ))}
                 </tbody>
             </table>
+        <div className='flex justify-end mt-4'>
+            <Link 
+                to={"/shop"}
+                >
+                    <button className="bg-red-400 hover:bg-red-500 rounded-md font-bold px-4 py-2">
+                        Return to Shop
+                    </button>
+            </Link>
+        </div>
         </div>
       </section>
     </div>

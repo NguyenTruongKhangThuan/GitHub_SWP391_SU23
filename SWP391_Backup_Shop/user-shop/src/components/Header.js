@@ -105,7 +105,14 @@ const Header = (props) => {
             className="hover:underline cursor-pointer"
             onClick={toggleDropdown}
           >
-            Hello {sessionStorage.getItem("account")}
+            {
+              sessionStorage.getItem("account") !== null ? (
+
+                <p>Hello {sessionStorage.getItem("account")}</p>
+              ) : (
+                <Link to={"/auth"}><p>Log In/Sign Up</p></Link>
+              )
+            }
           </div>
           {dropdown && (
             <div className="dropdown absolute right-[230px] top-[56px] mt-2 h-full bg-white rounded-lg shadow-lg">
@@ -123,15 +130,17 @@ const Header = (props) => {
               </div>
             </div>
           )}
-          <Link
+          { sessionStorage.getItem("account") !== null &&
+            <Link
             to={"/auth"}
             className="hover:underline"
             onClick={() => {
-              sessionStorage.removeItem("account");
+              sessionStorage.removeItem("account")
+              sessionStorage.removeItem("accountToken")
             }}
           >
             <p>Logout</p>
-          </Link>
+          </Link>}
           {/* Cart Quantity */}
           <div
             onClick={() => setIsOpen(!isOpen)}

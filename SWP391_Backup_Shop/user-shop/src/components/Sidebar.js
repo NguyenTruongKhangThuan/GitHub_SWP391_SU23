@@ -11,10 +11,26 @@ import { SidebarContext } from "../contexts/SidebarContext";
 
 import { CartContext } from "../contexts/CartContext";
 
+//Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 const Sidebar = () => {
   const { isOpen, handleClose } = useContext(SidebarContext);
 
   const { cart, clearCart, total, itemAmount } = useContext(CartContext);
+
+  const FailToCheckoutMessage = () => {
+    toast.fail("You must have an account to checkout! Redirecting...", {
+      position: toast.POSITION.TOP_RIGHT,
+    })
+  }
+
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
 
   return (
     <div
@@ -42,8 +58,8 @@ const Sidebar = () => {
       <div className="flex flex-col gap-y-3 py-4 mt-3">
         <div className="flex w-full justify-between items-center">
           <div className="uppercase font-semibold">
-            <span className="mr-2">Total:</span>VND{" "}
-            {parseFloat(total).toFixed(2)}
+            <span className="mr-2">Total:</span>{" "}
+            {VND.format(total)}
           </div>
           <div
             onClick={clearCart}
@@ -53,13 +69,15 @@ const Sidebar = () => {
           </div>
         </div>
         {/* Please note this demo only has the View Cart */}
-        <Link
-          to={"/shop/checkout"}
-          onClick={handleClose}
-          className="bg-gray-700 flex p-4 justify-center items-center text-white w-full font-medium"
-        >
-          Checkout
-        </Link>
+            <Link
+            to={sessionStorage.getItem("account")!== null ? "/shop/checkout": "/auth"}
+            onClick={handleClose}
+            className="bg-gray-700 flex p-4 justify-center items-center text-white w-full font-medium"
+            >
+            Checkout
+          </Link>
+          
+  
       </div>
     </div>
   );

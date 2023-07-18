@@ -38,19 +38,11 @@ const Navbar = () => {
         ></img>
         <ul className='hidden md:flex'>
           <li className='p-4'>
-            <button className='rounded-md w-[80px] h-[40px] hover:bg-slate-400 hover:text-black'>
-              Home
-            </button>
-          </li>
-          <li className='p-4'>
-            <button className='rounded-md w-[80px] h-[40px] hover:bg-slate-400 hover:text-black'>
-              About
-            </button>
-          </li>
-          <li className='p-4'>
-            <button className='rounded-md w-[80px] h-[40px] hover:bg-slate-400 hover:text-black'>
-              Cards
-            </button>
+            <Link to={"/shop"}>
+              <button className='rounded-md w-[120px] h-[40px] bg-blue-500 hover:bg-blue-700 hover:text-black'>
+                Enter Shop
+              </button>
+            </Link>
           </li>
           <li className='p-4'>
             <Link to={"/auth"}>

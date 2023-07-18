@@ -120,7 +120,7 @@ const StepTwoForm = (props) => {
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Numbers of Players Required</label>
           <input
-            type="number"
+            type="text"
             id="numberOfPlayer"
             placeholder="Enter Numbers of Players Required"
             className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
@@ -142,7 +142,7 @@ const StepTwoForm = (props) => {
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Average Match Duration</label>
           <input
-            type="number"
+            type="text"
             id="gameDuration"
             placeholder="Enter Average Match Duration"
             className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"

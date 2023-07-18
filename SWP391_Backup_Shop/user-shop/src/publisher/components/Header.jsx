@@ -38,7 +38,13 @@ const Header = () => {
               <Link to={'/shop/publisher/product/add'}>Add Items</Link>
             </div>
             <div className='hover:underline'>Hello {sessionStorage.getItem("account")}</div>
-            <Link to={'/auth'} className='hover:underline'>
+            <Link to={'/auth'} 
+              className='hover:underline'
+              onClick={() => {
+                sessionStorage.removeItem("account")
+                sessionStorage.removeItem("accountToken")
+              }}
+              >
               <p>Logout</p>
             </Link>
             

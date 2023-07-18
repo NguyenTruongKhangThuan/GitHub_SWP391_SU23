@@ -104,20 +104,16 @@ const ViewDetails = () => {
                   </div>
                 </div>
               </div>
-              {product.gameRule.length > 0 && (
+              {product.description.length > 0 && (
                 <div
-                  className={`mb-8 ${
-                    product.gameRule.length > 250
-                      ? "text-[13px]"
-                      : "text-[14px]"
-                  } w-[800px]`}
+                  className={`mb-8 text-[14px] w-[800px]`}
                 >
                   <p>
                     {showFullRule
-                      ? product.gameRule
-                      : `${product.gameRule.slice(0, 100)}...`}
+                      ? product.description
+                      : `${product.description.slice(0, 100)}...`}
                   </p>
-                  {product.gameRule.length > 200 && (
+                  {product.description.length > 200 && (
                     <button
                       className="text-blue-500 mt-2"
                       onClick={toggleRuleVisibility}

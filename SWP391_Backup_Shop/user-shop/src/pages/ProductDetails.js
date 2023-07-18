@@ -36,6 +36,11 @@ const ProductDetails = () => {
     });
   };
 
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
   //Case: Product Not Found
   if (!product) {
     return (
@@ -53,7 +58,7 @@ const ProductDetails = () => {
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex flex-1 justify-center items-center mb-8 lg:mb-10">
               <img
-                src={product.imageSrc}
+                src={product.image}
                 alt=""
                 className="max-w-[200px] lg:max-w-sm"
               />
@@ -63,7 +68,7 @@ const ProductDetails = () => {
                 {product.gamePackName}
               </h1>
               <div className="text-xl text-red-500 font-medium mb-6">
-                {product.price} VND
+                {VND.format(product.price)}
               </div>
               <div className="flex gap-x-20">
                 <div className="flex flex-col gap-y-4">
@@ -99,20 +104,20 @@ const ProductDetails = () => {
                   </div>
                 </div>
               </div>
-              {product.gameRule.length > 0 && (
+              {product.description.length > 0 && (
                 <div
                   className={`mb-8 ${
-                    product.gameRule.length > 250
+                    product.description.length > 250
                       ? "text-[13px]"
                       : "text-[14px]"
                   } w-[800px]`}
                 >
                   <p>
                     {showFullRule
-                      ? product.gameRule
-                      : `${product.gameRule.slice(0, 100)}...`}
+                      ? product.description
+                      : `${product.description.slice(0, 100)}...`}
                   </p>
-                  {product.gameRule.length > 200 && (
+                  {product.description.length > 200 && (
                     <button
                       className="text-blue-500 mt-2"
                       onClick={toggleRuleVisibility}
