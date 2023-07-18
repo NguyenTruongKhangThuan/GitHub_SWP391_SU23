@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
@@ -8,7 +9,6 @@ import SpecialShop from "./pages/SpecialShop";
 import ViewCart from "./pages/ViewCart";
 import Checkout from "./pages/Checkout";
 
-import Admin from "./admin/Admin";
 
 import LandingPage from "./landing-page/LandingPage";
 import Authentication from "./authentication/Authentication";
@@ -26,6 +26,15 @@ import UserPaymentDetails from "./pages/UserPaymentDetails";
 import UserOrderDetails from "./pages/UserOrderDetails";
 import Sales from "./publisher/page/Sales";
 
+import Sidebar from "./admin/components/Sidebar";
+import Dashboard from "./admin/pages/Dashboard";
+import Users from "./admin/pages/Users";
+import Publishers from "./admin/pages/Publishers"
+import GamePackages from "./admin/pages/GamePackages";
+import Boardgames from "./admin/pages/Boardgames";
+import Transactions from "./admin/pages/Transactions";
+import Tags from "./admin/pages/Tags";
+
 
 const App = () => {
   return (
@@ -36,7 +45,8 @@ const App = () => {
 
           <Route path="/auth" element={<Authentication />} />
 
-          <Route path="/admin" element={<Admin />} />
+          {/* Admin */}
+          <Route path="/admin/*" element={<AdminLayout />} />
 
           {/* Shop - User */}
           <Route path="/shop" element={<Home />} />
@@ -64,6 +74,27 @@ const App = () => {
         </Routes>
         <SideBar />
       </Router>
+    </div>
+  );
+};
+
+const AdminLayout = () => {
+
+  return (
+    <div className="flex w-full h-screen">
+      <Sidebar />
+      <div className="flex-1  bg-[#A5C0DD]">
+        <Routes>
+          <Route path="/" element={<Dashboard />}/>
+          <Route path="/dashboard" element={<Dashboard/>} />
+          <Route path="/users" element={<Users />}/>
+          <Route path="/publishers" element={<Publishers />} />
+          <Route path="/game-packages" element={<GamePackages />} />
+          <Route path="/boardgames" element={<Boardgames />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/tags" element={<Tags />} />
+        </Routes>
+      </div>
     </div>
   );
 };
