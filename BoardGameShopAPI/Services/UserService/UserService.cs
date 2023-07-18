@@ -195,8 +195,8 @@ namespace BoardGameShopAPI.Services.UserService
         public async Task<string> SignUpInputValidation(User user, string confirmPassword)
         {
             //Delete redundance space char
-            user.Username = user.Username.Trim();
-            user.Email = user.Email.Trim();
+            user.Username = user.Username == null ? "" : user.Username.Trim();
+            user.Email = user.Email == null ? "" : user.Email.Trim();
 
             //Check inputs
             if (user.Username == null || user.Username.Length == 0)
@@ -210,7 +210,7 @@ namespace BoardGameShopAPI.Services.UserService
                 }
                 else
                 {
-                    if (PasswordValidation(user.Password))
+                    if (!PasswordValidation(user.Password))
                     {
                         return "Invalid Input For Password";
                     }
@@ -248,7 +248,7 @@ namespace BoardGameShopAPI.Services.UserService
             var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
             var minLenght = 6;
 
-            if(password.Length < minLenght)
+            if(password.Length >= minLenght)
             {
                 if (!hasUpperChar.IsMatch(password))
                 {
