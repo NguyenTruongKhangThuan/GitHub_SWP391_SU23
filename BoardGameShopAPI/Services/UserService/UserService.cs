@@ -248,7 +248,7 @@ namespace BoardGameShopAPI.Services.UserService
             var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
             var minLenght = 6;
 
-            if(password.Length >= minLenght)
+            if(password.Length < minLenght)
             {
                 if (!hasUpperChar.IsMatch(password))
                 {
