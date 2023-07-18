@@ -21,5 +21,9 @@ namespace BoardGameShopAPI.Services.PaymentService
         Task<double> TotalIncome();
 
         Task<List<GamePack>> GetBestSeller();
+
+        Task<List<GamePack>> GetBestSellerOfPub(string pubId);
+
+        Task<List<GamePack>> GetSoldNumOfPubProduct(string pubId);
     }
 }

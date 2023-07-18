@@ -1,6 +1,5 @@
 using BoardGameShopAPI.Services.BoardGameService;
 using BoardGameShopAPI.Services.ComponentService;
-using BoardGameShopAPI.Services.FirebaseCloundService;
 using BoardGameShopAPI.Services.GamePackService;
 using BoardGameShopAPI.Services.OrderDetailService;
 using BoardGameShopAPI.Services.OrderService;
@@ -79,7 +78,6 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IFirebaseCloundService, FirebaseCloundService>(); 
 builder.Services.AddScoped<IMomoService, MomoService>();
 builder.Services.AddScoped<IGameTagService, GameTagService>();
 builder.Services.AddScoped<ITagInPackService, TagInPackService>();

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Data;
+using BoardGameShopAPI.Services.PaymentService;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,13 +20,15 @@ namespace BoardGameShopAPI.Controllers
     {
         private readonly IOwnerService _ownerService;
         private readonly IGamePackService _gamePackService;
-        public readonly IComponentService _componentService;
+        private readonly IComponentService _componentService;
+        private readonly IPaymentService _paymentService;
         public OwnerController(IOwnerService ownerService, IGamePackService gamePackService,
-            IComponentService componentService)
+            IComponentService componentService, IPaymentService paymentService)
         {
             _ownerService = ownerService;
             _gamePackService = gamePackService;
             _componentService = componentService;
+            _paymentService = paymentService;
         }
 
         //Owner Function
@@ -206,6 +209,22 @@ namespace BoardGameShopAPI.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError);
                 }
             }
-        }  
+        }
+
+        [HttpGet("statistic/bestsellers")]
+        public async Task<IActionResult> GetPubBestSeller(string token)
+        {
+            Owner owner = await _ownerService.ReadOwnerToken(token);
+            List<GamePack> packs = await _paymentService.GetBestSellerOfPub(owner.OwnerId);
+            return Ok(packs);
+        }
+
+        [HttpGet("statistic/soldnumbers")]
+        public async Task<IActionResult> GetPubSoldNumber(string token)
+        {
+            Owner owner = await _ownerService.ReadOwnerToken(token);
+            List<GamePack> packs = await _paymentService.GetSoldNumOfPubProduct(owner.OwnerId);
+            return Ok(packs);
+        }
     }
 }

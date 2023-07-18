@@ -14,6 +14,8 @@ namespace BoardGameShopAPI.Services.UserService
         //Basic CRUD Method for User
         Task<List<User>> ReadUserList();
 
+        Task<User> GetAUser(string userId);
+
         Task<string> CreateUserAccount(User user);
 
         Task<User> Login(string username, string password);

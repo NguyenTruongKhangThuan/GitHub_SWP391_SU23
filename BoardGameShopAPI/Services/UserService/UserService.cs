@@ -142,6 +142,19 @@ namespace BoardGameShopAPI.Services.UserService
             }
         }
 
+        public async Task<User> GetAUser(string userId)
+        {
+            try
+            {
+                return await _context.Users.FindAsync(userId);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new User();
+            }
+        }
+
         public async Task<string> UpdateUserAccount(User user)
         {
             try

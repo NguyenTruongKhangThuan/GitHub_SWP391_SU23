@@ -18,8 +18,5 @@ public partial class Component
 
     public string? Image { get; set; }
 
-    [NotMapped]
-    public string? ImageSrc { get; set; }
-
     public virtual GamePack? GamePack { get; set; }
 }

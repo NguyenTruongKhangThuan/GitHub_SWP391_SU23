@@ -40,7 +40,7 @@ public partial class GamePack
     public int? AvailableAmount { get; set; }
 
     [NotMapped]
-    public string? ImageSrc { get; set; }
+    public int TotalSold { get; set; }
 
     public virtual BoardGame? BoardGame { get; set; }
 

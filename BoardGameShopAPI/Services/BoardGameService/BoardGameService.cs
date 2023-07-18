@@ -1,5 +1,4 @@
 ﻿using BoardGameShopAPI.Models;
-using BoardGameShopAPI.Services.FirebaseCloundService;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
@@ -10,11 +9,9 @@ namespace BoardGameShopAPI.Services.BoardGameService
         private readonly string ModelName = "BoardGames";
 
         private readonly DbA9bc42BoardgameshopdbContext _context;
-        private readonly IFirebaseCloundService _firebaseCloundService;
-        public BoardGameService(DbA9bc42BoardgameshopdbContext context, IFirebaseCloundService firebaseCloundService)
+        public BoardGameService(DbA9bc42BoardgameshopdbContext context)
         {
             _context = context;
-            _firebaseCloundService = firebaseCloundService;
         }
 
         public async Task<string> CreateBoardGame(BoardGame boardGame)
@@ -28,8 +25,6 @@ namespace BoardGameShopAPI.Services.BoardGameService
                         Regex.Replace(_context.BoardGames.OrderBy(x => x.BoardGameId).LastOrDefault().BoardGameId,
                         "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
-                    _firebaseCloundService.UploadImage(boardGame.ImageSrc, boardGame.Image, ModelName);
-                    //Create BoardGame
                     boardGame.BoardGameId = createdId;
                     _context.BoardGames.Add(boardGame);
                     await _context.SaveChangesAsync();
@@ -57,8 +52,6 @@ namespace BoardGameShopAPI.Services.BoardGameService
                 }
                 else
                 {
-                    _firebaseCloundService.DeleteImage(boardGame.Image, ModelName);
-
                     _context.BoardGames.Remove(boardGame);
                     await _context.SaveChangesAsync();
                     return "Success";
@@ -74,14 +67,7 @@ namespace BoardGameShopAPI.Services.BoardGameService
         {
             try
             {
-                return await _context.BoardGames.Select(bg => new BoardGame()
-                {
-                    BoardGameId = bg.BoardGameId,
-                    Name = bg.Name,
-                    Description = bg.Description,
-                    Image = bg.Image,
-                    ImageSrc = _firebaseCloundService.RetrieveImage(bg.Image, ModelName),
-                }).OrderBy(bg => bg.BoardGameId).ToListAsync();
+                return await _context.BoardGames.OrderBy(bg => bg.BoardGameId).ToListAsync();
             }
             catch(Exception)
             {
@@ -96,8 +82,6 @@ namespace BoardGameShopAPI.Services.BoardGameService
                 BoardGame dbBoardGame = _context.BoardGames.Find(boardGame.BoardGameId);
                 if (dbBoardGame != null)
                 {
-                    _firebaseCloundService.UpdateImage(boardGame.ImageSrc, boardGame.Image, ModelName);
-
                     _context.Entry(dbBoardGame).CurrentValues.SetValues(boardGame);
                     await _context.SaveChangesAsync();
                     return "Success";

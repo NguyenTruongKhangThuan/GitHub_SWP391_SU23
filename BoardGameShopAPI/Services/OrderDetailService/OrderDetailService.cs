@@ -80,8 +80,7 @@ namespace BoardGameShopAPI.Services.OrderDetailService
         {
             try
             {
-                return await _context.OrderDetails.Where(odt => odt.OrderId == orderId)
-                    .OrderByDescending(odt => odt.OrderId).ToListAsync();
+                return await _context.OrderDetails.Where(odt => odt.OrderId == orderId).ToListAsync();
             }
             catch (Exception e)
             {

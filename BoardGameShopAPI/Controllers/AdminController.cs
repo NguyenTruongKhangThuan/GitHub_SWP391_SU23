@@ -60,6 +60,27 @@ namespace BoardGameShopAPI.Controllers
             return Ok(users);
         }
 
+        [HttpGet("users/{id}")]
+        public async Task<IActionResult> GetSingleUser(string id)
+        {
+            User user = await _userService.GetAUser(id);
+            if(user == null)
+            {
+                return BadRequest("Cannot Find");
+            }
+            else
+            {
+                if(user == new User())
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+                else
+                {
+                    return Ok(user);
+                }
+            }
+        }
+
         //--------------------------------------Component Management--------------------------------------
         [HttpGet("components")]
         public async Task<IActionResult> GetComponents(string gamePackId)
@@ -215,6 +236,27 @@ namespace BoardGameShopAPI.Controllers
                 else
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
+        }
+
+        [HttpDelete("owners")]
+        public async Task<IActionResult> DeleteOwner(string ownerId)
+        {
+            string res = await _ownerService.DeleteOwner(ownerId);
+            if (res.Equals("Success"))
+            {
+                return Ok("Delete Successfully");
+            }
+            else
+            {
+                if (res.Equals("NotFound"))
+                {
+                    return BadRequest("Cannot find the publisher");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, res);
                 }
             }
         }

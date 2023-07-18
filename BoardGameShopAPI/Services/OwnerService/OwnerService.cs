@@ -30,6 +30,7 @@ namespace BoardGameShopAPI.Services.OwnerService
                         "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                     owner.OwnerId = createdId;
+                    owner.Status = true;
                     _context.Owners.Add(owner);
                     await _context.SaveChangesAsync();
                     return "Success";
@@ -49,7 +50,7 @@ namespace BoardGameShopAPI.Services.OwnerService
         {
             try
             {
-                return await _context.Owners.OrderBy(ow => ow.OwnerId).ToListAsync();
+                return await _context.Owners.Where(o => o.Status == true).OrderBy(ow => ow.OwnerId).ToListAsync();
             }
             catch(Exception)
             {
@@ -88,6 +89,27 @@ namespace BoardGameShopAPI.Services.OwnerService
                 }
             }
             catch(Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> DeleteOwner(string ownerId)
+        {
+            try
+            {
+                Owner owner = _context.Owners.Find(ownerId);
+                if(owner == null)
+                {
+                    return "NotFound";
+                }
+                else
+                {
+                    owner.Status = false; await _context.SaveChangesAsync();
+                    return "Success";
+                }
+            }
+            catch (Exception ex)
             {
                 return ex.Message;
             }

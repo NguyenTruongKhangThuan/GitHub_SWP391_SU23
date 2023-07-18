@@ -14,8 +14,5 @@ public partial class BoardGame
 
     public string? Image { get; set; }
 
-    [NotMapped]
-    public string? ImageSrc { get; set; }
-
     public virtual ICollection<GamePack> GamePacks { get; set; } = new List<GamePack>();
 }

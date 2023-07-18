@@ -167,12 +167,67 @@ namespace BoardGameShopAPI.Services.PaymentService
                     SoldNumber = l.Sum(i => i.Amount),
                 })
                 .OrderByDescending(l => l.SoldNumber)
-                .Take(3);
+                .Take(3).ToList();
 
             List<GamePack> gamePacks = new List<GamePack>();
-            foreach (var pack in gamePacks)
+            foreach (var pack in soldGamePackList)
             {
                 gamePacks.Add(await _gamePackService.GetGamePack(pack.GamePackId));
+            }
+
+            return gamePacks;
+        }
+
+        public async Task<List<GamePack>> GetBestSellerOfPub(string pubId)
+        {
+            var soldGamePackList = _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
+                (p, odt) => new
+                {
+                    PaymentId = p.PaymentId,
+                    GamePackId = odt.GamePackId,
+                    Amount = odt.Amount,
+                })
+                .GroupBy(l => l.GamePackId)
+                .Select(l => new
+                {
+                    GamePackId = l.Key,
+                    SoldNumber = l.Sum(i => i.Amount),
+                })
+                .OrderByDescending(l => l.SoldNumber)
+                .Take(3).ToList();
+
+            List<GamePack> gamePacks = new List<GamePack>();
+            foreach (var pack in soldGamePackList)
+            {
+                gamePacks.Add(await _gamePackService.GetGamePackByPubId(pubId, pack.GamePackId));
+            }
+
+            return gamePacks;
+        }
+
+        public async Task<List<GamePack>> GetSoldNumOfPubProduct(string pubId)
+        {
+            var pubProductSold = _context.GamePacks.Join(_context.OrderDetails, gp => gp.GamePackId, odt => odt.GamePackId,
+                (gp, odt) => new
+                {
+                    OwnerId = gp.OwnerId,
+                    GamePackId = gp.GamePackId,
+                    Amount = odt.Amount,
+                })
+                .Where(l => l.OwnerId == pubId)
+                .GroupBy(l => l.GamePackId)
+                .Select(l => new
+                {
+                    GamePackId = l.Key,
+                    SoldNumber = l.Sum(i => i.Amount),
+                }).OrderByDescending(l => l.SoldNumber).ToList();
+
+            List<GamePack> gamePacks = new List<GamePack>();
+            foreach (var pack in pubProductSold)
+            {
+                GamePack gamePack = await _gamePackService.GetGamePackByPubId(pubId, pack.GamePackId);
+                gamePack.TotalSold = (int)pack.SoldNumber; 
+                gamePacks.Add(gamePack);
             }
 
             return gamePacks;

@@ -49,7 +49,7 @@ public partial class DbA9bc42BoardgameshopdbContext : DbContext
 
             entity.Property(e => e.BoardGameId).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("text");
-            entity.Property(e => e.Image).HasMaxLength(100);
+            entity.Property(e => e.Image).HasColumnType("text");
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
@@ -60,7 +60,7 @@ public partial class DbA9bc42BoardgameshopdbContext : DbContext
             entity.Property(e => e.ComponentId).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.GamePackId).HasMaxLength(50);
-            entity.Property(e => e.Image).HasMaxLength(100);
+            entity.Property(e => e.Image).HasColumnType("text");
             entity.Property(e => e.Type).HasMaxLength(50);
 
             entity.HasOne(d => d.GamePack).WithMany(p => p.Components)
@@ -78,7 +78,7 @@ public partial class DbA9bc42BoardgameshopdbContext : DbContext
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.GamePackName).HasMaxLength(150);
             entity.Property(e => e.GameRule).HasColumnType("text");
-            entity.Property(e => e.Image).HasMaxLength(100);
+            entity.Property(e => e.Image).HasColumnType("text");
             entity.Property(e => e.Material).HasMaxLength(50);
             entity.Property(e => e.NumberOfPlayer).HasMaxLength(50);
             entity.Property(e => e.Origin).HasMaxLength(50);

@@ -10,6 +10,8 @@ namespace BoardGameShopAPI.Services.OwnerService
 
         Task<string> UpdateOwner(Owner owner);
 
+        Task<string> DeleteOwner(string ownerId);
+
         Task<Owner> OwnerLogin(string ownername, string password);
 
         Task<string> CreateOwnerToken(Owner owner);
