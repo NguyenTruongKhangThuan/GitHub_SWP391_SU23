@@ -2,6 +2,7 @@
 using BoardGameShopAPI.Models;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace BoardGameShopAPI.Services.OrderService
 {
@@ -19,7 +20,20 @@ namespace BoardGameShopAPI.Services.OrderService
         {
             try
             {
-                string createdId = DateTime.Now.GetHashCode().ToString();
+                //ID Formater
+                //Initalize data
+                StringBuilder sb = new StringBuilder("O");
+                Random random = new Random();
+
+                //Set the Middle and End Part of ID
+                int dateValue = DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year;
+                int randomEndNumber = random.Next(1000000, 9999999);
+
+                sb.Append(dateValue);
+                sb.Append(randomEndNumber);
+
+                string createdId = sb.ToString();
+                //Check is ID Existed
                 if(_context.Orders.Find(createdId) == null)
                 {
                     order.OrderId = createdId;

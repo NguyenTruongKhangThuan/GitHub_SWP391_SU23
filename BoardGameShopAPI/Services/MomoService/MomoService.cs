@@ -62,7 +62,7 @@ namespace BoardGameShopAPI.Services.MomoService
             return JsonConvert.DeserializeObject<MomoCreatePaymentResponseModel>(response.Content);
         }
 
-        public async Task<MomoExecuteResponseModel> PaymentExecuteAsync(string extraData, string orderId, string orderInfo, string amount)
+        public async Task<MomoExecuteResponseModel> PaymentExecuteAsync(string extraData, string orderId, string orderInfo, string amount, DateTime time)
         {
             string jsonString = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(extraData));
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
@@ -75,7 +75,7 @@ namespace BoardGameShopAPI.Services.MomoService
                 PaymentId = "",
                 UserId = userId,
                 OrderId = orderId,
-                PaymentDate = DateTime.Now,
+                PaymentDate = time,
                 Method = "MOMO",
                 AmountOfMoney = Convert.ToDouble(amount),
                 State = "Pending"

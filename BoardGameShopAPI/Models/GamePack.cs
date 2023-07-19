@@ -25,7 +25,7 @@ public partial class GamePack
 
     public string? NumberOfPlayer { get; set; }
 
-    public int? GameDuration { get; set; }
+    public string? GameDuration { get; set; }
 
     public string? Origin { get; set; }
 

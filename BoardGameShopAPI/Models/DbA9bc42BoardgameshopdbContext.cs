@@ -80,7 +80,8 @@ public partial class DbA9bc42BoardgameshopdbContext : DbContext
             entity.Property(e => e.GameRule).HasColumnType("text");
             entity.Property(e => e.Image).HasColumnType("text");
             entity.Property(e => e.Material).HasMaxLength(50);
-            entity.Property(e => e.NumberOfPlayer).HasMaxLength(50);
+            entity.Property(e => e.NumberOfPlayer).HasMaxLength(100);
+            entity.Property(e => e.GameDuration).HasMaxLength(100);
             entity.Property(e => e.Origin).HasMaxLength(50);
             entity.Property(e => e.OwnerId).HasMaxLength(50);
             entity.Property(e => e.Size).HasMaxLength(50);
@@ -149,7 +150,7 @@ public partial class DbA9bc42BoardgameshopdbContext : DbContext
             entity.Property(e => e.PaymentId).HasMaxLength(50);
             entity.Property(e => e.Method).HasMaxLength(50);
             entity.Property(e => e.OrderId).HasMaxLength(50);
-            entity.Property(e => e.PaymentDate).HasColumnType("date");
+            entity.Property(e => e.PaymentDate).HasColumnType("datetime");
             entity.Property(e => e.State).HasMaxLength(50);
             entity.Property(e => e.UserId).HasMaxLength(50);
 
