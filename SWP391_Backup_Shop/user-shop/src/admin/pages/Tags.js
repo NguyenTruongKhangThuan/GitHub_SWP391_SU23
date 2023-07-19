@@ -204,7 +204,7 @@ const Tags = () => {
                   id=""
                   placeholder=""
                   className="p-2 rounded-md"
-                  // value={tag.gameTagName}
+                  defaultValue={tag.gameTagName}
                   onChange={(e) => setUpdatedTagName(e.target.value)}
                 />
               </div>
@@ -237,7 +237,7 @@ const Tags = () => {
                   type="text"
                   id=""
                   placeholder=""
-                  // value={tag.gameTagName}
+                  defaultValue={tag.gameTagName}
                   className="p-2 rounded-md"
                 />
               </div>

@@ -423,7 +423,7 @@ const BoardgameInformation = () => {
                     id="boardgameName"
                     placeholder="Enter Boardgame Name"
                     className="p-2 rounded-md"
-                    // value={updatedBoardGame.name}
+                    defaultValue={updatedBoardGame.name}
                     onChange={(e) =>
                       // getUpdatedBoardGameData("name", e.target.value)
                       setUpdatedName(e.target.value)
@@ -451,7 +451,7 @@ const BoardgameInformation = () => {
                     id="boardgameDescription"
                     placeholder="Enter Boardgame Description"
                     className="p-2 rounded-md"
-                    // value={updatedBoardGame.description}
+                    defaultValue={updatedBoardGame.description}
                     onChange={(e) =>
                       // getUpdatedBoardGameData("description", e.target.value)
                       setUpdatedDescription(e.target.value)
@@ -471,7 +471,7 @@ const BoardgameInformation = () => {
                   </button>
                   <button
                     className="bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] rounded-md"
-                    onClick={toggleAddForm}
+                    onClick={toggleUpdate}
                   >
                     Cancel
                   </button>

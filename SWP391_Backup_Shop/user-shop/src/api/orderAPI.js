@@ -30,8 +30,8 @@ export const createMoMoPayment = (data, token) => {
   return axiosClient.post(`${END_POINT.MOMO}?token=${token}`, data);
 };
 
-export const getMoMoResult = (extraData, orderId, orderInfo, amount) => {
+export const getMoMoResult = (extraData, orderId, orderInfo, amount, time) => {
   return axiosClient.get(
-    `${END_POINT.MOMO}?extraData=${extraData}&orderId=${orderId}&orderInfo=${orderInfo}&amount=${amount}`
+    `${END_POINT.MOMO}?extraData=${extraData}&orderId=${orderId}&orderInfo=${orderInfo}&amount=${amount}&time=${time}`
   );
 };
