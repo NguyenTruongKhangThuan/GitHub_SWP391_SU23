@@ -34,6 +34,16 @@ import GamePackages from "./admin/pages/GamePackages";
 import Boardgames from "./admin/pages/Boardgames";
 import Transactions from "./admin/pages/Transactions";
 import Tags from "./admin/pages/Tags";
+import UserDetails from "./admin/pages/UserDetails";
+import PublisherDetails from "./admin/pages/PublisherDetails"
+import AddPublishers from "./admin/pages/AddPublishers";
+import DetailGamePackage from "./admin/pages/DetailGamePackage";
+import DetailBoardgame from "./admin/pages/DetailBoardgame";
+import UpdateBoardgame from "./admin/pages/UpdateBoardgame";
+import DetailTransations from "./admin/pages/DetailTransations";
+import DetailTag from "./admin/pages/DetailTag";
+import AddTag from "./admin/pages/AddTag";
+import UpdateTag from "./admin/pages/UpdateTag";
 
 
 const App = () => {
@@ -87,12 +97,34 @@ const AdminLayout = () => {
         <Routes>
           <Route path="/" element={<Dashboard />}/>
           <Route path="/dashboard" element={<Dashboard/>} />
+
+          {/* Users: R */}
           <Route path="/users" element={<Users />}/>
+          <Route path="/users/details/:id" element={<UserDetails/>}/>
+
+          {/* Publisher: C,R,D */}
           <Route path="/publishers" element={<Publishers />} />
+          <Route path="/publishers/create" element={<AddPublishers/>} />
+          <Route path="/publisher/details/:id" element={<PublisherDetails/>}/>
+
+          {/* GamePackages: R */}
           <Route path="/game-packages" element={<GamePackages />} />
+          <Route path="/game-packages/details/:id" element={<DetailGamePackage/>}/>
+
+          {/* Boardgames: C,R,U,D */}
           <Route path="/boardgames" element={<Boardgames />} />
+          <Route path="/boardgames/details/:id" element={<DetailBoardgame/>}/>
+          <Route path="/boardgames/update/:id" element={<UpdateBoardgame/>}/>
+
+          {/* Transactions: R */}
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/transactions/details/:id" element={<DetailTransations/>}/>
+
+          {/* Tags: C,R,U,D */}
           <Route path="/tags" element={<Tags />} />
+          <Route path="/tags/details/:id" element={<DetailTag/>}/>
+          <Route path="/tags/create" element={<AddTag/>} />
+          <Route path="/tags/update/:id" element={<UpdateTag/>}/>
         </Routes>
       </div>
     </div>

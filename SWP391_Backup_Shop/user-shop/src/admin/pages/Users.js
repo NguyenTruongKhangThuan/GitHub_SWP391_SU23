@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { getUserAPI } from "../../api/adminAPI";
 import AdminAccount from "../components/AdminAccount";
+import { useNavigate } from "react-router-dom";
 
 const Users = () => {
   const [userData, setUserData] = useState([]);
   const [viewDetails, setViewDetails] = useState(false);
   const [userAtIndex, setUserAtIndex] = useState();
   const [userDetail, setUserDetail] = useState();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     refreshUserList();
@@ -76,8 +79,7 @@ const Users = () => {
                   <button
                     className="bg-green-400 hover:bg-green-600 w-[160px] p-2 text-[18px] font-bold rounded-md"
                     onClick={() => {
-                      toggleViewDetails();
-                      setUserDetail(user);
+                      navigate(`/admin/users/details/${user.userId}`, {state: {userInfo: user}})
                     }}
                   >
                     View Details

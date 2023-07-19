@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import { getOrderDetailsAPI, getUserInfoAPI, getUserPaymentsAPI } from '../api/userAPI';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 const UserPaymentDetails = () => {
     const [payments, setPayments] = useState([]);
@@ -55,7 +56,7 @@ const UserPaymentDetails = () => {
                         <tr className={`${index % 2 === 0 ? 'bg-gray-100': 'bg-gray-200'}`}>
                             <td className='border-[2px] border-gray-300 px-4 py-2'>{payment.paymentId}</td>
                             <td className='border-[2px] border-gray-300 px-4 py-2'>{payment.orderId}</td>
-                            <td className='border-[2px] border-gray-300 px-4 py-2'>{payment.paymentDate}</td>
+                            <td className='border-[2px] border-gray-300 px-4 py-2'>{moment(payment.paymentDate).format("DD/MM/YYYY, h:mm:ss")}</td>
                             <td className='border-[2px] border-gray-300 px-4 py-2'>{payment.method}</td>
                             <td className='border-[2px] border-gray-300 px-4 py-2'>{VND.format(payment.amountOfMoney)}</td>
                             <td className='border-[2px] border-gray-300 px-4 py-2'>
