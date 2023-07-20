@@ -25,6 +25,19 @@ const GamePackages = () => {
     setShowDetailsForm(!showDetailsForm);
   };
 
+  //Step 1: Declare 
+  const itemsPerPage = 10; // Adjust this value as per your preference
+  const [currentPage, setCurrentPage] = useState(1);
+
+  //Step 2: Pagination Function
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Modify the following line to calculate the starting and ending index of the items to be displayed on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
   //Dropdown
   const Dropdown = ({gamepack}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -77,7 +90,7 @@ const GamePackages = () => {
   return (
     <div className="mt-2">
       <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
-      <div className="p-[48px]">
+      <div className="p-[48px] h-screen overflow-auto">
         <div className="flex justify-between">
           <h2 className="mt-[16px] mb-[30px] font-bold text-2xl">
             Game Packages List
@@ -104,20 +117,20 @@ const GamePackages = () => {
               </th>
             </tr>
           </thead>
-          {gamePacks.map((gamePack, index) => (
+          {gamePacks.slice(startIndex,endIndex).map((gamePack, index) => (
           <tbody key={gamePack.gamePackId}>
               <tr
                 className={`${
                   index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
                 } text-[16px]`}
               >
-                <td className={`${gamePacks[gamePacks.length - 1].gamePackId === gamePack.gamePackId? 'border-b-[2px]': ''} border-l-[2px]  border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px] border-l-[2px]  border-gray-500 pr-5 p-4`}>
                   {gamePack.gamePackId}
                 </td>
-                <td className={`${gamePacks[gamePacks.length - 1].gamePackId === gamePack.gamePackId? 'border-b-[2px]': ''}  border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px]  border-gray-500 pr-5 p-4`}>
                   {gamePack.gamePackName}
                 </td>
-                <td className={`${gamePacks[gamePacks.length - 1].gamePackId === gamePack.gamePackId? 'border-b-[2px]': ''}  border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px]  border-gray-500 pr-5 p-4`}>
                   <img
                     src={gamePack.image}
                     className="w-[120px] p-2 cursor-pointer"
@@ -125,7 +138,7 @@ const GamePackages = () => {
                   />
                 </td>
                 {gamePack.description.length > 0 && (
-                  <td className={`${gamePacks[gamePacks.length - 1].gamePackId === gamePack.gamePackId? 'border-b-[2px]': ''}  border-gray-500 pr-5 p-4`}>
+                  <td className={`border-b-[1px]  border-gray-500 pr-5 p-4`}>
                     <p>
                       {showFull
                         ? gamePack.description
@@ -141,11 +154,11 @@ const GamePackages = () => {
                     )}
                   </td>
                 )}
-                <td className={`${gamePacks[gamePacks.length - 1].gamePackId === gamePack.gamePackId? 'border-b-[2px]': ''}  border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px]  border-gray-500 pr-5 p-4`}>
                   {VND.format(gamePack.price)}
                 </td>
                 <td 
-                  className={`${gamePacks[gamePacks.length - 1].gamePackId === gamePack.gamePackId? 'border-b-[2px]': ''} border-r-[2px] border-gray-500 pr-5 p-4`}
+                  className={`border-b-[1px] border-r-[2px] border-gray-500 pr-5 p-4`}
                   onClick={() => setGamePackData(gamePack)}
                   >
                       <Dropdown gamepack={gamePack}/>
@@ -154,6 +167,27 @@ const GamePackages = () => {
           </tbody>
           ))}
         </table>
+        <div className="flex justify-end mr-[6px]">
+          <div className="flex justify-center items-center mt-4">
+            <button
+              className="mr-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <p className="text-xl font-bold mx-4">
+                Page {currentPage} of {Math.ceil(gamePacks.length / itemsPerPage)}
+            </p>
+            <button
+              className="ml-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={endIndex >= gamePacks.length}
+            >
+              Next
+            </button>
+          </div>
+        </div> 
   
         {/* Image Modal */}
         {modalVisible && (

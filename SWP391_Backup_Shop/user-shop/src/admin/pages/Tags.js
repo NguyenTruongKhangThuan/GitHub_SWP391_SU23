@@ -177,32 +177,15 @@ const Tags = () => {
                   } text-[16px] w-fit`}
                 >
                   <td
-                    className={`${
-                      gameTags[gameTags.length - 1].gameTagId ===
-                      gameTag.gameTagId
-                        ? "border-b-[2px]"
-                        : ""
-                    } border-l-[2px] border-gray-500 pr-5 p-4`}
+                    className={`border-b-[1px] border-l-[2px] border-gray-500 pr-5 p-4`}
                   >
                     <p className="p-2">{gameTag.gameTagId}</p>
                   </td>
-                  <td
-                    className={`${
-                      gameTags[gameTags.length - 1].gameTagId ===
-                      gameTag.gameTagId
-                        ? "border-b-[2px]"
-                        : ""
-                    } border-gray-500 pr-5 p-4`}
-                  >
+                  <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
                     <p className="p-2">{gameTag.gameTagName}</p>
                   </td>
                   <td
-                    className={`${
-                      gameTags[gameTags.length - 1].gameTagId ===
-                      gameTag.gameTagId
-                        ? "border-b-[2px]"
-                        : ""
-                    } border-r-[2px] border-gray-500 pr-5 p-4`}
+                    className={`border-b-[1px] border-r-[2px] border-gray-500 pr-5 p-4`}
                   >
                     <div className="flex justify-center p-2">
                       <Dropdown tag={gameTag} />

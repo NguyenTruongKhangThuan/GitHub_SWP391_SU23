@@ -20,7 +20,7 @@ const initalData = {
 };
 
 const BoardgameInformation = () => {
-  const [boardgames, setBoardgames] = useState();
+  const [boardgames, setBoardgames] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [clickedImage, setClickedImage] = useState("");
 
@@ -40,6 +40,19 @@ const BoardgameInformation = () => {
       .then((data) => setBoardgames(data))
       .catch((error) => console.log(error));
   };
+
+  //Step 1: Declare
+  const itemsPerPage = 3; // Adjust this value as per your preference
+  const [currentPage, setCurrentPage] = useState(1);
+
+  //Step 2: Pagination Function
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Modify the following line to calculate the starting and ending index of the items to be displayed on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
 
   const Dropdown = ({ boardgame }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -146,73 +159,66 @@ const BoardgameInformation = () => {
               <th className="border-r-[2px] border-b-[2px] border-t-[2px] border-gray-500 pr-5 px-3"></th>
             </tr>
           </thead>
-          {boardgames &&
-            boardgames.map((boardgame, index) => (
-              <tbody>
-                <tr
-                  className={`${
-                    index % 2 === 0 ? "bg-gray-100" : "bg-gray-300"
-                  } text-[16px]`}
+          {boardgames.slice(startIndex, endIndex).map((boardgame, index) => (
+            <tbody>
+              <tr
+                className={`${
+                  boardgames[boardgames.length - 1].boardGameId ===
+                  boardgame.boardGameId
+                    ? "border-b-[2px]"
+                    : ""
+                } border-l-[2px] border-gray-500 pr-5 p-4`}
+              >
+                <td
+                  className={`border-b-[1px] border-l-[2px] border-gray-500 pr-5 p-4`}
                 >
-                  <td
-                    className={`${
-                      boardgames[boardgames.length - 1].boardGameId ===
-                      boardgame.boardGameId
-                        ? "border-b-[2px]"
-                        : ""
-                    } border-l-[2px] border-gray-500 pr-5 p-4`}
-                  >
-                    <p className="p-2">{boardgame.boardGameId}</p>
-                  </td>
-                  <td
-                    className={`${
-                      boardgames[boardgames.length - 1].boardGameId ===
-                      boardgame.boardGameId
-                        ? "border-b-[2px]"
-                        : ""
-                    } border-gray-500 pr-5 p-4`}
-                  >
-                    <p className="p-2">{boardgame.name}</p>
-                  </td>
-                  <td
-                    className={`${
-                      boardgames[boardgames.length - 1].boardGameId ===
-                      boardgame.boardGameId
-                        ? "border-b-[2px]"
-                        : ""
-                    } border-gray-500 pr-5 p-4`}
-                  >
-                    <img
-                      src={boardgame.image}
-                      alt=""
-                      className="w-[120px] p-4 cursor-pointer"
-                      onClick={() => handleImageClick(boardgame.image)}
-                    />
-                  </td>
-                  <td
-                    className={`${
-                      boardgames[boardgames.length - 1].boardGameId ===
-                      boardgame.boardGameId
-                        ? "border-b-[2px]"
-                        : ""
-                    } border-gray-500 pr-5 p-4`}
-                  >
-                    <p className="p-2">{boardgame.description}</p>
-                  </td>
-                  <td
-                    className={`${
-                      boardgames[boardgames.length - 1].boardGameId ===
-                      boardgame.boardGameId
-                        ? "border-b-[2px]"
-                        : ""
-                    } border-r-[2px] border-gray-500 pr-5 p-4`}
-                  >
-                    <Dropdown boardgame={boardgame} />
-                  </td>
-                </tr>
-              </tbody>
-            ))}
+                  <p className="p-2">{boardgame.boardGameId}</p>
+                </td>
+                <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
+                  <p className="p-2">{boardgame.name}</p>
+                </td>
+                <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
+                  <img
+                    src={boardgame.image}
+                    alt=""
+                    className="w-[120px] p-4 cursor-pointer"
+                    onClick={() => handleImageClick(boardgame.image)}
+                  />
+                </td>
+                <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
+                  <p className="p-2">{boardgame.description}</p>
+                </td>
+                <td
+                  className={`border-b-[1px] border-r-[2px] border-gray-500 pr-5 p-4`}
+                >
+                  <Dropdown boardgame={boardgame} />
+                </td>
+              </tr>
+            </tbody>
+          ))}
         </table>
+        <div className="flex justify-end mr-[6px]">
+          <div className="flex justify-center items-center mt-4">
+            <button
+              className="mr-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <p className="text-xl font-bold mx-4">
+              Page {currentPage} of{" "}
+              {Math.ceil(boardgames.length / itemsPerPage)}
+            </p>
+            <button
+              className="ml-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={endIndex >= boardgames.length}
+            >
+              Next
+            </button>
+          </div>
+        </div>
 
         {/* Image Modal */}
         {modalVisible && (
