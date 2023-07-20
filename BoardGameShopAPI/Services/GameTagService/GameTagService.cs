@@ -59,7 +59,7 @@ namespace BoardGameShopAPI.Services.GameTagService
         {
             try
             {
-                return await _context.GameTags.OrderBy(gt => gt.GameTagName).ToListAsync();
+                return await _context.GameTags.OrderBy(gt => gt.GameTagId).ToListAsync();
             }
             catch (Exception ex)
             {
