@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {Link, useNavigate} from "react-router-dom"
 import {
   getBoardgamesAPI,
   postBoardgamesAPI,
@@ -19,20 +20,21 @@ const initalData = {
 };
 
 const BoardgameInformation = () => {
-  const [openAddForm, setOpenAddForm] = useState(false);
-  const [openDetailsForm, setOpenDetailsForm] = useState(false);
-  const [deleteItem, setDeleteItem] = useState(0); //delete according to the index
   const [boardgames, setBoardgames] = useState();
-  const [openUpdateForm, setOpenUpdateForm] = useState(false);
-  const [boardGameInfo, setBoardGameInfo] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [clickedImage, setClickedImage] = useState("");
 
-  //Upload File
-  const [file, setFile] = useState("");
-  const [percent, setPercent] = useState(0);
+  const handleImageClick = (imageUrl) => {
+    setClickedImage(imageUrl);
+    setModalVisible(true);
+  };
 
   useEffect(() => {
     refreshBoardgamesList();
   }, []);
+
+  const navigate = useNavigate();
+  
 
   const refreshBoardgamesList = async () => {
     await getBoardgamesAPI(sessionStorage.getItem("accountToken"))
@@ -40,148 +42,60 @@ const BoardgameInformation = () => {
       .catch((error) => console.log(error));
   };
 
-  const toggleAddForm = () => {
-    setOpenAddForm(!openAddForm);
-    if (openAddForm === true) {
-      console.log("Form opened!");
-    } else {
-      console.log("Form closed!");
+  const Dropdown = ({boardgame}) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleDropdown = () => {
+      setIsOpen(!isOpen)
     }
-  };
 
-  const updateFormSubmission = (e) => {
-    e.preventDefault();
+    return (
+      <div className="relative">
+        <button
+          className="bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+          onClick={toggleDropdown}
+        >
+          Actions
+        </button>
+        {isOpen && (
+          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-50">
+            <button
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+              onClick={() => {
+                navigate(`/admin/boardgames/details/${boardgame.boardGameId}`, {state: {boardGameData: boardgame}})
+              }}
+            >
+              View Details
+            </button>
+            <button
+               className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+               onClick={() => {
+                navigate(`/admin/boardgames/update/${boardgame.boardGameId}`, {state: {boardGameData: boardgame}})
+              }}
+            >
+              Update
+            </button>
+            <button
+               className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                onClick={(e)=>{
+                  setDeleteBoardGameId(boardgame.boardGameId)
+                  deleteBoardGame(e)
+                }
+                }
+            >
+              Remove
+            </button>
+          </div>
+        )}
+      </div>
+    )
 
-    //Take Value In Document
-
-    if (file) {
-      const storageRef = ref(storage, `/files/${file.name}`);
-
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const percent = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-
-          setPercent(percent);
-        },
-        (err) => console.log(err),
-        () => {
-          //downloadUrl
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            UpdateBoardGame(url);
-          });
-        }
-      );
-    }
-  };
-
-  const [updatedBoardGame, setUpdatedBoardGame] = useState();
-  // const [updatedBoardGameData, setUpdatedBoardGameData] =
-  //   useState(updatedBoardGame);
-
-  const [updatedName, setUpdatedName] = useState();
-  const [updatedDescription, setUpdatedDescription] = useState();
-
-  // const getUpdatedBoardGameData = (name, value) => {
-  //   setUpdatedBoardGameData({
-  //     ...updatedBoardGameData,
-  //     [name]: value,
-  //   });
-  // };
-
-  const UpdateBoardGame = (imageUrl) => {
-    var formData = new FormData();
-    formData.append("boardGameId", updatedBoardGame.boardGameId);
-    formData.append("name", updatedName);
-    formData.append("description", updatedDescription);
-    formData.append("image", imageUrl);
-
-    putBoardgameAPI(sessionStorage.getItem("accountToken"), formData)
-      .then((res) => {
-        window.alert(res);
-        refreshBoardgamesList();
-      })
-      .catch((error) => {
-        console.log(error);
-        window.alert("Cannot add boardgame");
-      });
-  };
-
-  const addFormSubmission = (e) => {
-    e.preventDefault();
-
-    //Take Value In Document
-
-    if (file) {
-      const storageRef = ref(storage, `/files/${file.name}`);
-
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const percent = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-
-          setPercent(percent);
-        },
-        (err) => console.log(err),
-        () => {
-          //downloadUrl
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            addNewBoardGame(url);
-          });
-        }
-      );
-    }
-  };
-
-  const [boardGameData, setBoardGameData] = useState(initalData);
-  const getBoardGameData = (name, value) => {
-    setBoardGameData({
-      ...boardGameData,
-      [name]: value,
-    });
-  };
-
-  const addNewBoardGame = (imageUrl) => {
-    var formData = new FormData();
-    formData.append("boardGameId", "empty");
-    formData.append("name", boardGameData.name);
-    formData.append("description", boardGameData.description);
-    formData.append("image", imageUrl);
-
-    postBoardgamesAPI(sessionStorage.getItem("accountToken"), formData)
-      .then((res) => {
-        window.alert(res);
-        refreshBoardgamesList();
-      })
-      .catch((error) => {
-        console.log(error);
-        window.alert("Cannot add boardgame");
-      });
-  };
-
-  const toggleViewDetails = () => {
-    setOpenDetailsForm(!openDetailsForm);
-  };
-
-  const toggleUpdate = () => {
-    setOpenUpdateForm(!openUpdateForm);
-  };
-
-  const toggleViewOrUpdate = () => {
-    //rotate between view details and update
-    if (openDetailsForm) setOpenUpdateForm(false);
-    else setOpenUpdateForm(true);
-  };
+  }
 
   const [deleteBoardGameId, setDeleteBoardGameId] = useState();
   const deleteBoardGame = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
+    
     if (deleteBoardGameId) {
       deleteBoardgameAPI(
         sessionStorage.getItem("accountToken"),
@@ -196,294 +110,89 @@ const BoardgameInformation = () => {
   };
 
   return (
-    <div>
-      <div className="flex justify-end mt-2"><AdminAccount/></div>
+    <div className="p-[40px] h-screen overflow-y-auto">
+      <div className="flex justify-end"><AdminAccount/></div>
       <div className="mt-[20px]">
         <div className="flex justify-between">
-          <h2>Boardgames Management</h2>
+          <h2 className="font-bold text-xl">Boardgames Management</h2>
           <button
-            className="bg-blue-500 flex justify-center w-[120px] p-2 rounded-md"
-            onClick={toggleAddForm}
+            className="bg-blue-500 flex justify-center w-[120px] p-2 font-medium rounded-md"
+            onClick={() => {
+              navigate("/admin/boardgames/create")
+            }}
           >
             Add
           </button>
         </div>
   
-        <table className="mt-[10px]">
-          <thead>
-            <tr className="text-[18px]">
-              <th className="border-[2px] border-gray-500 pr-5 px-3">
-                Boardgame ID
-              </th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3">
-                Boardgame Name
-              </th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3">
-                Boardgame Image
-              </th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3">
-                Boardgame Description
-              </th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3" colSpan={3}>
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+          <table className="mt-[10px]">
+            <thead>
+              <tr className="text-[18px]">
+                <th className="border-l-[2px] border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">
+                  <p className="p-2">Boardgame ID</p>
+                </th>
+                <th className="border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">
+                  <p className="p-2">Boardgame Name</p>
+                </th>
+                <th className="border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">
+                  <p className="p-2">Boardgame Image</p>
+                </th>
+                <th className="border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">
+                  <p className="p-2">Boardgame Description</p>
+                </th>
+                <th className="border-r-[2px] border-b-[2px] border-t-[2px] border-gray-500 pr-5 px-3">
+                </th>
+              </tr>
+            </thead>
             {boardgames &&
               boardgames.map((boardgame, index) => (
-                <tr
-                  className={`${
-                    index % 2 === 0 ? "bg-gray-100" : "bg-gray-300"
-                  } text-[16px]`}
-                >
-                  <td className="border-[2px] border-gray-500 pr-5 pl-2">
-                    {boardgame.boardGameId}
-                  </td>
-                  <td className="border-[2px] border-gray-500 pr-5 pl-2">
-                    {boardgame.name}
-                  </td>
-                  <td className="border-[2px] border-gray-500 pr-5 pl-2">
-                    <img
-                      src={boardgame.image}
-                      alt={boardgame.image}
-                      className="w-[160px] p-4"
-                    />
-                  </td>
-                  <td className="border-[2px] border-gray-500 pr-5 pl-2">
-                    {boardgame.description}
-                  </td>
-                  <td className="border-l-[2px] border-b-[2px] border-r-none border-gray-500 pr-5 pl-2">
-                    <button
-                      className="bg-green-400 hover:bg-green-600 w-[160px] p-4 text-[18px] font-bold rounded-md"
-                      onClick={() => {
-                        toggleViewDetails();
-                        setBoardGameInfo(boardgame);
-                      }}
-                    >
-                      View Details
-                    </button>
-                  </td>
-                  <td className="border-b-[2px] border-gray-500 pr-5 pl-2">
-                    <button
-                      className="bg-yellow-400 hover:bg-yellow-500 w-[160px] p-4 text-[18px] font-bold rounded-md"
-                      onClick={() => {
-                        toggleUpdate();
-                        setUpdatedBoardGame(boardgame);
-                      }}
-                    >
-                      Update
-                    </button>
-                  </td>
-                  <td className="border-r-[2px] border-b-[2px] border-gray-500 pr-5 pl-2">
-                    <button
-                      className="bg-red-400 hover:bg-red-500 w-[160px] p-4 text-[18px] font-bold rounded-md"
-                      onClick={(e) => {
-                        // window.alert("test");
-                        setDeleteBoardGameId(boardgame.boardGameId);
-                        deleteBoardGame(e);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        {openAddForm && (
-          <div className="flex justify-center">
-            <form className="w-[840px]">
-              <div className="grid grid-cols-2 mt-4">
-                <div className="flex flex-col w-[400px]">
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Name</label>
-                    <input
-                      type="text"
-                      id="boardgameName"
-                      placeholder="Enter Boardgame Name"
-                      className="p-2 rounded-md"
-                      onChange={(e) => getBoardGameData("name", e.target.value)}
-                    />
-                  </div>
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Image</label>
-                    <input
-                      type="file"
-                      accept={"image/*"}
-                      id="boardgameImageSrc"
-                      placeholder="Import Boardgame Image"
-                      className="p-2 rounded-md"
-                      onChange={(e) => setFile(e.target.files[0])}
-                    />
-                  </div>
-                  <div></div>
-                </div>
-                <div className="flex flex-col w-[400px]">
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Description</label>
-                    <input
-                      type="text"
-                      id="boardgameDescription"
-                      placeholder="Enter Boardgame Description"
-                      className="p-2 rounded-md"
-                      onChange={(e) =>
-                        getBoardGameData("description", e.target.value)
-                      }
-                    />
-                  </div>
-                  <div className=" flex justify-end items-center gap-x-6">
-                    <button
-                      onClick={addFormSubmission}
-                      className="bg-blue-300 hover:bg-blue-600 items-center mt-4 p-4 w-[120px] rounded-md"
-                    >
-                      Add
-                    </button>
-                    <button
-                      className="bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] rounded-md"
-                      onClick={toggleAddForm}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <tbody>
+                  <tr
+                    className={`${
+                      index % 2 === 0 ? "bg-gray-100" : "bg-gray-300"
+                    } text-[16px]`}
+                  >
+                    <td className={`${boardgames[boardgames.length - 1].boardGameId === boardgame.boardGameId? 'border-b-[2px]': ''} border-l-[2px] border-gray-500 pr-5 p-4`}>
+                      <p className="p-2">{boardgame.boardGameId}</p>
+                    </td>
+                    <td className={`${boardgames[boardgames.length - 1].boardGameId === boardgame.boardGameId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
+                      <p className="p-2">{boardgame.name}</p>
+                    </td>
+                    <td className={`${boardgames[boardgames.length - 1].boardGameId === boardgame.boardGameId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
+                      <img
+                        src={boardgame.image}
+                        alt=""
+                        className="w-[120px] p-4 cursor-pointer"
+                        onClick={() => handleImageClick(boardgame.image)}
+                      />
+                    </td>
+                    <td className={`${boardgames[boardgames.length - 1].boardGameId === boardgame.boardGameId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
+                      <p className="p-2">{boardgame.description}</p>
+                    </td>
+                    <td className={`${boardgames[boardgames.length - 1].boardGameId === boardgame.boardGameId? 'border-b-[2px]': ''} border-r-[2px] border-gray-500 pr-5 p-4`}>
+                      <Dropdown boardgame={boardgame} />
+                    </td>
+                  </tr>
+            </tbody>
+          ))}
+          </table>
+
+        {/* Image Modal */}
+        {modalVisible && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+            <div className="max-w-[90%] max-h-[90%]">
+              <img src={clickedImage} alt="Enlarged" className="w-full h-auto" />
+              <button
+                className="absolute top-10 right-0 py-2 px-4 mr-4 rounded-md text-white bg-red-500 hover:bg-red-600"
+                onClick={() => setModalVisible(false)}
+              >
+                Close
+              </button>
+            </div>
           </div>
         )}
-        {openDetailsForm && boardGameInfo && (
-          <div className="flex justify-center">
-            <form className="w-[840px]">
-              <div className="grid grid-cols-2 mt-4">
-                <div className="flex flex-col w-[400px]">
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Name</label>
-                    <input
-                      type="text"
-                      id="boardgameName"
-                      placeholder="Enter Boardgame Name"
-                      className="p-2 rounded-md"
-                      value={boardGameInfo.name}
-                    />
-                  </div>
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Image</label>
-                    {/* <input
-                      type="file"
-                      accept={"/image/*"}
-                      id="boardgameImageSrc"
-                      placeholder="Import Boardgame Image"
-                      className="p-2 rounded-md"
-                    /> */}
-                    <img
-                      src={boardGameInfo.image}
-                      alt={boardGameInfo.name}
-                      id="boardgameImage"
-                      className="p-2 rounded-md"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-                <div className="flex flex-col w-[400px]">
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Description</label>
-                    <input
-                      type="text"
-                      id="boardgameDescription"
-                      placeholder="Enter Boardgame Description"
-                      className="p-2 rounded-md"
-                      value={boardGameInfo.description}
-                    />
-                  </div>
-                  <div className=" flex justify-end items-center gap-x-6">
-                    <button
-                      onClick={toggleViewOrUpdate}
-                      className="bg-yellow-300 hover:bg-yellow-600 items-center mt-4 p-4 w-[240px] text-[16px] rounded-md"
-                    >
-                      Update Boardgames
-                    </button>
-                    <button
-                      className="bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] text-[16px] rounded-md"
-                      onClick={toggleViewDetails}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        )}
-        {openUpdateForm && updatedBoardGame && (
-          <div className="flex justify-center">
-            <form className="w-[840px]">
-              <div className="grid grid-cols-2 mt-4">
-                <div className="flex flex-col w-[400px]">
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Name</label>
-                    <input
-                      type="text"
-                      id="boardgameName"
-                      placeholder="Enter Boardgame Name"
-                      className="p-2 rounded-md"
-                      // value={updatedBoardGame.name}
-                      onChange={(e) =>
-                        // getUpdatedBoardGameData("name", e.target.value)
-                        setUpdatedName(e.target.value)
-                      }
-                    />
-                  </div>
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Image</label>
-                    <input
-                      type="file"
-                      accept={"image/*"}
-                      id="boardgameImageSrc"
-                      placeholder="Import Boardgame Image"
-                      className="p-2 rounded-md"
-                      onChange={(e) => setFile(e.target.files[0])}
-                    />
-                  </div>
-                  <div></div>
-                </div>
-                <div className="flex flex-col w-[400px]">
-                  <div className="flex flex-col mt-4">
-                    <label className="mb-3">Boardgame Description</label>
-                    <input
-                      type="text"
-                      id="boardgameDescription"
-                      placeholder="Enter Boardgame Description"
-                      className="p-2 rounded-md"
-                      // value={updatedBoardGame.description}
-                      onChange={(e) =>
-                        // getUpdatedBoardGameData("description", e.target.value)
-                        setUpdatedDescription(e.target.value)
-                      }
-                    />
-                  </div>
-                  <div className=" flex justify-end items-center gap-x-6">
-                    <button
-                      onClick={(e) => {
-                        updateFormSubmission(e);
-                        toggleUpdate();
-                        //Add a
-                      }}
-                      className="bg-blue-300 hover:bg-blue-600 items-center mt-4 p-4 w-[120px] rounded-md"
-                    >
-                      Add
-                    </button>
-                    <button
-                      className="bg-red-300 hover:bg-red-500 items-center mt-4 p-4 w-[120px] rounded-md"
-                      onClick={toggleAddForm}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        )}
+
+        
       </div>
     </div>
   );

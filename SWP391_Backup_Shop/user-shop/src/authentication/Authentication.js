@@ -162,6 +162,7 @@ function Authentication() {
       let email = document.getElementById("sp-email").value;
       let password = document.getElementById("sp-password").value;
       let confirmPassword = document.getElementById("sp-confirmPassword").value;
+      let fullname = document.getElementById("sp-fullname").value;
 
       var formData = new FormData();
       formData.append("userId", "Utemp");
@@ -169,7 +170,7 @@ function Authentication() {
       formData.append("username", username);
       formData.append("password", password);
       formData.append("email", email);
-      formData.append("fullName", "");
+      formData.append("fullName", fullname);
       formData.append("birthday", moment(new Date()).format("L"));
       formData.append("gender", "");
       formData.append("address", "");
@@ -205,6 +206,16 @@ function Authentication() {
                     type="text"
                     id="sp-username"
                     placeholder="Enter your Username"
+                    required
+                    className="border-b-2 border-solid p-2 "
+                  ></input>
+                </div>
+                <div className="flex flex-col py-2 mx-8">
+                  <label className="font-bold ml-1 mb-1">Fullname</label>
+                  <input
+                    type="text"
+                    id="sp-fullname"
+                    placeholder="Enter your Fullname"
                     required
                     className="border-b-2 border-solid p-2 "
                   ></input>

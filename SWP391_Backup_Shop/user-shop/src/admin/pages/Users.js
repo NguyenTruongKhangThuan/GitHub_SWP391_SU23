@@ -27,6 +27,38 @@ const Users = () => {
     setUserAtIndex(index);
   };
 
+  //Dropdown
+  const Dropdown = ({user}) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleDropdown = () => {
+      setIsOpen(!isOpen)
+    }
+
+    return (
+      <div className="relative">
+        <button
+          className="bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+          onClick={toggleDropdown}
+        >
+          Actions
+        </button>
+        {isOpen && (
+          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-50">
+            <button
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+              onClick={() => {
+                navigate(`/admin/users/details/${user.userId}`, {state: {userInfo: user}})
+              }}
+            >
+              View Details
+            </button>
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="mt-2">
       <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
@@ -37,53 +69,53 @@ const Users = () => {
         <table className="mt-[10px]">
           <thead>
             <tr className="text-[16px]">
-              <th className="border-[2px] border-gray-500 pr-5 px-3">User ID</th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3">Username</th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3">
-                User Fullname
+              <th 
+                className="border-t-[2px] border-b-[2px] border-l-[2px] border-r-none border-gray-500 pr-5 px-3">
+                  <p className="p-2">User ID</p>
               </th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3">
-                User Email
+              <th 
+                className="border-t-[2px] border-b-[2px] border-l-none border-r-none border-gray-500 pr-5 px-3">
+                  <p className="p-2">Username</p>
               </th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3">
-                User Password
+              <th 
+                className="border-t-[2px] border-b-[2px] border-l-none border-r-none border-gray-500 pr-5 px-3">
+                <p className="p-2">User Fullname</p>
               </th>
-              <th className="border-[2px] border-gray-500 pr-5 px-3">Actions</th>
+              <th className="border-t-[2px] border-b-[2px] border-l-none border-r-none border-gray-500 pr-5 px-3">
+                <p className="p-2">User Email</p>
+              </th>
+              <th className="border-t-[2px] border-b-[2px] border-l-none border-r-none border-gray-500 pr-5 px-3">
+                <p className="p-2">User Password</p>
+              </th>
+              <th className="border-t-[2px] border-b-[2px] border-l-none border-r-[2px] border-gray-500 pr-5 px-3"></th>
             </tr>
           </thead>
           {userData.map((user, index) => (
-            <tbody className="bg-gray-200">
+            <tbody key={user.userId} className="bg-gray-200">
               {/* Dynamically update the data */}
               <tr
                 className={`${
-                  index % 2 === 0 ? "bg-gray-100" : "bg-gray-300"
+                  index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
                 } text-[16px]`}
               >
                 {/* Note: The declaration of each td must match with the define in SQL */}
-                <td className="border-[2px] border-gray-500 pr-5 p-4">
+                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-l-[2px] border-gray-500 pr-5 p-4`}>
                   {user.userId}
                 </td>
-                <td className="border-[2px] border-gray-500 pr-5 p-4">
+                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
                   {user.username}
                 </td>
-                <td className="border-[2px] border-gray-500 pr-5 p-4">
+                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
                   {user.fullName}
                 </td>
-                <td className="border-[2px] border-gray-500 pr-5 p-4">
+                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
                   {user.email}
                 </td>
-                <td className="border-[2px] border-gray-500 pr-5 p-4">
+                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
                   {user.password}
                 </td>
-                <td className="border-l-[2px] border-b-[2px] border-r-[2px] border-gray-500 pr-5 pl-2">
-                  <button
-                    className="bg-green-400 hover:bg-green-600 w-[160px] p-2 text-[18px] font-bold rounded-md"
-                    onClick={() => {
-                      navigate(`/admin/users/details/${user.userId}`, {state: {userInfo: user}})
-                    }}
-                  >
-                    View Details
-                  </button>
+                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-r-[2px] border-gray-500 pr-5 pl-2`}>
+                  <Dropdown user={user}/>
                 </td>
               </tr>
             </tbody>

@@ -94,8 +94,14 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
 
   const [numUsers, setNumUsers] = useState();
   const [numProducts, setNumProducts] = useState();
-  const [numIncome, setNumIncome] = useState();
+  const [numIncome, setNumIncome] = useState([]);
   const [bestSeller, setBestSeller] = useState([]);
+  const [currentIncome, setCurrentIncome] = useState();
+
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
 
   useEffect(() => {
     getBestSellerAPI(sessionStorage.getItem("accountToken"))
@@ -121,10 +127,13 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
 
   const valueNumIncome = () => {
     getStatisticIncomeAPI(sessionStorage.getItem("accountToken"))
-      .then((data) => setNumIncome(data))
+      .then((data) => {
+        setNumIncome(data)
+        setCurrentIncome(data[0].income)
+      })
       .catch((error) => console.log(error));
 
-    return numIncome;
+      return currentIncome
   };
 
   return (
@@ -178,7 +187,7 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
                 <GrMoney className="text-[50px]" />
                 <div className="flex flex-col">
                   <h2 className="text-[16px] font-medium">Total revenue is:</h2>
-                  <h1 className="text-[20px]">{valueNumIncome()} VND</h1>
+                  <h1 className="text-[20px]">{VND.format(valueNumIncome())}</h1>
                 </div>
               </div>
             </div>

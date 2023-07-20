@@ -8,7 +8,7 @@ const UserDetails = () => {
     let {userInfo} = location.state;
     return (
         <div>
-            <div className='flex justify-end'><AdminAccount/></div>
+            <div className='flex justify-end p-4'><AdminAccount/></div>
             <div className="flex flex-col items-center">
                 <h2 className="mt-10 font-bold text-2xl text-center">User Details - {userInfo.userId}</h2>
                 <div className="grid grid-cols-2 mt-8 w-[640px] justify-center items-center">
