@@ -29,21 +29,19 @@ import Sales from "./publisher/page/Sales";
 import Sidebar from "./admin/components/Sidebar";
 import Dashboard from "./admin/pages/Dashboard";
 import Users from "./admin/pages/Users";
-import Publishers from "./admin/pages/Publishers"
-import GamePackages from "./admin/pages/GamePackages";
-import Boardgames from "./admin/pages/Boardgames";
-import Transactions from "./admin/pages/Transactions";
-import Tags from "./admin/pages/Tags";
 import UserDetails from "./admin/pages/UserDetails";
+import Publishers from "./admin/pages/Publishers"
 import PublisherDetails from "./admin/pages/PublisherDetails"
 import AddPublishers from "./admin/pages/AddPublishers";
+import GamePackages from "./admin/pages/GamePackages";
 import DetailGamePackage from "./admin/pages/DetailGamePackage";
+import Boardgames from "./admin/pages/Boardgames";
+import AddBoardgames from "./admin/pages/AddBoardgames";
 import DetailBoardgame from "./admin/pages/DetailBoardgame";
 import UpdateBoardgame from "./admin/pages/UpdateBoardgame";
+import Tags from "./admin/pages/Tags";
+import Transactions from "./admin/pages/Transactions";
 import DetailTransations from "./admin/pages/DetailTransations";
-import DetailTag from "./admin/pages/DetailTag";
-import AddTag from "./admin/pages/AddTag";
-import UpdateTag from "./admin/pages/UpdateTag";
 
 
 const App = () => {
@@ -115,6 +113,7 @@ const AdminLayout = () => {
           <Route path="/boardgames" element={<Boardgames />} />
           <Route path="/boardgames/details/:id" element={<DetailBoardgame/>}/>
           <Route path="/boardgames/update/:id" element={<UpdateBoardgame/>}/>
+          <Route path="/boardgames/create" element={<AddBoardgames/>} />
 
           {/* Transactions: R */}
           <Route path="/transactions" element={<Transactions />} />
@@ -122,9 +121,6 @@ const AdminLayout = () => {
 
           {/* Tags: C,R,U,D */}
           <Route path="/tags" element={<Tags />} />
-          <Route path="/tags/details/:id" element={<DetailTag/>}/>
-          <Route path="/tags/create" element={<AddTag/>} />
-          <Route path="/tags/update/:id" element={<UpdateTag/>}/>
         </Routes>
       </div>
     </div>

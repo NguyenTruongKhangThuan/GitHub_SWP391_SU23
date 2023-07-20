@@ -4,14 +4,12 @@ import moment from 'moment'
 import AdminAccount from '../components/AdminAccount'
 
 const PublisherDetails = () => {
-    const location = useLocation();
-    let {publisher} = location.state;
-
-    console.log(publisher);
-
+  const location = useLocation();
+  let {publisherInfo} = location.state;
   return (
     <div>
-      <div className='flex justify-end'><AdminAccount/></div>
+      <div className='flex justify-end p-2'><AdminAccount/></div>
+      <h2 className='text-center font-bold text-2xl'>Publisher Information: {publisherInfo.ownerId}</h2>
       <div className="flex justify-center">
             <form className="w-[840px]">
               <div className="grid grid-cols-2 mt-4">
@@ -22,6 +20,7 @@ const PublisherDetails = () => {
                       type="text"
                       id="ownerId"
                       className="p-2 rounded-md"
+                      value={publisherInfo.ownerId}
                     />
                   </div>
                   <div className="flex flex-col mt-4">
@@ -30,6 +29,7 @@ const PublisherDetails = () => {
                       type="text"
                       id="ownerUsername"
                       className="p-2 rounded-md"
+                      value={publisherInfo.ownerName}
                     />
                   </div>
                   <div className="flex flex-col mt-4">
@@ -38,6 +38,7 @@ const PublisherDetails = () => {
                       type="password"
                       id="ownerPassword"
                       className="p-2 rounded-md"
+                      value={publisherInfo.password}
                     />
                   </div>
                   <div></div>
@@ -49,6 +50,7 @@ const PublisherDetails = () => {
                       type="text"
                       id="ownerFullName"
                       className="p-2 rounded-md"
+                      value={publisherInfo.fullName}
                     />
                   </div>
                   <div className="flex flex-col mt-4">
@@ -57,6 +59,7 @@ const PublisherDetails = () => {
                       type="text"
                       id="ownerEmail"
                       className="p-2 rounded-md"
+                      value={publisherInfo.email}
                     />
                   </div>
                   <div className="flex flex-col mt-4">
@@ -65,13 +68,14 @@ const PublisherDetails = () => {
                       type="text"
                       id="ownerPhoneNumber"
                       className="p-2 rounded-md"
+                      value={publisherInfo.phoneNumber}
                     />
                   </div>
                 </div>
               </div>
-              <Link to={"/admin/publishers"}>
+              <Link to={"/admin/publishers"} className='flex justify-end'>
                   <button
-                    className="bg-red-500 px-4 py-2 text-[18px] rounded-md"
+                    className="bg-red-500 hover:bg-red-600 px-4 py-2 mt-4 text-[18px] font-bold rounded-md"
                   >
                     Cancel View Details
                   </button>
