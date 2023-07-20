@@ -2,11 +2,19 @@ import React, { useState, useContext } from "react";
 
 import { Link } from "react-router-dom";
 
-import { BsPlus, BsEyeFill, BsTrash} from "react-icons/bs";
+import { BsPlus, BsEyeFill, BsTrash } from "react-icons/bs";
 
+import { deleteGamePackAPI } from "../../api/publisherAPI";
 
 const Product = ({ product }) => {
   const { gamePackId, image, category, gamePackName, price } = product;
+
+  const deleteHandler = (e) => {
+    e.preventDefault();
+    deleteGamePackAPI(sessionStorage.getItem("accountToken", gamePackId))
+      .then((res) => window.alert(res))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
@@ -21,7 +29,10 @@ const Product = ({ product }) => {
           </div>
         </div>
         <div className="absolute top-6 right-11 group-hover:right-5 p-2 flex-col items-center justify-center gap-y-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <button className="bg-red-400 w-12 h-12 flex items-center justify-center mb-4 drop-shadow-xl">
+          <button
+            className="bg-red-400 w-12 h-12 flex items-center justify-center mb-4 drop-shadow-xl"
+            onClick={deleteHandler}
+          >
             <BsTrash />
           </button>
           <Link

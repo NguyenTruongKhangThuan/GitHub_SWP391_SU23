@@ -33,7 +33,12 @@ function PaymentResult() {
 
   return (
     <div
-      onLoad={() => setTime(moment(Date.now.time).format("DD/MM/YYYY h:mm:ss"))}
+      onLoad={() => {
+        var date = moment(Date.now.time)
+          .format("DD/MM/YYYY h:mm:ss")
+          .toString();
+        setTime(date);
+      }}
     >
       <Header />
       <div className="w-full h-screen flex justify-center items-center bg-gray-100">

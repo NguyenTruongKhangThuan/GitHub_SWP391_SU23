@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { getPaymentAPI } from "../../api/adminAPI";
+import moment from "moment";
 
 const Transaction = () => {
   const [payments, setPayments] = useState([]);
   const [openDetailsForm, setOpenDetailsForm] = useState(false);
   const [transactionData, setTransactionData] = useState();
+
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
 
   useEffect(() => {
     refreshPaymentsList();
@@ -17,7 +23,7 @@ const Transaction = () => {
   };
 
   return (
-    <div>
+    <div className="p-8">
       <div className="flex justify-between mt-4">
         <h1 className="mt-[20px] mb-[30px] font-bold text-2xl">
           Transactions Management
@@ -40,7 +46,6 @@ const Transaction = () => {
             <th className="border-[2px] border-gray-500 pr-5 px-3">
               Total Payment
             </th>
-            <th className="border-[2px] border-gray-500 pr-5 px-3">State</th>
             <th className="border-[2px] border-gray-500 pr-5 px-3">Actions</th>
           </tr>
         </thead>
@@ -58,27 +63,21 @@ const Transaction = () => {
                 {payment.userId}
               </td>
               <td className="border-[2px] border-gray-500 pr-5 pl-2">
-                {payment.orderId}
+                 {payment.orderId}
               </td>
               <td className="border-[2px] border-gray-500 pr-5 pl-2">
-                {payment.paymentDate}
+                <div className="flex justify-between gap-x-10">
+                  <p>{moment(payment.paymentDate).format("DD/MM/YYYY")}</p>
+                  <p>{moment(payment.paymentDate).format("hh:mm:ss")}</p>
+                </div>
               </td>
               <td className="border-[2px] border-gray-500 pr-5 pl-2">
                 {payment.method}
               </td>
               <td className="border-[2px] border-gray-500 pr-5 pl-2">
-                {payment.amountOfMoney}
+                {VND.format(payment.amountOfMoney)}
               </td>
-              <td
-                className={`border-[2px] border-gray-500 pr-5 pl-2 ${
-                  payment.state === "Pending"
-                    ? "text-yellow-600"
-                    : "text-green-400"
-                }`}
-              >
-                {payment.state}
-              </td>
-              <td className="border-l-[2px] border-b-[2px] border-r-none border-gray-500 pr-5 pl-2">
+              <td className="border-l-[2px] border-b-[2px] border-r-[2px] border-gray-500 pr-5 pl-2">
                 <button
                   className="bg-green-400 hover:bg-green-600 w-[160px] py-2 text-[18px] font-bold rounded-md"
                   onClick={() => {

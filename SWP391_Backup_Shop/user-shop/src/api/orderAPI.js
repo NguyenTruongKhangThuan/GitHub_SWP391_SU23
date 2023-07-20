@@ -32,6 +32,6 @@ export const createMoMoPayment = (data, token) => {
 
 export const getMoMoResult = (extraData, orderId, orderInfo, amount, time) => {
   return axiosClient.get(
-    `${END_POINT.MOMO}?extraData=${extraData}&orderId=${orderId}&orderInfo=${orderInfo}&amount=${amount}&time=${time}`
+    `${END_POINT.MOMO}?extraData=${extraData}&orderId=${orderId}&orderInfo=${orderInfo}&amount=${amount}&dateStr=${time}`
   );
 };

@@ -20,7 +20,13 @@ import {
 const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
   const gapX = isSidebarOpen ? "20" : "30";
   const testLineGraph = {
-    labels: ["June 1", "June 8", "June 15", "June 22", "June 29"],
+    labels: [
+      ["", ""],
+      ["", ""],
+      ["", ""],
+      ["", ""],
+      ["", ""],
+    ],
     datasets: [
       {
         label: "Total Sales",
@@ -45,11 +51,14 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
       x: {
         type: "category",
       },
+      x2: {
+        labels: ["asdasd", "Adssad"],
+      },
       y: {
         // Add any additional configuration for the y scale if needed
         beginAtZero: true, // Start the y-axis scale from zero
         ticks: {
-          stepSize: 5, // Specify the step size for the y-axis ticks
+          stepSize: 1000, // Specify the step size for the y-axis ticks
         },
       },
     },
@@ -94,8 +103,11 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
 
   const [numUsers, setNumUsers] = useState();
   const [numProducts, setNumProducts] = useState();
-  const [numIncome, setNumIncome] = useState();
+  const [numIncome, setNumIncome] = useState([]);
   const [bestSeller, setBestSeller] = useState([]);
+  const [currentIncome, setCurrentIncome] = useState();
+
+  const [lineGraph, setLineGraph] = useState(testLineGraph);
 
   useEffect(() => {
     getBestSellerAPI(sessionStorage.getItem("accountToken"))
@@ -121,15 +133,103 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
 
   const valueNumIncome = () => {
     getStatisticIncomeAPI(sessionStorage.getItem("accountToken"))
-      .then((data) => setNumIncome(data))
+      .then((data) => {
+        setNumIncome(data);
+        setCurrentIncome(data[0].income);
+        createLineGraph(data);
+      })
       .catch((error) => console.log(error));
 
-    return numIncome;
+    return currentIncome;
+  };
+
+  const getMonthName = (month) => {
+    switch (month) {
+      case 1:
+        return "JAN";
+      case 2:
+        return "FEB";
+      case 3:
+        return "MAR";
+      case 4:
+        return "APR";
+      case 5:
+        return "MAY";
+      case 6:
+        return "JUN";
+      case 7:
+        return "JUL";
+      case 8:
+        return "AUG";
+      case 9:
+        return "SEP";
+      case 10:
+        return "OCT";
+      case 11:
+        return "NOV";
+      case 12:
+        return "DEC";
+      default:
+        break;
+    }
+  };
+
+  const createLineGraph = (dataInfo) => {
+    setLineGraph({
+      ...lineGraph,
+      labels: [
+        [`${getMonthName(dataInfo[4].month)} `, `${dataInfo[4].year}`],
+        [`${getMonthName(dataInfo[3].month)} `, `${dataInfo[3].year}`],
+        [`${getMonthName(dataInfo[2].month)} `, `${dataInfo[2].year}`],
+        [`${getMonthName(dataInfo[1].month)} `, `${dataInfo[1].year}`],
+        [`${getMonthName(dataInfo[0].month)} `, `${dataInfo[0].year}`],
+      ],
+      datasets: [
+        {
+          label: "Total Sales",
+          data: [
+            dataInfo[4].income,
+            dataInfo[3].income,
+            dataInfo[2].income,
+            dataInfo[1].income,
+            dataInfo[0].income,
+          ],
+          borderColor: "red",
+          backgroundColor: "transparent",
+        },
+        {
+          label: "Shop Income",
+          data: [
+            dataInfo[4].income * 0.4,
+            dataInfo[3].income * 0.4,
+            dataInfo[2].income * 0.4,
+            dataInfo[1].income * 0.4,
+            dataInfo[0].income * 0.4,
+          ],
+          borderColor: "blue",
+          backgroundColor: "transparent",
+        },
+        {
+          label: "Publisher Income",
+          data: [
+            dataInfo[4].income * 0.6,
+            dataInfo[3].income * 0.6,
+            dataInfo[2].income * 0.6,
+            dataInfo[1].income * 0.6,
+            dataInfo[0].income * 0.6,
+          ],
+          borderColor: "green",
+          backgroundColor: "transparent",
+        },
+      ],
+    });
   };
 
   return (
     <div className="mt-2">
-      <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
+      <div className="flex justify-end mr-[60px]">
+        <AdminAccount />
+      </div>
       <div className="p-6">
         <h2 className="font-bold text-2xl ml-10">Dashboard</h2>
         <div
@@ -191,8 +291,8 @@ const Dashboard = ({ isSidebarOpen, toggleSidebar }) => {
               }}
             >
               {/* This is where we want to display graph */}
-              <Charts type={"Line"} data={testLineGraph} content={"Sales"} />
-              <Charts type="Pie" data={testPieGraph} content="Boardgame" />
+              <Charts type={"Line"} data={lineGraph} content={"Sales"} />
+              {/* <Charts type="Pie" data={testPieGraph} content="Boardgame" /> */}
             </div>
           </div>
           <div

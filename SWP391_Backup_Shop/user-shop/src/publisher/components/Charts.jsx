@@ -83,7 +83,7 @@ const Charts = ({ type, data, content }) => {
           id={chartId}
           className={
             type === "Line" || type === "Bar"
-              ? "w-[780px] h-[360px]"
+              ? "w-[460px] h-[360px]"
               : "h-[160px]"
           }
         />

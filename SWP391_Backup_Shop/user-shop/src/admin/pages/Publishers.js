@@ -6,9 +6,11 @@ import {
   banOwnerAPI,
 } from "../../api/adminAPI";
 import AdminAccount from "../components/AdminAccount";
+import { useNavigate } from "react-router-dom";
 
 const Owner = () => {
   const [publishers, setPublishers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     refreshPublishersList();
@@ -66,7 +68,9 @@ const Owner = () => {
           <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-50">
             <button
               className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
-              onClick={() => handleActionClick("View Details")}
+              onClick={() => {
+                navigate(`/admin/publisher/details/${publisherData.ownerId}`, {state: {publisherInfo: publisherData}})
+              }}
             >
               View Details
             </button>
@@ -88,11 +92,6 @@ const Owner = () => {
 
   const toggleAddForm = () => {
     setOpenAddForm(!openAddForm);
-    if (openAddForm === true) {
-      console.log("Form opened!");
-    } else {
-      console.log("Form closed!");
-    }
   };
 
   const addFormSubmission = (e) => {
@@ -129,9 +128,9 @@ const Owner = () => {
       <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
       <div className="p-[60px]">
         <div className="flex justify-between">
-          <h2>Publishers Management</h2>
+          <h2 className="font-bold text-xl">Publishers Management</h2>
           <button
-            className="bg-blue-500 flex justify-center mr-14 w-[120px] p-2 rounded-md"
+            className="bg-blue-500 flex justify-center mr-14 w-[100px] p-2 rounded-md font-bold"
             onClick={toggleAddForm}
           >
             Add
@@ -193,8 +192,7 @@ const Owner = () => {
                     setPublisherData(publisher);
                   }}
                 >
-                  {" "}
-                  <Dropdown />{" "}
+                  <Dropdown />
                 </td>
               </tr>
             ))}
