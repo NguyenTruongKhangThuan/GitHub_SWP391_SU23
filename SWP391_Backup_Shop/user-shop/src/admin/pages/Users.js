@@ -9,6 +9,17 @@ const Users = () => {
   const [userAtIndex, setUserAtIndex] = useState();
   const [userDetail, setUserDetail] = useState();
 
+  //Pagination
+
+  //Step 1: Declare 
+  const itemsPerPage = 10; // Adjust this value as per your preference
+  const [currentPage, setCurrentPage] = useState(1);
+
+  //Step 2: Pagination Function
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +39,7 @@ const Users = () => {
   };
 
   //Dropdown
-  const Dropdown = ({user}) => {
+  const Dropdown = ({ user }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -48,7 +59,7 @@ const Users = () => {
             <button
               className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
               onClick={() => {
-                navigate(`/admin/users/details/${user.userId}`, {state: {userInfo: user}})
+                navigate(`/admin/users/details/${user.userId}`, { state: { userInfo: user } })
               }}
             >
               View Details
@@ -58,10 +69,13 @@ const Users = () => {
       </div>
     )
   }
+  // Modify the following line to calculate the starting and ending index of the items to be displayed on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
 
   return (
     <div className="mt-2">
-      <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
+      <div className="flex justify-end mr-[60px]"><AdminAccount /></div>
       <div className="p-8">
         <div className="flex justify-between">
           <h2 className="text-xl font-bold">Users Management</h2>
@@ -69,15 +83,15 @@ const Users = () => {
         <table className="mt-[10px]">
           <thead>
             <tr className="text-[16px]">
-              <th 
+              <th
                 className="border-t-[2px] border-b-[2px] border-l-[2px] border-r-none border-gray-500 pr-5 px-3">
-                  <p className="p-2">User ID</p>
+                <p className="p-2">User ID</p>
               </th>
-              <th 
+              <th
                 className="border-t-[2px] border-b-[2px] border-l-none border-r-none border-gray-500 pr-5 px-3">
-                  <p className="p-2">Username</p>
+                <p className="p-2">Username</p>
               </th>
-              <th 
+              <th
                 className="border-t-[2px] border-b-[2px] border-l-none border-r-none border-gray-500 pr-5 px-3">
                 <p className="p-2">User Fullname</p>
               </th>
@@ -90,116 +104,58 @@ const Users = () => {
               <th className="border-t-[2px] border-b-[2px] border-l-none border-r-[2px] border-gray-500 pr-5 px-3"></th>
             </tr>
           </thead>
-          {userData.map((user, index) => (
+          {userData.slice(startIndex, endIndex).map((user, index) => (
             <tbody key={user.userId} className="bg-gray-200">
               {/* Dynamically update the data */}
               <tr
-                className={`${
-                  index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
-                } text-[16px]`}
+                className={`${index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
+                  } text-[16px]`}
               >
                 {/* Note: The declaration of each td must match with the define in SQL */}
-                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-l-[2px] border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px] border-l-[2px] border-gray-500 pr-5 p-4`}>
                   {user.userId}
                 </td>
-                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
                   {user.username}
                 </td>
-                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
                   {user.fullName}
                 </td>
-                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
                   {user.email}
                 </td>
-                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-gray-500 pr-5 p-4`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
                   {user.password}
                 </td>
-                <td className={`${userData[userData.length - 1].userId === user.userId? 'border-b-[2px]': ''} border-r-[2px] border-gray-500 pr-5 pl-2`}>
-                  <Dropdown user={user}/>
+                <td className={`border-b-[1px] border-r-[2px] border-gray-500 pr-5 pl-2`}>
+                  <Dropdown user={user} />
                 </td>
               </tr>
             </tbody>
           ))}
         </table>
-        {viewDetails && userDetail && (
-          <div className="flex flex-col ">
-            <h2 className="mt-10">User Details</h2>
-            <div className="grid grid-cols-3 mt-8">
-              <div className="flex flex-col m-2">
-                {/* Add value into each input */}
-                <label>User ID</label>
-                <input
-                  type="text"
-                  readOnly
-                  className="w-[240px] rounded-md"
-                  value={userDetail.userId}
-                />
-              </div>
-              <div className="flex flex-col m-2">
-                <label>User Name</label>
-                <input
-                  type="text"
-                  readOnly
-                  className="w-[240px] rounded-md"
-                  value={userDetail.username}
-                />
-              </div>
-              <div className="flex flex-col m-2">
-                <label>User Fullname</label>
-                <input
-                  type="text"
-                  readOnly
-                  className="w-[240px] rounded-md"
-                  value={userDetail.fullName}
-                />
-              </div>
-              <div className="flex flex-col m-2">
-                <label>User Email</label>
-                <input
-                  type="text"
-                  readOnly
-                  className="w-[240px] rounded-md"
-                  value={userDetail.email}
-                />
-              </div>
-              <div className="flex flex-col m-2">
-                <label>User Phone Number</label>
-                <input
-                  type="text"
-                  readOnly
-                  className="w-[240px] rounded-md"
-                  value={userDetail.phoneNumber}
-                />
-              </div>
-              <div className="flex flex-col m-2">
-                <label>User Gender</label>
-                <input
-                  type="text"
-                  readOnly
-                  className="w-[240px] rounded-md"
-                  value={userDetail.gender}
-                />
-              </div>
-              <div className="flex flex-col m-2">
-                <label>User Sign Up Date</label>
-                <input
-                  type="text"
-                  readOnly
-                  className="w-[240px] rounded-md"
-                  value={userDetail.signUpDate}
-                />
-              </div>
-            </div>
-            <div>
-              <button
-                className="p-3 text-[16px] font-bold bg-red-500 w-[200px]  rounded-md"
-                onClick={toggleViewDetails}
-              >
-                Cancel View Details
-              </button>
-            </div>
+        {/* Add the pagination controls */}
+        <div className="flex justify-end mr-[380px]">
+          <div className="flex justify-center items-center mt-4">
+            <button
+              className="mr-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <p className="text-xl font-bold mx-4">
+                Page {currentPage} of {Math.ceil(userData.length / itemsPerPage)}
+            </p>
+            <button
+              className="ml-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={endIndex >= userData.length}
+            >
+              Next
+            </button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

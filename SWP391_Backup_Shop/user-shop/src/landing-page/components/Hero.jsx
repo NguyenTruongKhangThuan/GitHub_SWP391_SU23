@@ -11,10 +11,10 @@ const Hero = () => {
             <p className='md:text-lg sm:text-2xl text-xl font-bold text-white'>
               Artists around the world has joined in the festive of blood and soul in this unique self-decorate card shop.
             </p>
-                <Link to={"/auth"}>
+                <Link to={"/shop"}>
                   <button 
-                  className='bg-gradient-to-r from-cyan-500 to-blue-500 w-[200px] rounded-md font-medium my-6 mx-auto py-3 hover:bg-gradient-to-l hover:text-black'>
-                    Ready to Duel?
+                  className='bg-gradient-to-r from-cyan-500 to-blue-500 w-[240px] rounded-md font-medium my-6 mx-auto py-3 hover:bg-gradient-to-l hover:text-black'>
+                    Ready to Duel? Enter Now
                   </button>
                 </Link>
         </div>

@@ -43,6 +43,7 @@ const Owner = () => {
         .catch((err) => console.log(err));
     };
 
+    
     return (
       <div className="relative">
         <button
@@ -77,6 +78,18 @@ const Owner = () => {
     refreshPublishersList();
   }, []);
 
+  //Step 1: Declare 
+  const itemsPerPage = 10; // Adjust this value as per your preference
+  const [currentPage, setCurrentPage] = useState(1);
+
+  //Step 2: Pagination Function
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Modify the following line to calculate the starting and ending index of the items to be displayed on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
 
 
   return (
@@ -117,7 +130,7 @@ const Owner = () => {
               <th className="border-t-[2px] border-b-[2px] border-l-none border-r-[2px] border-gray-500 pr-5 px-3"></th>
             </tr>
           </thead>
-          {publishers.map((publisher, index) => (
+          {publishers.slice(startIndex,endIndex).map((publisher, index) => (
             
             <tbody key={publisher.ownerId}>
               <tr
@@ -125,26 +138,26 @@ const Owner = () => {
                   index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
                 } text-[16px]`}
               >
-                <td className={`${publishers[publishers.length - 1].ownerId === publisher.ownerId ? "border-b-[2px]": ""} border-l-[2px] border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-l-[2px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{publisher.ownerId}</p>
                 </td>
-                <td className={`${publishers[publishers.length - 1].ownerId === publisher.ownerId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{publisher.ownerName}</p>
                 </td>
-                <td className={`${publishers[publishers.length - 1].ownerId === publisher.ownerId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{publisher.password}</p>
                 </td>
-                <td className={`${publishers[publishers.length - 1].ownerId === publisher.ownerId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{publisher.fullName}</p>
                 </td>
-                <td className={`${publishers[publishers.length - 1].ownerId === publisher.ownerId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{publisher.email}</p>
                 </td>
-                <td className={`${publishers[publishers.length - 1].ownerId === publisher.ownerId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{publisher.phoneNumber}</p>
                 </td>
                 <td
-                  className={`${publishers[publishers.length - 1].ownerId === publisher.ownerId ? "border-b-[2px]": ""} border-r-[2px] border-gray-500 pr-5 pl-2`}
+                  className={`border-b-[1px] border-r-[2px] border-gray-500 pr-5 pl-2`}
                   onClick={() => {
                     setDeleteItem(publisher.ownerId);
                     setPublisherData(publisher);
@@ -156,8 +169,27 @@ const Owner = () => {
           </tbody>
           ))}
         </table>
-        
-        
+        <div className="flex justify-end mr-[60px]">
+          <div className="flex justify-center items-center mt-4">
+            <button
+              className="mr-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <p className="text-xl font-bold mx-4">
+                Page {currentPage} of {Math.ceil(publishers.length / itemsPerPage)}
+            </p>
+            <button
+              className="ml-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={endIndex >= publishers.length}
+            >
+              Next
+            </button>
+          </div>
+        </div> 
       </div>
     </div>
   );

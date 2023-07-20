@@ -9,6 +9,19 @@ const Transaction = () => {
   const navigate = useNavigate();
   const [payment, setPayment] = useState();
 
+  //Step 1: Declare 
+  const itemsPerPage = 10; // Adjust this value as per your preference
+  const [currentPage, setCurrentPage] = useState(1);
+
+  //Step 2: Pagination Function
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Modify the following line to calculate the starting and ending index of the items to be displayed on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
   const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
@@ -89,44 +102,66 @@ const Transaction = () => {
               <th className="border-r-[2px] border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3"></th>
             </tr>
           </thead>
+        {payments.slice(startIndex,endIndex).map((payment, index) => (
           <tbody className="bg-gray-200">
-            {payments.map((payment, index) => (
               <tr
                 className={`${
                   index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
                 } text-[16px]`}
               >
-                <td className={`${payments[payments.length - 1].paymentId === payment.paymentId ? "border-b-[2px]": ""} border-l-[2px] border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-l-[2px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{payment.paymentId}</p>
                 </td>
-                <td className={`${payments[payments.length - 1].paymentId === payment.paymentId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{payment.userId}</p>
                 </td>
-                <td className={`${payments[payments.length - 1].paymentId === payment.paymentId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                    <p className="p-2">{payment.orderId}</p>
                 </td>
-                <td className={`${payments[payments.length - 1].paymentId === payment.paymentId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <div className="flex justify-between gap-x-10 p-2">
                     <p>{moment(payment.paymentDate).format("DD/MM/YYYY")}</p>
                     <p>{moment(payment.paymentDate).format("hh:mm:ss")}</p>
                   </div>
                 </td>
-                <td className={`${payments[payments.length - 1].paymentId === payment.paymentId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{payment.method}</p>
                 </td>
-                <td className={`${payments[payments.length - 1].paymentId === payment.paymentId ? "border-b-[2px]": ""} border-gray-500 pr-5 pl-2`}>
+                <td className={`border-b-[1px] border-gray-500 pr-5 pl-2`}>
                   <p className="p-2">{VND.format(payment.amountOfMoney)}</p>
                 </td>
                 <td 
-                  className={`${payments[payments.length - 1].paymentId === payment.paymentId ? "border-b-[2px]": ""} border-r-[2px] border-gray-500 pr-5 pl-2`}
+                  className={`border-b-[1px] border-r-[2px] border-gray-500 pr-5 pl-2`}
                   onClick={()=>setPayment(payment)}
                   >
                     <div className="p-2"><Dropdown payment={payment}/></div>
                 </td>
               </tr>
-            ))}
           </tbody>
+        ))}
         </table>
+         {/* Add the pagination controls */}
+        <div className="flex justify-end mr-[160px]">
+          <div className="flex justify-center items-center mt-4">
+            <button
+              className="mr-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <p className="text-xl font-bold mx-4">
+              Page {currentPage} of {Math.ceil(payments.length / itemsPerPage)}
+            </p>
+            <button
+              className="ml-2 bg-gray-500 hover:bg-gray-600 px-4 py-2 text-white font-bold rounded-md"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={endIndex >= payments.length}
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
