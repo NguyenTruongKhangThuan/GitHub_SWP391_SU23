@@ -24,13 +24,13 @@ namespace BoardGameShopAPI.Services.PaymentService
                 string createdId = _context.Payments.OrderBy(x => x.PaymentId).LastOrDefault() == null ?
                     "PM00000001" :
                     Regex.Replace(_context.Payments.OrderBy(x => x.PaymentId).LastOrDefault()?.PaymentId,
-                    "\\d+", n => (int.Parse(n.Value)+1).ToString(new string('0', n.Value.Length)));
+                    "\\d+", n => (int.Parse(n.Value) + 1).ToString(new string('0', n.Value.Length)));
 
                 payment.PaymentId = createdId;
                 payment.User = _context.Users.Find(payment.UserId);
                 payment.Order = _context.Orders.Find(payment.OrderId);
 
-                if(!_context.Payments.Where(p => p.OrderId == payment.OrderId).Any())
+                if (!_context.Payments.Where(p => p.OrderId == payment.OrderId).Any())
                 {
                     _context.Payments.Add(payment);
                     await _context.SaveChangesAsync();
@@ -49,7 +49,7 @@ namespace BoardGameShopAPI.Services.PaymentService
             try
             {
                 Payment payment = _context.Payments.Find(paymentId);
-                if(payment == null)
+                if (payment == null)
                 {
                     return "NotFound";
                 }
@@ -72,20 +72,20 @@ namespace BoardGameShopAPI.Services.PaymentService
             {
                 return await _context.Payments.OrderByDescending(pm => pm.PaymentDate).ToListAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return null;
             }
         }
 
-        public async  Task<List<Payment>> GetPaymentList(string userId)
+        public async Task<List<Payment>> GetPaymentList(string userId)
         {
             try
             {
                 return await _context.Payments.Where(pm => pm.UserId == userId)
                     .OrderByDescending(pm => pm.PaymentDate).ToListAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return null;
             }
@@ -96,7 +96,7 @@ namespace BoardGameShopAPI.Services.PaymentService
             try
             {
                 Payment dbPayment = _context.Payments.Find(payment.PaymentId);
-                if(dbPayment == null)
+                if (dbPayment == null)
                 {
                     return "NotFound";
                 }
@@ -137,17 +137,53 @@ namespace BoardGameShopAPI.Services.PaymentService
         }
 
         //Statistic Calculation
-        public async Task<double> TotalIncome()
+        public async Task<List<IncomeStatistc>> TotalIncome()
         {
             try
             {
-                return (double)await _context.Payments.Where(p => p.PaymentDate.Value.Year == DateTime.Now.Year
-                && p.PaymentDate.Value.Month == DateTime.Now.Month).SumAsync(p => p.AmountOfMoney);
+                List<IncomeStatistc> IncomeStatistcs = new List<IncomeStatistc>();
+                int currentMonth = DateTime.Now.Month;
+                int currentYear = DateTime.Now.Year;
+
+                for (int i = 0; i < 5; i++)
+                {
+                    if (currentMonth == 0)
+                    {
+                        currentMonth = 12;
+                        currentYear--;
+                    }
+
+                    var orderDetails = await _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
+                    (p, odt) => new
+                    {
+                        OrderId = p.OrderId,
+                        PaymentDate = p.PaymentDate,
+                        GamePackId = odt.GamePackId,
+                        Amount = odt.Amount,
+                        TotalPrice = odt.Price * odt.Amount,
+                    }).Where(l => l.PaymentDate.Value.Month == currentMonth
+                    && l.PaymentDate.Value.Year == currentYear)
+                    .ToListAsync();
+
+
+                    IncomeStatistc incomeStatistc = new IncomeStatistc()
+                    {
+                        TotalNumberOfSoldProduct = (int)orderDetails.Sum(o => o.Amount),
+                        Income = (double)orderDetails.Sum(o => o.TotalPrice),
+                        Month = currentMonth,
+                        Year = currentYear,
+                    };
+
+                    IncomeStatistcs.Add(incomeStatistc);
+                    currentMonth--;
+
+                }
+                return IncomeStatistcs;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return double.MinValue;
+                return null;
             }
         }
 
@@ -205,32 +241,49 @@ namespace BoardGameShopAPI.Services.PaymentService
             return gamePacks;
         }
 
-        public async Task<List<GamePack>> GetSoldNumOfPubProduct(string pubId)
+        public async Task<List<IncomeStatistc>> GetSoldNumOfPubProduct(string pubId)
         {
-            var pubProductSold = _context.GamePacks.Join(_context.OrderDetails, gp => gp.GamePackId, odt => odt.GamePackId,
-                (gp, odt) => new
-                {
-                    OwnerId = gp.OwnerId,
-                    GamePackId = gp.GamePackId,
-                    Amount = odt.Amount,
-                })
-                .Where(l => l.OwnerId == pubId)
-                .GroupBy(l => l.GamePackId)
-                .Select(l => new
-                {
-                    GamePackId = l.Key,
-                    SoldNumber = l.Sum(i => i.Amount),
-                }).OrderByDescending(l => l.SoldNumber).ToList();
+            List<IncomeStatistc> incomeStatistcs = new List<IncomeStatistc>();
+            List<GamePack> pubGamePacks = _context.GamePacks.Where(gp => gp.OwnerId == pubId).ToList();
 
-            List<GamePack> gamePacks = new List<GamePack>();
-            foreach (var pack in pubProductSold)
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+
+            for (int i = 0; i < 5; i++)
             {
-                GamePack gamePack = await _gamePackService.GetGamePackByPubId(pubId, pack.GamePackId);
-                gamePack.TotalSold = (int)pack.SoldNumber; 
-                gamePacks.Add(gamePack);
+                if (currentMonth == 0)
+                {
+                    currentMonth = 12;
+                    currentYear--;
+                }
+
+                var orderDetails = await _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
+                (p, odt) => new
+                {
+                    OrderId = p.OrderId,
+                    PaymentDate = p.PaymentDate,
+                    GamePackId = odt.GamePackId,
+                    Amount = odt.Amount,
+                    TotalPrice = odt.Price * odt.Amount,
+                }).Where(l => l.PaymentDate.Value.Month == currentMonth
+                && l.PaymentDate.Value.Year == currentYear)
+                .ToListAsync();
+
+                var temp = orderDetails.Where(o => pubGamePacks.Where(p => p.GamePackId == o.GamePackId).Any());
+
+                IncomeStatistc incomeStatistc = new IncomeStatistc()
+                {
+                    TotalNumberOfSoldProduct = (int)temp.Sum(o => o.Amount),
+                    Income = (double)temp.Sum(o => o.TotalPrice),
+                    Month = currentMonth,
+                    Year = currentYear,
+                };
+
+                incomeStatistcs.Add(incomeStatistc);
+                currentMonth--;
             }
 
-            return gamePacks;
+            return incomeStatistcs;
         }
     }
 }

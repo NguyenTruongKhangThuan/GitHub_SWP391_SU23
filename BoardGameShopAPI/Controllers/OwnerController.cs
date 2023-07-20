@@ -223,7 +223,7 @@ namespace BoardGameShopAPI.Controllers
         public async Task<IActionResult> GetPubSoldNumber(string token)
         {
             Owner owner = await _ownerService.ReadOwnerToken(token);
-            List<GamePack> packs = await _paymentService.GetSoldNumOfPubProduct(owner.OwnerId);
+            List<IncomeStatistc> packs = await _paymentService.GetSoldNumOfPubProduct(owner.OwnerId);
             return Ok(packs);
         }
     }

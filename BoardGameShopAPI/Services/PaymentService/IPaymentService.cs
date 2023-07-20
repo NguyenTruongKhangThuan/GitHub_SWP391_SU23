@@ -18,12 +18,12 @@ namespace BoardGameShopAPI.Services.PaymentService
         Task<string> CreatePayment(Payment payment);
 
         //Statistic Calculation:
-        Task<double> TotalIncome();
+        Task<List<IncomeStatistc>> TotalIncome();
 
         Task<List<GamePack>> GetBestSeller();
 
         Task<List<GamePack>> GetBestSellerOfPub(string pubId);
 
-        Task<List<GamePack>> GetSoldNumOfPubProduct(string pubId);
+        Task<List<IncomeStatistc>> GetSoldNumOfPubProduct(string pubId);
     }
 }

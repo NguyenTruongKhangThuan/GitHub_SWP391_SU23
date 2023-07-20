@@ -101,8 +101,10 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpGet("momo")]
-        public async Task<IActionResult> PaymentCallBack(string extraData, string orderId, string orderInfo, string amount, DateTime time)
+        public async Task<IActionResult> PaymentCallBack(string extraData, string orderId, string orderInfo, string amount, string dateStr)
         {
+            DateTime time = DateTime.Parse(dateStr);
+
             var response = await _momoService.PaymentExecuteAsync(extraData, orderId, orderInfo, amount, time);
             return Ok(response);
         }

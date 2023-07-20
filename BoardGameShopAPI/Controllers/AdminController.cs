@@ -408,8 +408,8 @@ namespace BoardGameShopAPI.Controllers
         [HttpGet("statistics/income")]
         public async Task<IActionResult> GetTotalIncome()
         {
-            double totalIncome = await _paymentService.TotalIncome();
-            if (totalIncome == double.MinValue)
+            List<IncomeStatistc> totalIncome = await _paymentService.TotalIncome();
+            if (totalIncome == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

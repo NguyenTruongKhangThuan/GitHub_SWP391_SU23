@@ -197,6 +197,7 @@ namespace BoardGameShopAPI.Services.UserService
             //Delete redundance space char
             user.Username = user.Username == null ? "" : user.Username.Trim();
             user.Email = user.Email == null ? "" : user.Email.Trim();
+            user.FullName = user.FullName == null ? user.Username.Trim() : user.FullName.Trim();
 
             //Check inputs
             if (user.Username == null || user.Username.Length == 0)
