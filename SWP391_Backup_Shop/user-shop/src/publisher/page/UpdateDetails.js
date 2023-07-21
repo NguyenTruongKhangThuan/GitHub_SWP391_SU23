@@ -363,7 +363,7 @@ const UpdatePage = () => {
   return (
     <div>
       <Header />
-      <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-full h-screen flex justify-center items-center bg-gradient-to-tr from-[#C0EEF2] to-[#146C94]">
         <div className="w-full p-8 h-fit rounded-lg">
           <form className="h-fit px-[20px] gap-[10px]">
             {currentStep === 1 && (

@@ -50,8 +50,8 @@ const Header = (props) => {
   return (
     <header
       className={`${
-        isActive ? "bg-white py-4 shadow-md" : "bg-none py-6"
-      } fixed w-full z-10 transition-all`}
+        isActive ? "bg-[#03001C] py-4 shadow-md" : "bg-[#181818] py-4"
+      } fixed w-full z-10 transition-all duration-300`}
     >
       <div className="container mx-auto flex items-center justify-between h-full">
         <div className="flex justify-start gap-x-8">
@@ -91,7 +91,7 @@ const Header = (props) => {
             </button>
           </div>
         </div>
-        <div className="flex items-center justify-end gap-x-[30px] ">
+        <div className="flex items-center justify-end gap-x-[30px] text-gray-200">
           <div className="rounded-full w-[100px] px-3 py-2 text-center hover:underline">
             <Link to={"/shop"}>Home</Link>
           </div>
@@ -115,7 +115,7 @@ const Header = (props) => {
             }
           </div>
           {dropdown && (
-            <div className="dropdown absolute right-[230px] top-[56px] mt-2 h-full bg-white rounded-lg shadow-lg">
+            <div className="dropdown absolute right-[230px] top-[56px] mt-2 h-[100px] bg-white rounded-lg shadow-lg">
               <div className="flex flex-col justify-center items-center gap-y-4">
                 <Link to={"/shop/user/profile"}>
                   <button className="mt-1 px-4 py-2 text-sm text-center flex justify-center items-center text-gray-800 hover:bg-gray-100 hover:rounded-md">

@@ -16,6 +16,7 @@ const Product = ({ product }) => {
 
   const navigate = useNavigate();
 
+
   const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
@@ -29,31 +30,18 @@ const Product = ({ product }) => {
 
   return (
     <div>
-      <div className="border border-[#e4e4e4] h-[300px] mb-4 relative overflow-hidden group transition">
+      <div className="border border-[#3282B8] bg-[#BBE1FA] rounded-md h-[300px] mb-4 relative overflow-hidden group transition">
         <div className="w-full h-full flex justify-center items-center">
-          <div className="w-[200px] mx-auto flex justify-center items-center">
+          <div className="w-[160px] mx-auto flex justify-center items-center">
             <img
               src={image}
               alt=""
               onClick={() => navigate(`/shop/product/${gamePackId}`)}
-              className="max-h-[160px] cursor-pointer group-hover:scale-110 transition duration-300"
+              className="max-h-[180px] cursor-pointer group-hover:scale-110 transition duration-300"
             ></img>
           </div>
         </div>
         <div className="absolute top-6 right-11 group-hover:right-5  p-2 flex-col items-center justify-center gap-y-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <button
-            title="Add To Cart"
-            onClick={() => {
-              addToCart(product, gamePackId);
-              showSuccessMessage();
-            }}
-            className="mb-4"
-          >
-            <div className="flex justify-center items-center text-white w-12 h-12 bg-green-500">
-              <BsPlus className="text-3xl" />
-            </div>
-          </button>
-
           <Link
             to={`/shop/product/${gamePackId}`}
             title="View Details"
@@ -64,12 +52,26 @@ const Product = ({ product }) => {
         </div>
       </div>
       <ToastContainer className={"mt-14"} />
-      <div>
-        <div className="text-sm capitalize text-gray-500">{gameTags}</div>
-        <Link to={`/shop/product/${gamePackId}`}>
-          <h2 className="font-semibold mb-1 ">{gamePackName}</h2>
-        </Link>
-        <div className="font-semibold">{VND.format(price)}</div>
+      <div className="flex justify-between">
+        <div>
+          <div className="text-sm capitalize text-gray-500">{gameTags}</div>
+          <Link to={`/shop/product/${gamePackId}`}>
+            <h2 className="font-bold mb-1 ">{gamePackName}</h2>
+          </Link>
+          <div className="font-medium">{VND.format(price)}</div>
+        </div>
+        <button
+            title="Add To Cart"
+            onClick={() => {
+              addToCart(product, gamePackId);
+              showSuccessMessage();
+            }}
+            className="mb-4"
+          >
+            <div className={`flex justify-center items-center text-white w-full p-2 rounded-md bg-[#50D890]`}>
+              <BsPlus className="text-3xl" />
+            </div>
+        </button>
       </div>
     </div>
   );

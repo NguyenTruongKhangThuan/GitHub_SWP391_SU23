@@ -24,7 +24,7 @@ const SpecialShops = () => {
   return (
     <div>
       <Header searchFunction={searchFunction} />
-      <section className="py-16">
+      <section className="py-16 bg-gradient-to-tr from-[#C0EEF2] to-[#146C94]">
         <div className="container mx-auto mt-8">
           <h2 className="font-semibold text-[24px] mb-4">Special Shop</h2>
           <div

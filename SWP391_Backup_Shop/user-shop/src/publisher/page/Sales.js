@@ -46,8 +46,8 @@ const Sales = () => {
   return (
     <div>
       <Header />
-      <div className="py-[100px]">
-        <section className="container mx-auto">
+      <div className="py-[100px] bg-gradient-to-tr from-[#C0EEF2] to-[#146C94]">
+        <section className="container mx-auto ">
           <div className="flex gap-x-20">
             <div className="flex flex-col">
               <h2 className="text-xl font-bold mb-6">Sales Report</h2>

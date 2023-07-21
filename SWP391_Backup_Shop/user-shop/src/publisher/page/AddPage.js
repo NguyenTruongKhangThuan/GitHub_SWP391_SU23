@@ -218,7 +218,7 @@ const FinalStepForm = (props) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center ">
       <h2 className="font-semibold mb-8 text-[32px]">Step 3: Imports</h2>
       <form className="h-fit px-[20px] gap-[10px]">
         <div className="flex flex-col gap-y-3">
@@ -228,7 +228,7 @@ const FinalStepForm = (props) => {
             accept={".docx" || ".doc"}
             id="gameRule"
             placeholder="Enter Game Package Price"
-            className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
+            className=" p-1 border-b-[1px]"
             onChange={getRuleContent}
           />
         </div>
@@ -239,7 +239,7 @@ const FinalStepForm = (props) => {
             accept={"image/*"}
             id="image"
             placeholder="Enter Game Package Price"
-            className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
+            className="p-1 border-b-[1px]"
             onChange={getImageData}
           />
         </div>
@@ -250,7 +250,7 @@ const FinalStepForm = (props) => {
             accept={".xlsx" || ".xls"}
             id="update-gpdescription"
             placeholder="Enter Game Package Price"
-            className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
+            className=" p-1 border-b-[1px]"
           />
         </div>
       </form>
@@ -369,7 +369,7 @@ const AddPage = () => {
   return (
     <div>
       <Header />
-      <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-full h-screen flex justify-center items-center bg-gradient-to-tr from-[#C0EEF2] to-[#146C94]">
         <div className="w-full p-8 h-fit rounded-lg">
           <form className="h-fit px-[20px] gap-[10px]">
             {currentStep === 1 && (
