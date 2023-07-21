@@ -11,9 +11,9 @@ const Product = ({ product }) => {
 
   const deleteHandler = (e) => {
     e.preventDefault();
-    deleteGamePackAPI(sessionStorage.getItem("accountToken", gamePackId))
+    deleteGamePackAPI(sessionStorage.getItem("accountToken"), gamePackId)
       .then((res) => window.alert(res))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("Error Occur"));
   };
 
   return (

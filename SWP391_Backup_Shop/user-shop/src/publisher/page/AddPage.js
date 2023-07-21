@@ -2,19 +2,31 @@ import React, { useContext, useState } from "react";
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getBoardGameAPI, getGameTagsAPI } from "../../api/productAPI";
+import {
+  getBoardGameAPI,
+  getGameTagsAPI,
+  addGameTagIntoGamePack,
+} from "../../api/productAPI";
 import { createGamePackAPI } from "../../api/publisherAPI";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { useEffect } from "react";
+
+import Select from "react-select";
 
 //import firebase
 import storage from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const StepOneForm = (props) => {
-  const { getPackData, boardGames, gameTags, packData } = props;
-
+  const {
+    getPackData,
+    boardGames,
+    gameTags,
+    packData,
+    handelTagChance,
+    selectedTag,
+  } = props;
   return (
     <div className="flex flex-col items-center justify-center">
       <h2 className="font-semibold mb-8 text-[32px]">
@@ -76,11 +88,16 @@ const StepOneForm = (props) => {
         {/* game tag */}
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Game Package Other Tags</label>
-          <select>
-            {gameTags.map((item) => (
-              <option>{item.gameTagName}</option>
-            ))}
-          </select>
+
+          {gameTags && (
+            <Select
+              options={gameTags}
+              isSearchable={true}
+              isMulti={true}
+              onChange={handelTagChance}
+              defaultValue={selectedTag}
+            />
+          )}
         </div>
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Game Package Quantity</label>
@@ -315,7 +332,12 @@ const AddPage = () => {
     );
   };
 
+  const tagIds = [];
   const AddGamePack = (url) => {
+    selectedTag.map((tag, index) => {
+      tagIds[index] = tag.value;
+    });
+
     const formData = new FormData();
     formData.append("gamePackId", packData.gamePackId);
     formData.append("boardGameId", packData.boardGameId);
@@ -331,13 +353,16 @@ const AddPage = () => {
     formData.append("weight", packData.weight);
     formData.append("size", packData.size);
     formData.append("material", packData.material);
-    formData.append("gameRule", packData.gameRule);
+    formData.append("gameRule", "empty");
     formData.append("availableAmount", packData.availableAmount);
     formData.append("owner.ownerId", "temp");
     formData.append("boardGame.boardGameId", "temp");
     createGamePackAPI(sessionStorage.getItem("accountToken"), formData)
-      .then((res) => window.alert(res))
-      .catch((err) => window.alert(err.data));
+      .then((res) => {
+        addGameTagIntoGamePack(res, tagIds).catch((err) => console.log(err));
+        window.alert("Create Successfully");
+      })
+      .catch((err) => window.alert("Error Occur"));
 
     navigate("/shop/publisher");
   };
@@ -350,7 +375,7 @@ const AddPage = () => {
   };
 
   const [boardGames, setBoardGames] = useState([]);
-  const [gameTags, setGameTags] = useState([]);
+  const [options, setOption] = useState([]);
 
   useEffect(() => {
     loadDropDownList();
@@ -362,8 +387,17 @@ const AddPage = () => {
       .catch((err) => console.log(err));
 
     getGameTagsAPI()
-      .then((res) => setGameTags(res))
+      .then((res) => {
+        res.map((tag, i) => {
+          options[i] = { value: tag.gameTagId, label: tag.gameTagName };
+        });
+      })
       .catch((err) => console.log(err));
+  };
+
+  const [selectedTag, setSelectedTag] = useState();
+  const handelTagChance = (tags) => {
+    setSelectedTag(tags);
   };
 
   return (
@@ -376,8 +410,10 @@ const AddPage = () => {
               <StepOneForm
                 getPackData={getPackData}
                 boardGames={boardGames}
-                gameTags={gameTags}
+                gameTags={options}
                 packData={packData}
+                handelTagChance={handelTagChance}
+                selectedTag={selectedTag}
               />
             )}
             {currentStep === 2 && (
