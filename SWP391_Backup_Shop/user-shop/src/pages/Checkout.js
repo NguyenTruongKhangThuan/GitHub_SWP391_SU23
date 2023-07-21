@@ -10,6 +10,7 @@ import Momo from "../img/Momo_2.png";
 
 import { CartContext } from "../contexts/CartContext";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import moment from "moment";
 
 //Import API
@@ -86,11 +87,11 @@ function Checkout() {
   };
 
   return (
-    <>
+    <div>
       <Header />
-      <div
-        className="w-full mt-[80px] bg-white fixed top-0 h-full shadow-2xl 
-            md:w-[35vw] xl:w-full"
+      <section
+        className="mt-[80px] fixed top-0 h-full shadow-2xl 
+             bg-gradient-to-tr from-[#C0EEF2] to-[#146C94] w-full overflow-auto"
       >
         <div className="flex flex-col gap-y-2 h-[520px] lg:h-[640px] overflow-y-auto overflow-x-hidden border-b">
           {cart.map((item) => {
@@ -148,8 +149,8 @@ function Checkout() {
             )}
           </div>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 }
 

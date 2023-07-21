@@ -53,14 +53,14 @@ const ProductDetails = () => {
   return (
     <>
       <Header />
-      <section className="pt-32 pb-12 lg:py-32 h-screen flex items-center">
+      <section className="bg-gradient-to-tr from-[#C0EEF2] to-[#146C94] pt-32 pb-12 lg:py-32 h-screen flex items-center">
         <div className="container mx-auto lg:mx-0">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex flex-1 justify-center items-center mb-8 lg:mb-10">
               <img
                 src={product.image}
                 alt=""
-                className="max-w-[200px] lg:max-w-sm"
+                className="w-[320px]"
               />
             </div>
             <div className="flex-1 text-center lg:text-left">
@@ -72,33 +72,33 @@ const ProductDetails = () => {
               </div>
               <div className="flex gap-x-20">
                 <div className="flex flex-col gap-y-4">
-                  <div className="flex justify-between w-[240px]">
+                  <div className="flex justify-between w-[360px]">
                     <p className="font-semibold">Numbers of Players:</p>
                     <p>{product.numberOfPlayer}</p>
                   </div>
-                  <div className="flex justify-between w-[240px]">
+                  <div className="flex justify-between w-[360px]">
                     <p className="font-semibold">Appropriate Age:</p>
-                    <p>{product.age}</p>
+                    <p>{product.age}+</p>
                   </div>
-                  <div className="flex justify-between w-[240px]">
+                  <div className="flex justify-between w-[360px]">
                     <p className="font-semibold">Average Duration Match:</p>
                     <p>{product.gameDuration}</p>
                   </div>
                 </div>
                 <div className="">
-                  <div className="flex justify-between w-[320px] mb-4">
+                  <div className="flex justify-between w-[360px] mb-4">
                     <p className="font-semibold">Origin:</p>
                     <p>{product.origin}</p>
                   </div>
-                  <div className="flex justify-between w-[320px] mb-4">
+                  <div className="flex justify-between w-[360px] mb-4">
                     <p className="font-semibold">Weight:</p>
-                    <p>{product.weight}</p>
+                    <p>{product.weight}g</p>
                   </div>
-                  <div className="flex justify-between w-[320px] mb-4">
+                  <div className="flex justify-between w-[360px] mb-4">
                     <p className="font-semibold">Size:</p>
                     <p>{product.size}</p>
                   </div>
-                  <div className="flex justify-between w-[320px] mb-4">
+                  <div className="flex justify-between w-[360px] mb-4">
                     <p className="font-semibold">Material:</p>
                     <p>{product.material}</p>
                   </div>
@@ -129,7 +129,7 @@ const ProductDetails = () => {
               )}
               <div className="flex gap-x-10">
                 <button
-                  className="bg-primary py-4 px-8 text-white"
+                  className="bg-primary hover:bg-gray-800 rounded-md py-4 px-8 text-white"
                   onClick={() => {
                     addToCart(product, product.gamePackId);
                     showSuccessMessage();
@@ -137,8 +137,8 @@ const ProductDetails = () => {
                 >
                   Add To Cart
                 </button>
-                <Link to={"/shop"}>
-                  <button className="bg-primary py-4 px-8 text-white">
+                <Link to={"/shop/category"}>
+                  <button className="bg-primary hover:bg-gray-800 rounded-md py-4 px-8 text-white">
                     Return and Continue Shopping
                   </button>
                 </Link>

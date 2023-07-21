@@ -12,17 +12,17 @@ import 'slick-carousel/slick/slick-theme.css';
 const Hero_1 = () => {
     return (
       <div>
-        <section className="bg-[url('https://wallpaperaccess.com/full/2402653.jpg')] h-[800px] bg-no-repeat bg-cover bg-center py-24">
+        <section className="bg-[url('https://wallpapercave.com/wp/wp3748775.jpg')] h-[800px] bg-no-repeat bg-cover bg-center bg-opacity-30 py-24">
           <div className='container mx-auto flex justify-around h-full'>
-            <div className='flex flex-col items-center justify-center'>
+            <div className='flex flex-col items-center justify-center text-white'>
               <div className='font-semibold flex items-center uppercase'>
-                New Trend
+                Strategical Building
               </div>
               <h1 className='text-[64px] leading-[1.1] text-center font-light mb-4'>
-                CHILL OUT AND HAVE FUN<br/>
-                <span className='text-[48px] font-semibold'>BOARDGAMES</span>
+                CONQUER AND UNITE AS ONE<br/>
+                {/* <span className='text-[48px] font-semibold'>BOARDGAMES</span> */}
               </h1>
-              <Link to={'/shop/special'} className='self-center uppercase font-semibold border-b-2 border-primary'>
+              <Link to={'/shop/special'} className='self-center uppercase font-semibold border-b-2 border-white'>
                 Discover More
               </Link>
             </div>
@@ -35,19 +35,19 @@ const Hero_1 = () => {
 const Hero_2 = () => {
   return(
     <div>
-      <section className="bg-[url('https://wallpapers.com/images/hd/anime-landscape-mirroring-lake-h6y2zxu7bdzep5kx.jpg')] h-[800px] bg-no-repeat bg-cover bg-center py-24">
-        <div className='container mx-auto flex justify-start h-full'>
+      <section className="bg-[url('https://c0.wallpaperflare.com/preview/937/656/43/play-board-game-cube-human-don-t-be-angry.jpg')] h-[800px] bg-no-repeat bg-opacity-20 bg-cover bg-center py-24">
+        <div className='container mx-auto flex justify-start h-full text-white'>
           {/* Text */}
           <div className='flex flex-col justify-center items-start'>
             {/* Pre Title */}
             <div className='font-semibold flex items-center uppercase'>
-              New Trend
+              Roll Your Luck
             </div>
             <h1 className='text-[64px] leading-[1.1] text-left justify-center font-light mb-4'>
-              CHILL OUT AND HAVE FUN<br/>
-              <span className='text-[48px] font-semibold'>BOARDGAMES</span>
+              READY, SET, ROLL!<br/>
+              {/* <span className='text-[48px] font-semibold'>BOARDGAMES</span> */}
             </h1>
-            <Link to={'/shop/special'} className='self-start uppercase font-semibold border-b-2 border-primary'>
+            <Link to={'/shop/special'} className='self-start uppercase font-semibold border-b-2 border-white'>
               Discover More
             </Link>
           </div>
@@ -60,19 +60,19 @@ const Hero_2 = () => {
 const Hero_3 = () => {
   return(
     <div>
-      <section className="bg-[url('https://wallpaperaccess.com/full/3443.jpg')] h-[800px] bg-no-repeat bg-cover bg-center py-24">
-        <div className='container mx-auto flex justify-end h-full'>
+      <section className="bg-[url('https://www.offtheeatenpathblog.com/wp-content/uploads/2020/04/tono-graphy-WtdIwprWnB4-unsplash-1024x683.jpg.webp')] h-[800px] bg-no-repeat bg-cover bg-center py-24">
+        <div className='container mx-auto flex justify-start h-full text-gray-200'>
           {/* Text */}
-          <div className='flex flex-col justify-center items-end'>
+          <div className='flex flex-col justify-center items-start'>
             {/* Pre Title */}
             <div className='font-semibold flex items-center uppercase'>
-              New Trend
+              Chess
             </div>
-            <h1 className='text-[64px] leading-[1.1] text-right justify-center font-light mb-4'>
-              CHILL OUT AND HAVE FUN<br/>
-              <span className='text-[48px] font-semibold'>BOARDGAMES</span>
+            <h1 className='text-[64px] leading-[1.1] text-left justify-center font-light mb-4'>
+              PLAN AHEAD <br/> OF YOURSELF<br/>
+              {/* <span className='text-[48px] font-semibold'>BOARDGAMES</span> */}
             </h1>
-            <Link to={'/shop/special'} className='self-end uppercase font-semibold border-b-2 border-primary'>
+            <Link to={'/shop/special'} className='self-start uppercase font-semibold border-b-2 border-white'>
               Discover More
             </Link>
           </div>
