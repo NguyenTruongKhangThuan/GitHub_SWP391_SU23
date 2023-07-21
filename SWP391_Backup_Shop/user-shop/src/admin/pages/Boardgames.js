@@ -162,12 +162,15 @@ const BoardgameInformation = () => {
           {boardgames.slice(startIndex, endIndex).map((boardgame, index) => (
             <tbody>
               <tr
+                // className={`${
+                //   boardgames[boardgames.length - 1].boardGameId ===
+                //   boardgame.boardGameId
+                //     ? "border-b-[2px]"
+                //     : ""
+                // } border-l-[2px] border-gray-500 pr-5 p-4`}
                 className={`${
-                  boardgames[boardgames.length - 1].boardGameId ===
-                  boardgame.boardGameId
-                    ? "border-b-[2px]"
-                    : ""
-                } border-l-[2px] border-gray-500 pr-5 p-4`}
+                  index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
+                } text-[16px]`}
               >
                 <td
                   className={`border-b-[1px] border-l-[2px] border-gray-500 pr-5 p-4`}

@@ -211,14 +211,15 @@ const Sales = () => {
                   <b>Most Sold Products</b>
                 </h2>
                 <div className="flex flex-col gap-y-8">
-                  {bestSeller &&
-                    bestSeller.map((product) => (
-                      <HighlightedItems
-                        header={product.gamePackName}
-                        content={product.price}
-                        imgSrc={product.image}
-                      />
-                    ))}
+                  {bestSeller.length > 0 && bestSeller[0] !== null
+                    ? bestSeller.map((product) => (
+                        <HighlightedItems
+                          header={product.gamePackName}
+                          content={product.price}
+                          imgSrc={product.image}
+                        />
+                      ))
+                    : ""}
                 </div>
               </div>
             </div>

@@ -105,9 +105,7 @@ const ViewDetails = () => {
                 </div>
               </div>
               {product.description.length > 0 && (
-                <div
-                  className={`mb-8 text-[14px] w-[800px]`}
-                >
+                <div className={`mb-8 text-[14px] w-[800px]`}>
                   <p>
                     {showFullRule
                       ? product.description
