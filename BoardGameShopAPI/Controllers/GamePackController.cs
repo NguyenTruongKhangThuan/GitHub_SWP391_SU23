@@ -51,15 +51,19 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPost("tags")]
-        public async Task<IActionResult> AddTag(string gamePackId, string tag)
+        public async Task<IActionResult> AddTag(string gamePackId, string[] tagIds)
         {
-            string res = await _tagInPackService.AddTagToPack(gamePackId, tag);
+            string res = await _tagInPackService.AddTagToPack(gamePackId, tagIds);
             if (res.Equals("Success"))
             {
                 return Ok("Success");
             }
             else
             {
+                if(res.Equals("GamePack NotFound"))
+                {
+                    return BadRequest("Game Pack Not Found");
+                }
                 return StatusCode(StatusCodes.Status500InternalServerError, res);
             }
         }

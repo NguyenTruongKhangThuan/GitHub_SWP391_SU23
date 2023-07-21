@@ -61,7 +61,7 @@ namespace BoardGameShopAPI.Services.GameTagService
             {
                 return await _context.GameTags.OrderBy(gt => gt.GameTagId).ToListAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex)    
             {
                 Console.WriteLine(ex.Message);
                 return null;

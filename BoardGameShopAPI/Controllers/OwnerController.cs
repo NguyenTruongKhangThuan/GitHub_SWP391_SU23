@@ -77,9 +77,10 @@ namespace BoardGameShopAPI.Controllers
         public async Task<IActionResult> CreatePack([FromForm] GamePack gamePack)
         {
             string res = await _gamePackService.CreateGamePack(gamePack);
-            if (res.Equals("Success"))
+            if (res.Contains("Success"))
             {
-                return Ok("Create Successfully");
+                string id = res.Split('/')[1];
+                return Ok(id);
             }
             else
             {

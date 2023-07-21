@@ -35,7 +35,7 @@ namespace BoardGameShopAPI.Services.GamePackService
 
                     _context.GamePacks.Add(gamePack);
                     await _context.SaveChangesAsync();
-                    return "Success";
+                    return $"Success/{gamePack.GamePackId}";
                 }
                 else
                 {
@@ -118,7 +118,7 @@ namespace BoardGameShopAPI.Services.GamePackService
         {
             try
             { 
-                return await _context.GamePacks.Where(gp => gp.OwnerId == ownerId).OrderBy(gp => gp.GamePackId).ToListAsync();
+                return await _context.GamePacks.Where(gp => gp.OwnerId == ownerId && gp.AvailableAmount != -1).OrderBy(gp => gp.GamePackId).ToListAsync();
             }
             catch (Exception)
             {

@@ -1,4 +1,5 @@
 ﻿using BoardGameShopAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameShopAPI.Services.TagInPackService
 {
@@ -10,17 +11,23 @@ namespace BoardGameShopAPI.Services.TagInPackService
             _context = context;
         }
 
-        public async Task<string> AddTagToPack(string gamePackId, string tag)
+        public async Task<string> AddTagToPack(string gamePackId, string[] tagIds)
         {
             try
             {
-                TagInPack tagInPack = new TagInPack();
-                tagInPack.GamePackId = gamePackId;
-                tagInPack.GameTagId = _context.GameTags.Where(gt => gt.GameTagName == tag).FirstOrDefault() == null ? "" : 
-                                        _context.GameTags.Where(gt => gt.GameTagName == tag).FirstOrDefault().GameTagId;
+                if(_context.GamePacks.Find(gamePackId) == null)
+                {
+                    return "GamePack NotFound";
+                }
+                foreach (string tagId in tagIds)
+                {
+                    TagInPack tagInPack = new TagInPack();
+                    tagInPack.GamePackId = gamePackId;
+                    tagInPack.GameTagId = tagId;
 
-                _context.TagInPacks.Add(tagInPack);
-                await _context.SaveChangesAsync();
+                    _context.TagInPacks.Add(tagInPack);
+                    await _context.SaveChangesAsync();
+                }
 
                 return "Success";
             }
@@ -34,16 +41,21 @@ namespace BoardGameShopAPI.Services.TagInPackService
         {
             try
             {
-                List<TagInPack> tagInPack = _context.TagInPacks.Where(tig => tig.GamePackId ==  gamePackId).ToList();
-                List<GameTag> tags = new List<GameTag>();
+                var joinList = await _context.TagInPacks.Join(_context.GameTags, tip => tip.GameTagId, gt => gt.GameTagId,
+                    (tid, gt) => new
+                    {
+                        GamePackId = tid.GamePackId,
+                        GameTagId = gt.GameTagId
+                    }).Where(l => l.GamePackId == gamePackId).ToListAsync();
 
-                foreach (var item in tagInPack)
+                List<GameTag> result = new List<GameTag>();
+                foreach (var tag in joinList)
                 {
-                    GameTag gameTag = await _context.GameTags.FindAsync(item.GameTagId);
-                    tags.Add(gameTag);
+                    GameTag tagInPack = _context.GameTags.Find(tag.GameTagId);
+                    result.Add(tagInPack);
                 }
 
-                return tags;
+                return result;
             }
             catch (Exception ex)
             {
