@@ -168,12 +168,12 @@ namespace BoardGameShopAPI.Services.UserService
                 {
                     _context.Entry(dbUser).CurrentValues.SetValues(user);
                     await _context.SaveChangesAsync();
-                    return "Success";
+                    return await CreateAuthToken(user);
                 }
             }
             catch(Exception ex)
             {
-                return ex.Message;
+                return "InteralErr";
             }
         }
 

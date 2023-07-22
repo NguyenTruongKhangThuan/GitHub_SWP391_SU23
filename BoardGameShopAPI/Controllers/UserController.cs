@@ -30,7 +30,7 @@ namespace BoardGameShopAPI.Controllers
             if (user == null)
             {
                 Owner owner = await _ownerService.OwnerLogin(username, password);
-                if(owner == null)
+                if (owner == null)
                 {
                     return BadRequest("Incorrect Username or Password!");
                 }
@@ -51,7 +51,7 @@ namespace BoardGameShopAPI.Controllers
         public async Task<IActionResult> Authentication(string token)
         {
             User user = await _userService.ReadAuthToken(token);
-            if(user == null)
+            if (user == null)
             {
                 Owner owner = await _ownerService.ReadOwnerToken(token);
                 if (owner == null)
@@ -77,22 +77,22 @@ namespace BoardGameShopAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditProfile([FromForm] User user)
+        public async Task<IActionResult> EditProfile(User user)
         {
             string res = await _userService.UpdateUserAccount(user);
-            if (res.Equals("Success"))
+            if (res.Equals("NotFound"))
             {
-                return Ok("Update Successfully");
+                return BadRequest("User Is Not Found");
             }
             else
             {
-                if (res.Equals("NotFound"))
+                if (res.Equals("InteralErr"))
                 {
-                    return BadRequest("User Is Not Found");
+                    return StatusCode(StatusCodes.Status500InternalServerError);
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
+                    return Ok(res);
                 }
             }
         }
