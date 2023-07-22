@@ -14,7 +14,6 @@ const DetailTransations = () => {
 
   return (
     <div>
-      <div className='flex justify-end mt-2 mr-4'><AdminAccount/></div>
       <h2 className='mt-2 p-[42px] font-bold text-center text-2xl'>Payment Details - {paymentInfo.paymentId}</h2>
       <div className="flex justify-center items-center ">
         <div className='grid grid-cols-2 justify-center gap-x-4'>

@@ -99,13 +99,13 @@ const Tags = () => {
     }
   };
 
-   //Dropdown
-   const Dropdown = ({tag}) => {
+  //Dropdown
+  const Dropdown = ({ tag }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
-      setIsOpen(!isOpen)
-    }
+      setIsOpen(!isOpen);
+    };
 
     return (
       <div className="relative">
@@ -122,7 +122,7 @@ const Tags = () => {
               onClick={() => {
                 toggleViewDetailsForm();
                 setTag(tag);
-              }}    
+              }}
             >
               View Details
             </button>
@@ -131,19 +131,18 @@ const Tags = () => {
               onClick={(e) => {
                 setDeleteTag(tag);
                 deleteGameTag(e);
-              }}   
+              }}
             >
               Delete
             </button>
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div>
-      <div className="flex justify-end p-4"><AdminAccount/></div>
       <div className="p-20">
         <div className="flex justify-center gap-x-[120px]">
           <h2 className="font-bold text-2xl">Tags Management</h2>
@@ -158,10 +157,13 @@ const Tags = () => {
           <table className="mt-[10px]">
             <thead>
               <tr className="text-[16px]">
-                <th className="border-l-[2px] border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">Tag ID</th>
-                <th className="border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">Tag Name</th>
-                <th className="border-r-[2px] border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">
+                <th className="border-l-[2px] border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">
+                  Tag ID
                 </th>
+                <th className="border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3">
+                  Tag Name
+                </th>
+                <th className="border-r-[2px] border-t-[2px] border-b-[2px] border-gray-500 pr-5 px-3"></th>
               </tr>
             </thead>
             <tbody className="bg-gray-200">
@@ -171,15 +173,21 @@ const Tags = () => {
                     index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
                   } text-[16px] w-fit`}
                 >
-                  <td className={`border-b-[1px] border-l-[2px] border-gray-500 pr-5 p-4`}>
+                  <td
+                    className={`border-b-[1px] border-l-[2px] border-gray-500 pr-5 p-4`}
+                  >
                     <p className="p-2">{gameTag.gameTagId}</p>
                   </td>
                   <td className={`border-b-[1px] border-gray-500 pr-5 p-4`}>
                     <p className="p-2">{gameTag.gameTagName}</p>
                   </td>
-                  <td className={`border-b-[1px] border-r-[2px] border-gray-500 pr-5 p-4`}>
-                    <div className="flex justify-center p-2"><Dropdown tag={gameTag}/></div>
-                  </td>   
+                  <td
+                    className={`border-b-[1px] border-r-[2px] border-gray-500 pr-5 p-4`}
+                  >
+                    <div className="flex justify-center p-2">
+                      <Dropdown tag={gameTag} />
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -188,38 +196,38 @@ const Tags = () => {
       </div>
       {openAddForm && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-        <div className="bg-gray-200 p-6 rounded-md w-[840px]">
-          <form>
-            <div className="flex flex-col w-[400px]">
-              <div className="flex flex-col mt-4">
-                <label className="mb-3">Tag Name</label>
-                <input
-                  type="text"
-                  id=""
-                  placeholder=""
-                  value={addedTagName}
-                  className="p-2 rounded-md border-gray-900"
-                  onChange={(e) => setAddedTagName(e.target.value)}
-                />
+          <div className="bg-gray-200 p-6 rounded-md w-[840px]">
+            <form>
+              <div className="flex flex-col w-[400px]">
+                <div className="flex flex-col mt-4">
+                  <label className="mb-3">Tag Name</label>
+                  <input
+                    type="text"
+                    id=""
+                    placeholder=""
+                    value={addedTagName}
+                    className="p-2 rounded-md border-gray-900"
+                    onChange={(e) => setAddedTagName(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="flex justify-between mt-4">
-              <button
-                className="bg-green-500 px-4 py-2 rounded-md font-bold w-[120px] text-[16px]"
-                onClick={addTag}
-              >
-                Add
-              </button>
-              <button
-                className="bg-red-500 px-4 py-2 rounded-md font-bold w-[120px] text-[16px]"
-                onClick={toggleAddForm}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+              <div className="flex justify-between mt-4">
+                <button
+                  className="bg-green-500 px-4 py-2 rounded-md font-bold w-[120px] text-[16px]"
+                  onClick={addTag}
+                >
+                  Add
+                </button>
+                <button
+                  className="bg-red-500 px-4 py-2 rounded-md font-bold w-[120px] text-[16px]"
+                  onClick={toggleAddForm}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
       )}
       {openDetailsForm && tag && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">

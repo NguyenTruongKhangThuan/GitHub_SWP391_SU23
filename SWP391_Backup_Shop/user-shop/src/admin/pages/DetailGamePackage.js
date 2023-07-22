@@ -13,7 +13,6 @@ const DetailGamePackage = () => {
 
   return (
     <div className='mt-2'>
-      <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
       <h2 className='text-center font-bold text-2xl'>Gamepack Detail - {gamePackData.gamePackId}</h2>
       <div className="flex justify-center">
             <form className="w-[840px]">

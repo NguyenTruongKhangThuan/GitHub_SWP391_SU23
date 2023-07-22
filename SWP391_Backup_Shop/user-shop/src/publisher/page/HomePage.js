@@ -28,9 +28,11 @@ const HomePage = () => {
 
   useEffect(() => {
     loadCreatedGamePack();
-  }, []);
+  });
 
-  const loadCreatedGamePack = () => {
+  //Need to change the delay setting
+  const loadCreatedGamePack = async () => {
+    await delay(5000);
     getCreatedGamePackAPI(
       sessionStorage.getItem("accountToken"),
       sessionStorage.getItem("publisherId")
@@ -49,23 +51,24 @@ const HomePage = () => {
       <Header />
       <Hero />
       <h2 className="ml-[100px] mt-4 font-bold">
-          Your Published Game Packages:
+        Your Published Game Packages:
       </h2>
-      <div >
+      <div>
         <section className="py-10">
           <div className="container mx-auto">
             <div
               className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-4 xl: grid-cols-5 gap-[30px]
             max-w-sm mx-auto md:max-w-none md:mx-0"
             >
-              {products.map((product) => {
-                return <Product product={product} key={product.gamePackId} />;
-              })}
+              {products.length > 0 &&
+                products.map((product) => {
+                  return <Product product={product} key={product.gamePackId} />;
+                })}
             </div>
           </div>
         </section>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

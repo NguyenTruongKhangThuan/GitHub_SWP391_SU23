@@ -88,11 +88,10 @@ const GamePackages = () => {
   });
 
   return (
-    <div className="mt-2">
-      <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
-      <div className="p-[48px] h-screen overflow-auto">
+    <div>
+      <div className="p-[30px]">
         <div className="flex justify-between">
-          <h2 className="mt-[16px] mb-[30px] font-bold text-2xl">
+          <h2 className="mt-[4px] mb-[30px] font-bold text-2xl">
             Game Packages List
           </h2>
         </div>

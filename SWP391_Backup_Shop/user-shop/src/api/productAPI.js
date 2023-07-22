@@ -6,6 +6,7 @@ const END_POINT = {
   SEARCH: "api/gamepacks/searchmethods",
   COMPONENTS: "api/components",
   GAMETAG: "api/gametags",
+  TAGINPACK: "api/gamepacks/tags",
 };
 
 //BoardGame API
@@ -36,4 +37,14 @@ export const getRelativeComponentsAPI = (gamePackId) => {
 //Game Tags API
 export const getGameTagsAPI = () => {
   return axiosClient.get(`${END_POINT.GAMETAG}`);
+};
+
+export const addGameTagIntoGamePack = (gamePackId, tags) => {
+  return axiosClient.post(
+    `${END_POINT.TAGINPACK}?gamePackId=${gamePackId}`,
+    tags
+  );
+};
+export const getGameTagOfGamPack = (gamePackId) => {
+  return axiosClient.get(`${END_POINT.TAGINPACK}?gamePackId=${gamePackId}`);
 };

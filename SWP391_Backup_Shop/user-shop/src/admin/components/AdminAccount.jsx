@@ -17,14 +17,14 @@ const AdminAccount = () => {
   return (
     <div className="relative">
       <button
-        className="flex items-center justify-center w-[40px] h-10 bg-gray-400 rounded-full"
+        className="flex items-center w-[95%] hover:underline font-bold justify-end p-6 mr-[20px]"
         onClick={handleAvatarClick}
       >
-        <RiAdminFill className="text-white text-xl" />
+        Hello {sessionStorage.getItem("account")}
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-[200px] bg-white rounded shadow-md z-10">
+        <div className="absolute top-20 right-8 w-[200px] bg-white rounded shadow-md z-10">
           {/* Dropdown content */}
           <ul className="py-2">
             <li className="px-4 py-2 hover:bg-gray-300 cursor-pointer text-[16px] text-red-400">

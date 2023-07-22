@@ -20,9 +20,11 @@ function ViewCart() {
             md:w-[35vw] xl:w-full"
       >
         <div className="flex flex-col gap-y-2 h-[520px] lg:h-[640px] overflow-y-auto overflow-x-hidden border-b">
-          {cart.map((item) => {
+          {cart !==null ? cart.map((item) => {
             return <CartItem item={item} key={item.gamePackId} />;
-          })}
+          }): (
+            <p className="text-white">Currently have no items in the cart</p>
+          )}
         </div>
         <div className="flex flex-col gap-y-3 py-4 mt-3">
           <div className="flex w-full justify-between items-center">

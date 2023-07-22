@@ -9,7 +9,6 @@ const DetailBoardgame = () => {
 
   return (
     <div className='mt-2'>
-      <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
       <div className="flex justify-center">
             <form className="w-[840px]">
               <div className="grid grid-cols-2 mt-4">

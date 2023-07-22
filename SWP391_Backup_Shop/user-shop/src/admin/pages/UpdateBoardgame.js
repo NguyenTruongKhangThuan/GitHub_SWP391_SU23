@@ -86,7 +86,6 @@ const UpdateBoardgame = () => {
 
   return (
     <div>
-      <div className="flex justify-end p-4"><AdminAccount/></div>
       <h2 className="text-center font-bold text-2xl">Update Boardgame: {boardGameData.name}</h2>
       <div className="flex justify-center">
             <form className="w-[840px]">

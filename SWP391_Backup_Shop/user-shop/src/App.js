@@ -42,6 +42,8 @@ import UpdateBoardgame from "./admin/pages/UpdateBoardgame";
 import Tags from "./admin/pages/Tags";
 import Transactions from "./admin/pages/Transactions";
 import DetailTransations from "./admin/pages/DetailTransations";
+import AdminAccount from "./admin/components/AdminAccount";
+import Footer from "./components/Footer";
 
 
 const App = () => {
@@ -89,40 +91,44 @@ const App = () => {
 const AdminLayout = () => {
 
   return (
-    <div className="flex w-full h-screen">
-      <Sidebar />
-      <div className="flex-1  bg-[#A5C0DD]">
-        <Routes>
-          <Route path="/" element={<Dashboard />}/>
-          <Route path="/dashboard" element={<Dashboard/>} />
-
-          {/* Users: R */}
-          <Route path="/users" element={<Users />}/>
-          <Route path="/users/details/:id" element={<UserDetails/>}/>
-
-          {/* Publisher: C,R,D */}
-          <Route path="/publishers" element={<Publishers />} />
-          <Route path="/publishers/create" element={<AddPublishers/>} />
-          <Route path="/publisher/details/:id" element={<PublisherDetails/>}/>
-
-          {/* GamePackages: R */}
-          <Route path="/game-packages" element={<GamePackages />} />
-          <Route path="/game-packages/details/:id" element={<DetailGamePackage/>}/>
-
-          {/* Boardgames: C,R,U,D */}
-          <Route path="/boardgames" element={<Boardgames />} />
-          <Route path="/boardgames/details/:id" element={<DetailBoardgame/>}/>
-          <Route path="/boardgames/update/:id" element={<UpdateBoardgame/>}/>
-          <Route path="/boardgames/create" element={<AddBoardgames/>} />
-
-          {/* Transactions: R */}
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/transactions/details/:id" element={<DetailTransations/>}/>
-
-          {/* Tags: C,R,U,D */}
-          <Route path="/tags" element={<Tags />} />
-        </Routes>
+    <div>
+      <div className="flex w-full h-full overflow-auto">
+        <Sidebar />
+        <div className="flex-1  bg-[#A5C0DD]">
+          <AdminAccount/>
+          <Routes>
+            <Route path="/" element={<Dashboard />}/>
+            <Route path="/dashboard" element={<Dashboard/>} />
+  
+            {/* Users: R */}
+            <Route path="/users" element={<Users />}/>
+            <Route path="/users/details/:id" element={<UserDetails/>}/>
+  
+            {/* Publisher: C,R,D */}
+            <Route path="/publishers" element={<Publishers />} />
+            <Route path="/publishers/create" element={<AddPublishers/>} />
+            <Route path="/publisher/details/:id" element={<PublisherDetails/>}/>
+  
+            {/* GamePackages: R */}
+            <Route path="/game-packages" element={<GamePackages />} />
+            <Route path="/game-packages/details/:id" element={<DetailGamePackage/>}/>
+  
+            {/* Boardgames: C,R,U,D */}
+            <Route path="/boardgames" element={<Boardgames />} />
+            <Route path="/boardgames/details/:id" element={<DetailBoardgame/>}/>
+            <Route path="/boardgames/update/:id" element={<UpdateBoardgame/>}/>
+            <Route path="/boardgames/create" element={<AddBoardgames/>} />
+  
+            {/* Transactions: R */}
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/transactions/details/:id" element={<DetailTransations/>}/>
+  
+            {/* Tags: C,R,U,D */}
+            <Route path="/tags" element={<Tags />} />
+          </Routes>
+        </div>
       </div>
+      <Footer/>
     </div>
   );
 };

@@ -2,9 +2,11 @@ import { useState } from "react";
 import { getMoMoResult, deleteOrderAPI } from "../api/orderAPI";
 import { Link, useSearchParams } from "react-router-dom";
 import Header from "../components/Header";
+import moment from "moment/moment";
 
 function PaymentResult() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [time, setTime] = useState();
 
   const orderId = searchParams.get("orderId");
   const orderInfo = searchParams.get("orderInfo");
@@ -12,14 +14,14 @@ function PaymentResult() {
   const extraData = searchParams.get("extraData");
   const message = searchParams.get("message");
 
-  const VND = new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
+  const VND = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
   });
 
   function PaymentRequest() {
     if (message === "Success") {
-      getMoMoResult(extraData, orderId, orderInfo, amount).catch((err) =>
+      getMoMoResult(extraData, orderId, orderInfo, amount, time).catch((err) =>
         window.alert(err.response.data)
       );
     } else {
@@ -30,27 +32,38 @@ function PaymentResult() {
   }
 
   return (
-    <div className="">
+    <div
+      onLoad={() => {
+        var date = moment(Date.now.time)
+          .format("DD/MM/YYYY h:mm:ss")
+          .toString();
+        setTime(date);
+      }}
+    >
       <Header />
-      <div className="w-full h-screen flex justify-center items-center bg-gradient-to-tr from-[#C0EEF2] to-[#146C94]">
-        <div className="flex flex-col items-center gap-y-5 bg-white/40 p-8 rounded-lg shadow-md">
-          <div className={`relative ${message === 'Success' ? 'border-green-500' : 'border-red-500'}`}>
-            {message === 'Success' ? (
+      <div className="w-full h-screen flex justify-center items-center bg-gray-100">
+        <div className="flex flex-col items-center gap-y-5 bg-white p-8 rounded-lg shadow-md">
+          <div
+            className={`relative ${
+              message === "Success" ? "border-green-500" : "border-red-500"
+            }`}
+          >
+            {message === "Success" ? (
               <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <svg
-                className="w-12 h-12 text-[#34D399]"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" fill="#34D399" />
-                <path d="M9 12l2 2 4-4" stroke="#fff" />
-              </svg>
-            </div>
+                <svg
+                  className="w-12 h-12 text-[#34D399]"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" fill="#34D399" />
+                  <path d="M9 12l2 2 4-4" stroke="#fff" />
+                </svg>
+              </div>
             ) : (
               <div className="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-1/2">
                 <svg
@@ -68,7 +81,11 @@ function PaymentResult() {
               </div>
             )}
           </div>
-          <div className={` p-4 text-center ${message === "Success" ? 'text-[#4B8673]' : 'text-red-500'} text-2xl font-semibold`}>
+          <div
+            className={` p-4 text-center ${
+              message === "Success" ? "text-[#4B8673]" : "text-red-500"
+            } text-2xl font-semibold`}
+          >
             {message}
           </div>
           <div className="w-full flex justify-between gap-x-8">

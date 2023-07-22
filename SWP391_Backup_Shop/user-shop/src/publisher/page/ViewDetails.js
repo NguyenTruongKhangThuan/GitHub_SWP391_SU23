@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { ProductContext } from "../../contexts/ProductContext";
 import Header from "../components/Header";
 import Footer from "../../components/Footer";
+import { getGameTagOfGamPack } from "../../api/productAPI";
 
 const ViewDetails = () => {
   //Get the Product ID from the URL
@@ -22,6 +23,8 @@ const ViewDetails = () => {
     return item.gamePackId === id;
   });
 
+  const [tags, setTags] = useState([]);
+
   //Case: Product Not Found
   if (!product) {
     return (
@@ -29,6 +32,12 @@ const ViewDetails = () => {
         Loading...
       </section>
     );
+  } else {
+    getGameTagOfGamPack(product.gamePackId)
+      .then((res) => {
+        setTags(res);
+      })
+      .catch((err) => console.log("Error Occur"));
   }
 
   //destructure product
@@ -104,10 +113,17 @@ const ViewDetails = () => {
                   </div>
                 </div>
               </div>
+              <div className="flex justify-start  gap-x-[20px] mb-4">
+                <p className="p-2 font-bold">Tags:</p>
+                {tags &&
+                  tags.map((tag) => (
+                    <p className="border rounded bg-[#d2d2d2] p-2">
+                      {tag.gameTagName}
+                    </p>
+                  ))}
+              </div>
               {product.description.length > 0 && (
-                <div
-                  className={`mb-8 text-[14px] w-[800px]`}
-                >
+                <div className={`mb-8 text-[14px] w-[800px]`}>
                   <p>
                     {showFullRule
                       ? product.description

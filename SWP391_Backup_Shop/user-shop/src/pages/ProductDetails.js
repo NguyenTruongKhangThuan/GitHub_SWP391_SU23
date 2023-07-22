@@ -53,7 +53,7 @@ const ProductDetails = () => {
   return (
     <>
       <Header />
-      <section className="bg-gradient-to-tr from-[#C0EEF2] to-[#146C94] pt-32 pb-12 lg:py-32 h-screen flex items-center">
+      <section className="bg-gradient-to-tr from-[#C0EEF2] to-[#146C94] pt-32 pb-12 lg:py-32 w-full h-screen flex items-center">
         <div className="container mx-auto lg:mx-0">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex flex-1 justify-center items-center mb-8 lg:mb-10">
@@ -64,9 +64,27 @@ const ProductDetails = () => {
               />
             </div>
             <div className="flex-1 text-center lg:text-left">
-              <h1 className="text-[26px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
-                {product.gamePackName}
-              </h1>
+              <div className="flex justify-between">
+                <h1 className="text-[26px] font-medium mb-2 max-w-[800px] mx-auto lg:mx-0">
+                  {product.gamePackName}
+                </h1>
+                <div className="flex gap-x-10">
+                  <button
+                    className="bg-primary hover:bg-gray-800 text-[14px] rounded-md py-4 px-8 text-white"
+                    onClick={() => {
+                      addToCart(product, product.gamePackId);
+                      showSuccessMessage();
+                    }}
+                  >
+                    Add To Cart
+                  </button>
+                  <Link to={"/shop/category"}>
+                    <button className="bg-primary hover:bg-gray-800 rounded-md py-4 px-8 text-white">
+                      Return and Continue Shopping
+                    </button>
+                  </Link>
+                </div>
+              </div>
               <div className="text-xl text-red-500 font-medium mb-6">
                 {VND.format(product.price)}
               </div>
@@ -83,6 +101,10 @@ const ProductDetails = () => {
                   <div className="flex justify-between w-[360px]">
                     <p className="font-semibold">Average Duration Match:</p>
                     <p>{product.gameDuration}</p>
+                  </div>
+                  <div className="flex justify-between w-[360px]">
+                    <p className="font-semibold">Tags:</p>
+                    <p>{product.gameTag}</p>
                   </div>
                 </div>
                 <div className="">
@@ -104,45 +126,33 @@ const ProductDetails = () => {
                   </div>
                 </div>
               </div>
-              {product.description.length > 0 && (
-                <div
-                  className={`mb-8 ${
-                    product.description.length > 250
-                      ? "text-[13px]"
-                      : "text-[14px]"
-                  } w-[800px]`}
-                >
-                  <p>
-                    {showFullRule
-                      ? product.description
-                      : `${product.description.slice(0, 100)}...`}
-                  </p>
-                  {product.description.length > 200 && (
-                    <button
-                      className="text-blue-500 mt-2"
-                      onClick={toggleRuleVisibility}
-                    >
-                      {showFullRule ? "View Less" : "View More"}
-                    </button>
-                  )}
-                </div>
-              )}
-              <div className="flex gap-x-10">
-                <button
-                  className="bg-primary hover:bg-gray-800 rounded-md py-4 px-8 text-white"
-                  onClick={() => {
-                    addToCart(product, product.gamePackId);
-                    showSuccessMessage();
-                  }}
-                >
-                  Add To Cart
-                </button>
-                <Link to={"/shop/category"}>
-                  <button className="bg-primary hover:bg-gray-800 rounded-md py-4 px-8 text-white">
-                    Return and Continue Shopping
-                  </button>
-                </Link>
+              <div className="flex flex-col gap-y-4 justify-between w-[360px] mb-4">
+                <p className="font-semibold">Description:</p>
+                {product.description.length > 0 && (
+                  <div
+                    className={`mb-8 ${
+                      product.description.length > 250
+                        ? "text-[14px]"
+                        : "text-[16px]"
+                    } w-[800px]`}
+                  >
+                    <p>
+                      {showFullRule
+                        ? product.description
+                        : `${product.description.slice(0, 100)}`}
+                    </p>
+                    {(product.description.length > 120) && (
+                      <button
+                        className="text-blue-500 mt-2"
+                        onClick={toggleRuleVisibility}
+                      >
+                        {showFullRule ? "View Less" : "View More"}
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
+              
             </div>
             <ToastContainer className={"mt-14 bg-no-repeat"} />
           </div>

@@ -8,7 +8,6 @@ const PublisherDetails = () => {
   let {publisherInfo} = location.state;
   return (
     <div>
-      <div className='flex justify-end p-2'><AdminAccount/></div>
       <h2 className='text-center font-bold text-2xl'>Publisher Information: {publisherInfo.ownerId}</h2>
       <div className="flex justify-center">
             <form className="w-[840px]">

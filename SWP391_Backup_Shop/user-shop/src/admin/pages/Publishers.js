@@ -94,7 +94,6 @@ const Owner = () => {
 
   return (
     <div className="mt-2">
-      <div className="flex justify-end mr-[60px]"><AdminAccount/></div>
       <div className="p-[60px]">
         <div className="flex justify-between">
           <h2 className="font-bold text-xl">Publishers Management</h2>

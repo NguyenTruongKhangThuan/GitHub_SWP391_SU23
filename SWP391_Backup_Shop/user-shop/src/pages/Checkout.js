@@ -91,12 +91,13 @@ function Checkout() {
       <Header />
       <section
         className="mt-[80px] fixed top-0 h-full shadow-2xl 
-             bg-gradient-to-tr from-[#C0EEF2] to-[#146C94] w-full overflow-auto"
+             bg-gradient-to-tr from-[#B4CDE6] to-[#8758FF] w-full overflow-auto"
       >
         <div className="flex flex-col gap-y-2 h-[520px] lg:h-[640px] overflow-y-auto overflow-x-hidden border-b">
           {cart.map((item) => {
             return <CartItem item={item} key={item.gamePackId} />;
           })}
+
         </div>
         <div className="flex flex-col gap-y-3 py-4 mt-3">
           <div className="flex w-full justify-between items-center">

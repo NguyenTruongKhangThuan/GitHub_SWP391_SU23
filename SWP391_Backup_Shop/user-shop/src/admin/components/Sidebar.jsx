@@ -104,12 +104,6 @@ const Sidebar = () => {
             </NavLink>
           </li>
         </ul>
-        <div className="flex justify-center cursor-pointer">
-          {expand ?
-            <BsArrowRightCircle size={30} onClick={toggleExpand} title="Expand"/>
-            :
-            <BsArrowLeftCircle size={30} onClick={toggleExpand} title="Close"/>}
-        </div>
       </div>
     </div>
   );

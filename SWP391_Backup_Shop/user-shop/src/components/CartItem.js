@@ -19,7 +19,7 @@ const CartItem = ({ item }) => {
   });
   
   return (
-    <div className="flex gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
+    <div className="flex gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full  font-light text-black">
       <div className="w-full min-h-[150px] flex items-center gap-x-4">
         <Link to={`/shop/product/${gamePackId}`}>
           <img className="max-w-[80px]" src={image} alt="" />
@@ -28,7 +28,7 @@ const CartItem = ({ item }) => {
           <div className="flex justify-between mb-2">
             <Link
               to={`/shop/product/${gamePackId}`}
-              className="text-sm uppercase font-medium max-w-[240px] text-primary hover:underline"
+              className="text-sm uppercase font-medium max-w-[240px]  hover:underline"
             >
               {gamePackName}
             </Link>
@@ -36,23 +36,23 @@ const CartItem = ({ item }) => {
               className="text-xl cursor-pointer"
               onClick={() => removeFromCart(gamePackId)}
             >
-              <IoMdClose className="text-gray-500 hover:text-red-500 transition" />
+              <IoMdClose className="text-black hover:text-red-500 transition" />
             </div>
           </div>
           <div className="flex flex-row gap-x-2 h-[36px] text-sm">
-            <div className="flex flex-1 max-w-[100px] items-center h-full border text-primary font-medium">
+            <div className="flex flex-1 max-w-[100px] items-center h-full border-[1px] border-black text-white rounded-3xl font-medium">
               <div
                 onClick={() => decreaseAmount(gamePackId)}
-                className="flex-1 flex justify-center items-center h-full cursor-pointer "
+                className="flex-1 flex justify-center items-center h-full cursor-pointer rounded-l-3xl text-black"
               >
                 <IoMdRemove />
               </div>
-              <div className="h-full flex justify-center items-center px-2">
+              <div className="h-full flex justify-center items-center px-4 text-black">
                 {parseInt(amount)}
               </div>
               <div
                 onClick={() => increaseAmount(gamePackId)}
-                className="flex-1 h-full flex justify-center items-center cursor-pointer"
+                className="flex-1 h-full flex justify-center items-center cursor-pointer rounded-r-3xl text-black"
               >
                 <IoMdAdd />
               </div>

@@ -71,7 +71,6 @@ const Transaction = () => {
 
   return (
     <div>
-      <div className='flex justify-end mt-2 mr-4'><AdminAccount/></div>
       <div className="p-8">
         <div className="flex justify-between mt-4">
           <h1 className="mt-[20px] mb-[30px] font-bold text-2xl">

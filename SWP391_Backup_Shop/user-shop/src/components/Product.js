@@ -82,7 +82,7 @@ const Product = ({ product }) => {
           </button>
         </div>
       </div>
-      <ToastContainer className={"mt-14"} limit={1}/>
+      <ToastContainer className={"mt-14"} />
     </div>
   );
 };

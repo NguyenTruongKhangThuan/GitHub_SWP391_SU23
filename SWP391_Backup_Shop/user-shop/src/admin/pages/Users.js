@@ -75,7 +75,6 @@ const Users = () => {
 
   return (
     <div className="mt-2">
-      <div className="flex justify-end mr-[60px]"><AdminAccount /></div>
       <div className="p-8">
         <div className="flex justify-between">
           <h2 className="text-xl font-bold">Users Management</h2>

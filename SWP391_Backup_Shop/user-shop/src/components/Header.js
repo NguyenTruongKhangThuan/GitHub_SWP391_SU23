@@ -70,10 +70,11 @@ const Header = (props) => {
               onChange={(e) => {
                 setCategory(e.target.value);
                 handleFilter(e.target.value);
+                searchFunction("", e.target.value);
               }}
             >
               <option>All</option>
-              {categories &&
+              {categories &&  
                 categories.map((item) => <option>{item.name}</option>)}
             </select>
             <input
