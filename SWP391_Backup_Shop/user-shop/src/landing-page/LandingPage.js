@@ -6,8 +6,6 @@ import ForestBackground from './assets/Forest.png'
 
 import Hero from './components/Hero';
 import Navbar from './components/Navbar';
-import About from './components/About';
-import Roles from './components/FeaturedCards';
 
 function App() {  
   const [showNavbar, setShowNavbar] = useState(true);
@@ -31,19 +29,19 @@ function App() {
   }, [prevScrollPos]);
 
   return (
-    <div className='w-[100%] overflow-hidden'>
+    <div className='w-screen overflow-y-hidden'>
       <Navbar hidden={!showNavbar} />
       <div
-        className="bg-cover bg-center h-[1000px] items-center"
+        className="bg-cover bg-center h-[880px] items-center"
         style={{
           backgroundImage: `url(${ForestBackground})`, // Use the imported image as background
           marginTop: showNavbar ? 0 : '-80px',
         }}
       >
-        <Hero/>
+        <div className='flex justify-center'>
+          <Hero/>
+        </div>
       </div>
-      <About/>
-      <Roles/>
     </div>
   );
 }

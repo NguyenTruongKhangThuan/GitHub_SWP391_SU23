@@ -132,7 +132,7 @@ const Header = (props) => {
           )}
           { sessionStorage.getItem("account") !== null &&
             <Link
-            to={"/auth"}
+            to={"/"}
             className="hover:underline"
             onClick={() => {
               sessionStorage.removeItem("account")

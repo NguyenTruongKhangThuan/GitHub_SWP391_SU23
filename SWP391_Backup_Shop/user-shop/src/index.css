@@ -7,3 +7,36 @@
     @apply font-primary text-primary;
   }
 }
+
+@keyframes shooting-star1 {
+  from {
+    transform: translate(-20%, 10%) rotate(-45deg);
+    opacity: 1;
+  }
+  to {
+    transform: translate(100%, -200%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shooting-star2 {
+  from {
+    transform: translate(-30%, 20%) rotate(-45deg);
+    opacity: 1;
+  }
+  to {
+    transform: translate(100%, -150%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shooting-star3 {
+  from {
+    transform: translate(-25%, 25%) rotate(30deg);
+    opacity: 1;
+  }
+  to {
+    transform: translate(100%, -150%) rotate(45deg);
+    opacity: 0;
+  }
+}

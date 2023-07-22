@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import { getOrderDetailsAPI, getUserInfoAPI, getUserPaymentsAPI } from '../api/userAPI';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import Footer from '../components/Footer';
 
 const UserPaymentDetails = () => {
     const [payments, setPayments] = useState([]);
@@ -37,18 +38,18 @@ const UserPaymentDetails = () => {
   return (
     <div>
       <Header/>
-      <section className='py-[120px]'>
+      <section className='py-[120px] h-screen bg-gradient-to-tr from-[#C0EEF2] to-[#146C94]'>
         <div className='container mx-auto'>
             <h2 className='text-2xl font-bold'>User's Payment History Details</h2>
             <table className='w-full mt-5'>
                 <thead>
-                    <tr>
-                        <th className='border-[2px] border-gray-300 px-4 py-2'>Payment ID</th>
-                        <th className='border-[2px] border-gray-300 px-4 py-2'>Order ID</th>
-                        <th className='border-[2px] border-gray-300 px-4 py-2'>Payment Date</th>
-                        <th className='border-[2px] border-gray-300 px-4 py-2'>Payment Method</th>
-                        <th className='border-[2px] border-gray-300 px-4 py-2'>Total Pay</th>
-                        <th className='border-[2px] border-gray-300 px-4 py-2'>Action</th>
+                    <tr className='text-[16px]'>
+                        <th className='p-2 border-l-[2px] border-t-[2px] border-b-[2px] border-gray-300 px-4 py-2'>Payment ID</th>
+                        <th className='p-2 border-t-[2px] border-b-[2px] border-gray-300 px-4 py-2'>Order ID</th>
+                        <th className='p-2 border-t-[2px] border-b-[2px] border-gray-300 px-4 py-2'>Payment Date</th>
+                        <th className='p-2 border-t-[2px] border-b-[2px] border-gray-300 px-4 py-2'>Payment Method</th>
+                        <th className='p-2 border-t-[2px] border-b-[2px] border-gray-300 px-4 py-2'>Total Pay</th>
+                        <th className='p-2 border-r-[2px] border-t-[2px] border-b-[2px] border-gray-300 px-4 py-2'>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,6 +88,7 @@ const UserPaymentDetails = () => {
         </div>
         </div>
       </section>
+      <Footer/>
     </div>
   )
 }

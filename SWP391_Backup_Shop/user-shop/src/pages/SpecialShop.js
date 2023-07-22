@@ -29,7 +29,7 @@ const SpecialShops = () => {
           <h2 className="font-semibold text-[24px] mb-4">Special Shop</h2>
           <div
             className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-4 xl: grid-cols-5 gap-[30px]
-            max-w-sm mx-auto md:max-w-none md:mx-0"
+            max-w-sm mx-auto md:max-w-none md:mx-0 bg-gradient-to-tr from-[#C0EEF2] to-[#146C94]"
           >
             {searchedProduct === null
               ? products.map((product) => {
