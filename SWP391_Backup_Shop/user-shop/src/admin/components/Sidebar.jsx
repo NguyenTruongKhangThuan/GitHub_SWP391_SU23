@@ -4,8 +4,7 @@ import { RiDashboardFill } from 'react-icons/ri';
 import { FaUserCircle, FaMoneyBillWave, FaTags } from 'react-icons/fa';
 import { GiCardRandom, GiRuleBook } from 'react-icons/gi';
 import { MdGames, MdAddBusiness } from 'react-icons/md';
-import Logo from '../../admin/assets/Logo.svg';
-import {BsArrowLeftCircle, BsArrowRightCircle} from 'react-icons/bs'
+import Logo from '../../admin/assets/Logo.png';
 
 const Sidebar = () => {
   const [expand, setExpand] = useState(false)

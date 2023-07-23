@@ -3,7 +3,7 @@ import { SidebarContext } from "../contexts/SidebarContext";
 import { BsBag } from "react-icons/bs";
 import { CartContext } from "../contexts/CartContext";
 import { Link } from "react-router-dom";
-import Logo from "../img/LogoCopy.svg";
+import Logo from "../img/Logo.png";
 import { getBoardGameAPI } from "../api/productAPI";
 
 const Header = (props) => {
@@ -59,37 +59,39 @@ const Header = (props) => {
           <Link to={"/shop"}>
             <div>
               {/* Replace this image with an SVG of our project */}
-              <img src={Logo} alt="" className="w-[40px]" />
+              <img src={Logo} alt="" className="w-[80px]" />
             </div>
           </Link>
-          <div className="flex">
-            {/* Category Filter */}
-            <select
-              id="categories"
-              className="py-2 PX-3 outline-none b border border-gray-400"
-              onChange={(e) => {
-                setCategory(e.target.value);
-                handleFilter(e.target.value);
-                searchFunction("", e.target.value);
-              }}
-            >
-              <option>All</option>
-              {categories &&  
-                categories.map((item) => <option>{item.name}</option>)}
-            </select>
-            <input
-              type="text"
-              placeholder="Search..."
-              id="searchValue"
-              className="px-3 py-2 w-[400px] border border-gray-400"
-              onChange={(e) => setSearchValue(e.target.value)}
-            ></input>
-            <button
-              className="px-3 py-2 w-[100px] border border-gray-400 bg-[#ffffff]"
-              onClick={handleSearch}
-            >
-              Search
-            </button>
+          <div className="flex items-center">
+            <div className="flex h-[50px] justify-center">
+              {/* Category Filter */}
+              <select
+                id="categories"
+                className="py-1 outline-none b border border-gray-400"
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                  handleFilter(e.target.value);
+                  searchFunction("", e.target.value);
+                }}
+              >
+                <option>All</option>
+                {categories &&  
+                  categories.map((item) => <option>{item.name}</option>)}
+              </select>
+              <input
+                type="text"
+                placeholder="Search..."
+                id="searchValue"
+                className="px-3 py-2 w-[400px] border border-gray-400"
+                onChange={(e) => setSearchValue(e.target.value)}
+              ></input>
+              <button
+                className="px-3 py-2 w-[100px] border border-gray-400 bg-[#ffffff] rounded-r-xl"
+                onClick={handleSearch}
+              >
+                Search
+              </button>
+            </div>
           </div>
         </div>
         <div className="flex items-center justify-end gap-x-[30px] text-gray-200">
