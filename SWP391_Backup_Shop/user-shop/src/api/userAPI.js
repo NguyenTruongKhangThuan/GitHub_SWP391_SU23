@@ -3,9 +3,9 @@ import axiosClient from "../api/axiosClient";
 const END_POINT = {
   USER: "api/users",
   AUTHENTICATION: "api/users/authentication",
-  INFO : "api/users/info",
+  INFO: "api/users/info",
   PAYMENT: "api/payments",
-  ORDERDETAILS : "api/orderdetails"
+  ORDERDETAILS: "api/orderdetails",
 };
 
 //User API
@@ -38,14 +38,14 @@ export const authenticationAPI = (token) => {
 //Infor API
 export const getUserInfoAPI = (token) => {
   return axiosClient.get(`${END_POINT.INFO}?token=${token}`);
-}
+};
 
 //Payments API
 export const getUserPaymentsAPI = (userID) => {
-  return axiosClient.get(`${END_POINT.PAYMENT}?userId=${userID}`)
-}
+  return axiosClient.get(`${END_POINT.PAYMENT}?userId=${userID}`);
+};
 
 //OrderDetails API
 export const getOrderDetailsAPI = (orderID) => {
-  return axiosClient.get(`${END_POINT.ORDERDETAILS}?orderId=${orderID}`)
-}
+  return axiosClient.get(`${END_POINT.ORDERDETAILS}?orderId=${orderID}`);
+};

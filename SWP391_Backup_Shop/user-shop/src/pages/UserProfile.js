@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import Header from "../components/Header";
-import { getUserInfoAPI } from "../api/userAPI";
+import { getUserInfoAPI, updateUserAPI } from "../api/userAPI";
 import { Link } from "react-router-dom";
 
 const UserProfile = () => {
@@ -20,8 +20,25 @@ const UserProfile = () => {
 
   const handleEditClick = () => {
     setIsEditable(true);
-    
-    
+  };
+
+  const handleInputChange = (name, value) => {
+    setAccountInfo({
+      ...accountInfo,
+      [name]: value,
+    });
+  };
+
+  const confirmUpdate = (e) => {
+    // e.preventDefault();
+    setIsEditable(false);
+    console.log(accountInfo);
+    updateUserAPI(accountInfo)
+      .then((res) => {
+        sessionStorage.setItem("accountToken", res);
+        window.alert("Update Complete");
+      })
+      .catch((err) => window.alert("Error Occur"));
   };
 
   return (
@@ -46,6 +63,9 @@ const UserProfile = () => {
                           className="p-2 w-[240px] rounded-md"
                           defaultValue={accountInfo.username}
                           readOnly={!isEditable}
+                          onChange={(e) =>
+                            handleInputChange("username", e.target.value)
+                          }
                         />
                       </div>
                       <div className="flex justify-between items-center mt-3">
@@ -55,13 +75,18 @@ const UserProfile = () => {
                           className="p-2 w-[240px] rounded-md"
                           defaultValue={accountInfo.password}
                           readOnly={!isEditable}
+                          onChange={(e) =>
+                            handleInputChange("password", e.target.value)
+                          }
                         />
                       </div>
                     </section>
                   </div>
                   <div className="p-2">
                     <section className="mt-4">
-                      <h2 className="my-2 text-xl font-bold">User Information</h2>
+                      <h2 className="my-2 text-xl font-bold">
+                        User Information
+                      </h2>
                       <div className="">
                         <div className="flex justify-between items-center mt-3 gap-x-3">
                           <label className="font-semibold">Full Name</label>
@@ -70,6 +95,9 @@ const UserProfile = () => {
                             className="p-2 w-[240px] rounded-md"
                             defaultValue={accountInfo.fullName}
                             readOnly={!isEditable}
+                            onChange={(e) =>
+                              handleInputChange("fullName", e.target.value)
+                            }
                           />
                         </div>
                         <div className="flex justify-between items-center mt-3 gap-x-3">
@@ -79,6 +107,9 @@ const UserProfile = () => {
                             className="p-2 w-[240px] rounded-md"
                             defaultValue={accountInfo.email}
                             readOnly={!isEditable}
+                            onChange={(e) =>
+                              handleInputChange("email", e.target.value)
+                            }
                           />
                         </div>
                         <div className="flex justify-between mt-3 items-center gap-x-3">
@@ -88,6 +119,9 @@ const UserProfile = () => {
                             className="p-2 w-[240px] rounded-md"
                             defaultValue={accountInfo.phoneNumber}
                             readOnly={!isEditable}
+                            onChange={(e) =>
+                              handleInputChange("phoneNumber", e.target.value)
+                            }
                           />
                         </div>
                         <div className="flex justify-between mt-3 items-center gap-x-3">
@@ -97,6 +131,9 @@ const UserProfile = () => {
                             className="p-2 w-[240px] rounded-md"
                             defaultValue={accountInfo.address}
                             readOnly={!isEditable}
+                            onChange={(e) =>
+                              handleInputChange("address", e.target.value)
+                            }
                           />
                         </div>
                       </div>
@@ -121,7 +158,7 @@ const UserProfile = () => {
               ) : (
                 <button
                   className="text-[16px] font-bold bg-green-500 px-6 py-3 rounded-md"
-                  onClick={() => setIsEditable(false)}
+                  onClick={() => confirmUpdate()}
                 >
                   Save Changes
                 </button>
