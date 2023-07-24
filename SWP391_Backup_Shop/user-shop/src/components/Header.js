@@ -50,7 +50,7 @@ const Header = (props) => {
   return (
     <header
       className={`${
-        isActive ? "bg-[#03001C] py-4 shadow-md" : "bg-[#181818] py-4"
+        isActive ? "bg-[#03001C] py-2 shadow-md" : "bg-[#181818] py-2"
       } fixed w-full z-10 transition-all duration-300`}
     >
       <div className="container mx-auto flex items-center justify-between h-full">

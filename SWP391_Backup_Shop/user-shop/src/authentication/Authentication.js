@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { loginAPI, authenticationAPI, signUpAPI } from "../api/userAPI";
 import { Navigate, useNavigate } from "react-router-dom";
+import {IoMdInformationCircleOutline} from 'react-icons/io'
 import useSessionStorageState from "use-session-storage-state";
+import PasswordStrengthBar from 'react-password-strength-bar';
 import moment from "moment";
 
 function Authentication() {
@@ -52,6 +54,8 @@ function Authentication() {
 
   //Login Form Here
   const LoginForm = () => {
+    const [errorMessage, setErrorMessage] = useState('');
+
     const authenLogin = (e) => {
       e.preventDefault();
       let username =
@@ -69,9 +73,14 @@ function Authentication() {
           setUsernameSession(username);
         })
         .catch((error) => {
-            window.alert(error.response.data);
+            setErrorMessage(error.response.data);
         });
     };
+
+    const clearErrorMessage = () => {
+      setErrorMessage(''); // Clear the error message when the user clicks on the input fields again
+    };
+
     if (token !== null) {
       sessionStorage.setItem("accountToken", token);
       authenticationAPI(token)
@@ -97,14 +106,18 @@ function Authentication() {
     }
     return (
       <div className="bg-gradient-to-tr from-[#62B6B7] to-[#CBEDD5]  w-full h-screen flex justify-center items-center">
-        <div className="w-[460px] p-8 h-fit  bg-[#ffffffc2] rounded-lg">
-          <form className="h-fit flex flex-col px-[20px] gap-[10px]">
+        <div className={`w-[460px] p-8 h-fit  ${errorMessage !== ''? 'border-red-500 border-[1px]': ''} bg-[#ffffffc2] rounded-lg`}>
+          <form className={`h-fit flex flex-col px-[20px] gap-[10px]`}>
+          
             <header className="w-full text-center py-[20px] font-bold">
               <h2 className="text-[36px] mb-3">Login</h2>
               <h4 className="text-[16px] font-medium">
                 Welcome to the shop, please login to continue
               </h4>
             </header>
+            {errorMessage && (
+              <div className="text-red-500 text-center mt-2">{errorMessage}</div>
+            )}
             <div className="flex flex-col">
               <label className="font-bold mb-1">Username</label>
               <input
@@ -112,6 +125,7 @@ function Authentication() {
                 id="lg-username"
                 placeholder="Enter your username"
                 className="border-b-solid border-b-[1px] bg-[#ffffff] p-1"
+                onClick={clearErrorMessage}
               />
             </div>
             <div className="flex flex-col">
@@ -121,6 +135,7 @@ function Authentication() {
                 id="lg-password"
                 placeholder="Enter your Password"
                 className="border-b-solid bg-[#ffffffc2] p-1 border-b-[1px]"
+                onClick={clearErrorMessage}
               />
             </div>
             {/* <div className="justify-between flex py-[10px]">
@@ -149,6 +164,7 @@ function Authentication() {
               </div>
             </div>
           </form>
+        
         </div>
       </div>
     );
@@ -156,13 +172,33 @@ function Authentication() {
 
   //Signup Form Here
   const SignupForm = () => {
+    const [errorMessage, setErrorMessage] = useState('');
+    
+    const clearErrorMessage = () => {
+          setErrorMessage(''); // Clear the error message when the user clicks on the input fields again
+        };
+
+    const [openEmailHint, setOpenEmailHint] = useState(false);
+
+    const toggleEmailHint = () => {
+      setOpenEmailHint(!openEmailHint);
+    }
+
+    const [openPasswordHint, setOpenPasswordHint] = useState(false);
+
+    const togglePasswordHint = () => {
+      setOpenPasswordHint(!openPasswordHint);
+    }
+
+    const [password, setPassword] = useState('')
+
     const authenSignUp = (e) => {
+
       e.preventDefault();
       let username = document.getElementById("sp-username").value;
       let email = document.getElementById("sp-email").value;
       let password = document.getElementById("sp-password").value;
       let confirmPassword = document.getElementById("sp-confirmPassword").value;
-      let fullname = document.getElementById("sp-fullname").value;
 
       var formData = new FormData();
       formData.append("userId", "Utemp");
@@ -170,7 +206,7 @@ function Authentication() {
       formData.append("username", username);
       formData.append("password", password);
       formData.append("email", email);
-      formData.append("fullName", fullname);
+      formData.append("fullName", username);
       formData.append("birthday", moment(new Date()).format("L"));
       formData.append("gender", "");
       formData.append("address", "");
@@ -183,23 +219,25 @@ function Authentication() {
           window.alert(res);
           loginRedirect(username, password);
         })
-        .catch((err) => {
-          window.alert(err.response.data);
+        .catch(() => {
+          setErrorMessage("Error! One or more fields are not met the conditions, please check again!");
         });
     };
     return (
       <div className="bg-gradient-to-tr from-[#B799FF] to-[#AEE2FF]">
-        <div className="w-[1000px] h-screen flex items-center mx-auto justify-center ">
+        <div className="w-[80%] h-screen flex items-center mx-auto justify-center ">
           <div className="h-fit flex flex-col justify-center items-center">
-            <form className="w-[500px] bg-[#ffffffc2] p-4 login rounded-lg shadow-md ">
+            <form className={`w-[1000px] bg-[#ffffffc2] ${errorMessage !== ''? 'border-red-500 border-[1px]': ''} p-4 login rounded-lg shadow-md `}>
               <header className="w-full text-center py-[20px] font-bold">
                 <h2 className="text-[36px] mb-3">Sign Up</h2>
                 <h4 className="text-[16px] font-medium">
                   First time around? Come here and sign up!
                 </h4>
               </header>
-
-              <div className="flex flex-col">
+              {errorMessage && (
+                <div className="text-red-500 text-center mt-2">{errorMessage}</div>
+              )}
+              <div className="grid grid-cols-2">
                 <div className="flex flex-col py-2 mx-8">
                   <label className="font-bold ml-1 mb-1">Username</label>
                   <input
@@ -208,37 +246,70 @@ function Authentication() {
                     placeholder="Enter your Username"
                     required
                     className="border-b-2 border-solid p-2 "
+                    onClick={clearErrorMessage}
                   ></input>
                 </div>
                 <div className="flex flex-col py-2 mx-8">
-                  <label className="font-bold ml-1 mb-1">Fullname</label>
-                  <input
-                    type="text"
-                    id="sp-fullname"
-                    placeholder="Enter your Fullname"
-                    required
-                    className="border-b-2 border-solid p-2 "
-                  ></input>
-                </div>
-                <div className="flex flex-col py-2 mx-8">
-                  <label className="font-bold ml-1 mb-1">Email</label>
+                  <div className="flex justify-between">
+                    <label className="font-bold ml-1 mb-1">Email</label>         
+                  </div>
                   <input
                     type="email"
                     id="sp-email"
                     placeholder="Enter your Email"
                     required
                     className="border-b-2 border-solid p-2 "
+                    onClick={clearErrorMessage}
                   ></input>
+                  <label 
+                      className="font-medium ml-1 mb-1 mt-2 text-[12px] flex items-end cursor-pointer"
+                      onClick={toggleEmailHint}
+                      >
+                        {openEmailHint ? (
+                          <>
+                            <div className="flex justify-between">
+                              <IoMdInformationCircleOutline size={20}/>
+                              <p>Your personal email</p>
+                            </div>
+                          </>
+                        ) : (
+                          <IoMdInformationCircleOutline size={20} title="Hint"/>
+                        )}
+                    </label>
+                  
                 </div>
                 <div className="flex flex-col py-2 mx-8">
-                  <label className="font-bold ml-1 mb-1">Password</label>
+                  <div className="flex justify-between">
+                    <label className="font-bold ml-1 mb-1">Password</label>
+                    
+                  </div>
                   <input
                     type="password"
                     id="sp-password"
-                    placeholder="Enter your Password"
+                    placeholder="At least 6 letters, 1 special character and 1 number"
                     required
                     className="border-b-2 border-solid p-2 "
+                    onChange={(e) => setPassword(e.target.value)}
+                    onClick={clearErrorMessage}
                   ></input>
+                  {/* <label 
+                      className="font-medium ml-1 mb-1 mt-2 text-[12px] flex items-end cursor-pointer"
+                      onClick={togglePasswordHint}
+                    >
+                      {openPasswordHint ? (
+                        <>
+                          <div className="flex justify-between gap-x-2">
+                            <IoMdInformationCircleOutline size={20}/>
+                            <p>Password must contain more than 6 letters, at least 1 number and 1 special character</p>
+                          </div>
+                        </>
+                      ): (
+                        <IoMdInformationCircleOutline size={20} title="Hint"/>
+                      )}
+                    </label> */}
+                    <div className="w-full">
+                      <PasswordStrengthBar password={password} minLength={6}/>
+                    </div>
                 </div>
                 <div className="flex flex-col py-2 mx-8">
                   <label className="font-bold ml-1 mb-1">
@@ -250,6 +321,7 @@ function Authentication() {
                     placeholder="Enter your Password"
                     required
                     className="border-b-2 border-solid p-2 "
+                    onClick={clearErrorMessage}
                   ></input>
                 </div>
               </div>
