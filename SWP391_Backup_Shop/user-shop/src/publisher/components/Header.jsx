@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BsBag } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-import Logo from '../assets/LogoCopy.svg'
+import Logo from '../assets/Logo.png'
 
 const Header = () => {
 
@@ -38,7 +38,7 @@ const Header = () => {
               <Link to={'/shop/publisher/product/add'}>Add Items</Link>
             </div>
             <div className='hover:underline'>Hello {sessionStorage.getItem("account")}</div>
-            <Link to={'/auth'} 
+            <Link to={'/'} 
               className='hover:underline'
               onClick={() => {
                 sessionStorage.removeItem("account")

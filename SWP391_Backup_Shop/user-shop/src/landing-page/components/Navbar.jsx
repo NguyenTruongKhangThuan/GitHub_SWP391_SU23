@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Logo from './../assets/Logo.svg';
+import Logo from './../assets/Logo.png';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -33,8 +33,7 @@ const Navbar = () => {
         <img
           src={Logo}
           alt='Logo'
-          style={{ width: '100px', height: '124.5px' }}
-          className='flex m2-4'
+          className='flex w-[160px]'
         ></img>
         <ul className='hidden md:flex'>
           <li className='p-4'>
