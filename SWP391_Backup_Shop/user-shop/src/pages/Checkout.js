@@ -91,7 +91,7 @@ function Checkout() {
       <Header />
       <section
         className="mt-[80px] fixed top-0 h-full shadow-2xl 
-             bg-gradient-to-tr from-[#B4CDE6] to-[#8758FF] w-full overflow-auto"
+             bg-gradient-to-tr from-[#97DECE] to-[#439A97] w-full overflow-auto"
       >
         <div className="flex flex-col gap-y-2 h-[520px] lg:h-[640px] overflow-y-auto overflow-x-hidden border-b">
           {cart.map((item) => {

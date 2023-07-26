@@ -12,7 +12,7 @@ import 'slick-carousel/slick/slick-theme.css';
 const Hero_1 = () => {
     return (
       <div>
-        <section className="bg-[url('https://wallpapercave.com/wp/wp3748775.jpg')] h-[800px] bg-no-repeat bg-cover bg-center bg-opacity-30 py-24">
+        <section className="bg-[url('https://wallpapercave.com/wp/wp3748775.jpg')] h-[400px] bg-no-repeat bg-cover bg-center bg-opacity-30 py-24">
           <div className='container mx-auto flex justify-around h-full'>
             <div className='flex flex-col items-center justify-center text-white'>
               <div className='font-semibold flex items-center uppercase'>
@@ -35,7 +35,7 @@ const Hero_1 = () => {
 const Hero_2 = () => {
   return(
     <div>
-      <section className="bg-[url('https://c0.wallpaperflare.com/preview/937/656/43/play-board-game-cube-human-don-t-be-angry.jpg')] h-[800px] bg-no-repeat bg-opacity-20 bg-cover bg-center py-24">
+      <section className="bg-[url('https://c0.wallpaperflare.com/preview/937/656/43/play-board-game-cube-human-don-t-be-angry.jpg')] h-[400px] bg-no-repeat bg-opacity-20 bg-cover bg-center py-24">
         <div className='container mx-auto flex justify-start h-full text-white'>
           {/* Text */}
           <div className='flex flex-col justify-center items-start'>
@@ -60,7 +60,7 @@ const Hero_2 = () => {
 const Hero_3 = () => {
   return(
     <div>
-      <section className="bg-[url('https://www.offtheeatenpathblog.com/wp-content/uploads/2020/04/tono-graphy-WtdIwprWnB4-unsplash-1024x683.jpg.webp')] h-[800px] bg-no-repeat bg-cover bg-center py-24">
+      <section className="bg-[url('https://www.offtheeatenpathblog.com/wp-content/uploads/2020/04/tono-graphy-WtdIwprWnB4-unsplash-1024x683.jpg.webp')] h-[400px] bg-no-repeat bg-cover bg-center py-24">
         <div className='container mx-auto flex justify-start h-full text-gray-200'>
           {/* Text */}
           <div className='flex flex-col justify-center items-start'>

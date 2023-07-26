@@ -32,7 +32,7 @@ const CategoryShops = () => {
       <Header searchFunction={searchFunction} />
       <section className={`py-[100px] bg-gradient-to-tr from-[#C0EEF2] via-[#89C4E1] to-[#146C94] `}>
           <div className="container mx-auto mt-8">
-            <h2 className="font-semibold text-[24px] mb-4">
+            <h2 className="font-semibold text-[24px] mb-4 bg-white">
               Categorial Shop -- {categoryNote}
             </h2>
             <div

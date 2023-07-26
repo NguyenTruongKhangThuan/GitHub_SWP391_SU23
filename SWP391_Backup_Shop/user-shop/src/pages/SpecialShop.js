@@ -25,7 +25,7 @@ const SpecialShops = () => {
     <div>
       <Header searchFunction={searchFunction} />
       <section className="py-16 bg-gradient-to-tr from-[#C0EEF2] to-[#146C94]">
-        <div className="container mx-auto mt-8">
+        <div className="container mx-auto mt-16">
           <h2 className="font-semibold text-[24px] mb-4">Special Shop</h2>
           <div
             className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-4 xl: grid-cols-5 gap-[30px]
