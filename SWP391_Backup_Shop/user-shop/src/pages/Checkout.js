@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -18,6 +18,7 @@ import {
   createMoMoPayment,
   createOrderAPI,
   createOrderDetailAPI,
+  deleteOrderAPI,
 } from "../api/orderAPI";
 
 function Checkout() {
@@ -25,10 +26,14 @@ function Checkout() {
   const [orderId, setOrderId] = useState(null);
   const [isOrderMade, setIsOrderMade] = useState(false);
 
-  const VND = new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
+  const VND = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
   });
+
+  useEffect(() => {
+    if (cart !== null) createOrder();
+  }, []);
 
   //Create order payment:
   const createOrder = async () => {
@@ -70,6 +75,14 @@ function Checkout() {
     });
   };
 
+  //Delete Order
+  const deleteOrder = () => {
+    deleteOrderAPI(orderId)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  //MOMO Payment Method
   const momoPayMethod = async (orderId) => {
     var userName = sessionStorage.getItem("account");
     var orderInfo = {
@@ -97,13 +110,11 @@ function Checkout() {
           {cart.map((item) => {
             return <CartItem item={item} key={item.gamePackId} />;
           })}
-
         </div>
         <div className="flex flex-col gap-y-3 py-4 mt-3">
           <div className="flex w-full justify-between items-center">
             <div className="uppercase font-semibold text-[16px]">
-              <span className="mr-2">Total:</span>{" "}
-              {VND.format(parseInt(total))}
+              <span className="mr-2">Total:</span> {VND.format(parseInt(total))}
             </div>
             <div
               onClick={clearCart}
@@ -116,38 +127,24 @@ function Checkout() {
             <Link
               to={"/shop/category"}
               className="bg-gray-700 flex p-[18px] justify-center items-center text-white w-[300px] font-medium rounded-md"
+              onClick={deleteOrder}
             >
               Continue Shopping
             </Link>
 
-            {!isOrderMade && (
-              <div
-                to={"/shop/category"}
-                className="bg-gray-700 flex p-[18px] justify-center items-center text-white w-[300px] font-medium rounded-md cursor-pointer"
+            <Link className="bg-[#D82D8B] flex justify-center items-center text-white w-[300px] font-medium rounded-md">
+              <button
+                className="flex items-center justify-center p-3 "
                 onClick={() => {
-                  createOrder();
-                  setIsOrderMade(true);
+                  momoPayMethod(orderId);
                 }}
               >
-                Make Order
-              </div>
-            )}
-
-            {isOrderMade && (
-              <Link className="bg-[#D82D8B] flex justify-center items-center text-white w-[300px] font-medium rounded-md">
-                <button
-                  className="flex items-center justify-center p-3 "
-                  onClick={() => {
-                    momoPayMethod(orderId);
-                  }}
-                >
-                  <img src={Momo} alt="" className="w-[40px] " />
-                  <p className="flex items-center text-center mx-auto">
-                    Pay with Momo
-                  </p>
-                </button>
-              </Link>
-            )}
+                <img src={Momo} alt="" className="w-[40px] " />
+                <p className="flex items-center text-center mx-auto">
+                  Pay with Momo
+                </p>
+              </button>
+            </Link>
           </div>
         </div>
       </section>

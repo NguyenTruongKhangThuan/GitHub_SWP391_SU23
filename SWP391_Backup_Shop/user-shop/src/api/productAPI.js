@@ -7,6 +7,7 @@ const END_POINT = {
   COMPONENTS: "api/components",
   GAMETAG: "api/gametags",
   TAGINPACK: "api/gamepacks/tags",
+  BESTSELLER: "api/gamepacks/bestsellers",
 };
 
 //BoardGame API
@@ -47,4 +48,9 @@ export const addGameTagIntoGamePack = (gamePackId, tags) => {
 };
 export const getGameTagOfGamPack = (gamePackId) => {
   return axiosClient.get(`${END_POINT.TAGINPACK}?gamePackId=${gamePackId}`);
+};
+
+//Best Sellers
+export const getBestSellerAPI = () => {
+  return axiosClient.get(`${END_POINT.BESTSELLER}`);
 };

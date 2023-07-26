@@ -8,6 +8,8 @@ import Hero from "../components/Hero";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+import { getBestSellerAPI } from "../api/productAPI";
+
 const Home = () => {
   const { products } = useContext(ProductContext);
 
@@ -24,7 +26,7 @@ const Home = () => {
             {products.map((product) => {
               return (
                 <div>
-                  <Product product={product} key={product.gamePackId}/>
+                  <Product product={product} key={product.gamePackId} />
                 </div>
               );
             })}
