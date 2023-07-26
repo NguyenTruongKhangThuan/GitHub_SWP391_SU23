@@ -133,7 +133,7 @@ namespace BoardGameShopAPI.Services.UserService
         {
             try
             {
-                return await _context.Users.OrderBy(u => u.UserId).ToListAsync();
+                return await _context.Users.Where(u => u.RoleId == "RO02").OrderBy(u => u.UserId).ToListAsync();
             }
             catch(Exception ex)
             {

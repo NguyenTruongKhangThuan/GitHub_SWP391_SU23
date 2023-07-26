@@ -24,6 +24,8 @@ namespace BoardGameShopAPI.Services.PaymentService
 
         Task<List<GamePack>> GetBestSellerOfPub(string pubId);
 
+        Task<List<GamePack>> GetBestSellerForShopPage();
+
         Task<List<IncomeStatistc>> GetSoldNumOfPubProduct(string pubId);
     }
 }

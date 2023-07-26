@@ -106,7 +106,7 @@ namespace BoardGameShopAPI.Services.GamePackService
         {
             try
             {
-                return await _context.GamePacks.Where(gp => gp.AvailableAmount >= 0).OrderBy(gp => gp.GamePackId).ToListAsync();
+                return await _context.GamePacks.Where(gp => gp.AvailableAmount >= 0).OrderBy(gp => gp.BoardGameId).ToListAsync();
             }
             catch (Exception)
             {

@@ -36,6 +36,10 @@ namespace BoardGameShopAPI.Controllers
                 }
                 else
                 {
+                    if(owner.OwnerId == null)
+                    {
+                        return BadRequest("Not have permission");
+                    }
                     string authenToken = await _ownerService.CreateOwnerToken(owner);
                     return Ok(authenToken);
                 }

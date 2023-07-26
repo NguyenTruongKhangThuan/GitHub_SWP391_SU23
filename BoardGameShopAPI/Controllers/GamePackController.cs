@@ -2,6 +2,7 @@
 using BoardGameShopAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BoardGameShopAPI.Services.TagInPackService;
+using BoardGameShopAPI.Services.PaymentService;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,10 +14,13 @@ namespace BoardGameShopAPI.Controllers
     {
         private readonly IGamePackService _gamePackService;
         private readonly ITagInPackService _tagInPackService;
-        public GamePackController(IGamePackService gamePackService, ITagInPackService tagInPackService)
+        private readonly IPaymentService _paymentService;
+        public GamePackController(IGamePackService gamePackService, ITagInPackService tagInPackService,
+            IPaymentService paymentService)
         {
             _gamePackService = gamePackService;
             _tagInPackService = tagInPackService;
+            _paymentService = paymentService;
         }
 
         [HttpGet]
@@ -34,6 +38,13 @@ namespace BoardGameShopAPI.Controllers
         public async Task<IActionResult> GetGamePackById(string id)
         {
             return Ok(await _gamePackService.GetGamePack(id));
+        }
+
+        [HttpGet("bestsellers")]
+        public async Task<IActionResult> GetBestSeller()
+        {
+            List<GamePack> bestSellers = await _paymentService.GetBestSellerForShopPage();
+            return Ok(bestSellers);
         }
 
         [HttpGet("searchmethods")]

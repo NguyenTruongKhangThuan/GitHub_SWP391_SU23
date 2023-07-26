@@ -285,5 +285,32 @@ namespace BoardGameShopAPI.Services.PaymentService
 
             return incomeStatistcs;
         }
+
+        public async Task<List<GamePack>> GetBestSellerForShopPage()
+        {
+            var soldGamePackList = _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
+                (p, odt) => new
+                {
+                    PaymentId = p.PaymentId,
+                    GamePackId = odt.GamePackId,
+                    Amount = odt.Amount,
+                })
+                .GroupBy(l => l.GamePackId)
+                .Select(l => new
+                {
+                    GamePackId = l.Key,
+                    SoldNumber = l.Sum(i => i.Amount),
+                })
+                .OrderByDescending(l => l.SoldNumber)
+                .Take(4).ToList();
+
+            List<GamePack> gamePacks = new List<GamePack>();
+            foreach (var pack in soldGamePackList)
+            {
+                gamePacks.Add(await _gamePackService.GetGamePack(pack.GamePackId));
+            }
+
+            return gamePacks;
+        }
     }
 }

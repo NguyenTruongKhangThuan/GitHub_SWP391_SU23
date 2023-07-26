@@ -64,6 +64,12 @@ namespace BoardGameShopAPI.Services.OwnerService
             {
                 Owner owner = await _context.Owners.Where(ow => ow.OwnerName == ow.OwnerName
                                 && ow.Password == password).FirstOrDefaultAsync();
+
+                if ((bool)owner.Status == false)
+                {
+                    return new Owner();
+                }
+
                 return owner;
             }
             catch(Exception ex)
