@@ -3,18 +3,32 @@ import Header from "../components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProductContext } from "../../contexts/ProductContext";
 
-import { getBoardGameAPI, getGameTagsAPI } from "../../api/productAPI";
-import { createGamePackAPI, updateGamePackAPI } from "../../api/publisherAPI";
+import {
+  getBoardGameAPI,
+  getGameTagsAPI,
+  getGameTagOfGamPack,
+} from "../../api/productAPI";
+import { updateGamePackAPI } from "../../api/publisherAPI";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { useEffect } from "react";
+
+import Select from "react-select";
 
 //import firebase
 import storage from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const StepOneForm = (props) => {
-  const { getPackData, boardGames, gameTags, packData } = props;
+  const {
+    getPackData,
+    boardGames,
+    gameTags,
+    packData,
+    handelTagChance,
+    selectedTag,
+    defaultOpt,
+  } = props;
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -77,11 +91,17 @@ const StepOneForm = (props) => {
         {/* game tag */}
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Game Package Other Tags</label>
-          <select>
-            {gameTags.map((item) => (
-              <option>{item.gameTagName}</option>
-            ))}
-          </select>
+          {gameTags && (
+            <Select
+              options={gameTags}
+              isSearchable={true}
+              isMulti={true}
+              onChange={handelTagChance}
+              defaultValue={
+                selectedTag === undefined ? defaultOpt : selectedTag
+              }
+            />
+          )}
         </div>
         <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Game Package Quantity</label>
@@ -344,20 +364,39 @@ const UpdatePage = () => {
   };
 
   const [boardGames, setBoardGames] = useState([]);
-  const [gameTags, setGameTags] = useState([]);
+  const [options, setOption] = useState([]);
+  const [defaultOpts, setDefaultOpts] = useState([]);
 
   useEffect(() => {
     loadDropDownList();
   }, []);
 
   const loadDropDownList = () => {
+    console.log(packData);
     getBoardGameAPI()
       .then((res) => setBoardGames(res))
       .catch((err) => console.log(err));
 
     getGameTagsAPI()
-      .then((res) => setGameTags(res))
+      .then((res) => {
+        res.map((tag, i) => {
+          options[i] = { value: tag.gameTagId, label: tag.gameTagName };
+        });
+      })
       .catch((err) => console.log(err));
+
+    getGameTagOfGamPack(packData.gamePackId)
+      .then((res) => {
+        res.map((tag, i) => {
+          defaultOpts[i] = { value: tag.gameTagId, label: tag.gameTagName };
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const [selectedTag, setSelectedTag] = useState();
+  const handelTagChance = (tags) => {
+    setSelectedTag(tags);
   };
 
   return (
@@ -370,8 +409,11 @@ const UpdatePage = () => {
               <StepOneForm
                 getPackData={getPackData}
                 boardGames={boardGames}
-                gameTags={gameTags}
+                gameTags={options}
                 packData={packData}
+                handelTagChance={handelTagChance}
+                selectedTag={selectedTag}
+                defaultOpt={defaultOpts}
               />
             )}
             {currentStep === 2 && (

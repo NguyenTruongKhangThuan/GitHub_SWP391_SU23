@@ -21,10 +21,6 @@ export const getAvailableGamePackAPI = () => {
   return axiosClient.get(`${END_POINT.GAMEPACK}`);
 };
 
-export const getGamePacksBestSellerAPI = () => {
-  return axiosClient.get(`${END_POINT.GAMEPACK}/bestseller`)
-}
-
 export const searchGamePackAPI = (searchValue, boardGameName) => {
   return axiosClient.get(
     `${END_POINT.SEARCH}?searchValue=${searchValue}&boardGameName=${boardGameName}`

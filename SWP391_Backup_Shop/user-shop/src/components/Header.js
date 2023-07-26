@@ -9,7 +9,7 @@ import { getBoardGameAPI } from "../api/productAPI";
 const Header = (props) => {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   const { itemAmount } = useContext(CartContext);
-  const { searchFunction } = props;
+  const { searchFunction, getBoardGame } = props;
 
   //Header State
   const [isActive, setIsActive] = useState(false);
@@ -34,7 +34,10 @@ const Header = (props) => {
 
   useEffect(() => {
     getBoardGameAPI()
-      .then((res) => setCategories(res))
+      .then((res) => {
+        setCategories(res);
+        getBoardGame(res);
+      })
       .catch((err) => console.log(err.response));
   }, []);
 
@@ -75,7 +78,7 @@ const Header = (props) => {
                 }}
               >
                 <option>All</option>
-                {categories &&  
+                {categories &&
                   categories.map((item) => <option>{item.name}</option>)}
               </select>
               <input
@@ -108,14 +111,13 @@ const Header = (props) => {
             className="hover:underline cursor-pointer"
             onClick={toggleDropdown}
           >
-            {
-              sessionStorage.getItem("account") !== null ? (
-
-                <p>Hello {sessionStorage.getItem("account")}</p>
-              ) : (
-                <Link to={"/auth"}><p>Log In</p></Link>
-              )
-            }
+            {sessionStorage.getItem("account") !== null ? (
+              <p>Hello {sessionStorage.getItem("account")}</p>
+            ) : (
+              <Link to={"/auth"}>
+                <p>Log In</p>
+              </Link>
+            )}
           </div>
           {dropdown && (
             <div className="dropdown absolute right-[230px] top-[56px] mt-2 h-[100px] bg-white rounded-lg shadow-lg">
@@ -133,17 +135,18 @@ const Header = (props) => {
               </div>
             </div>
           )}
-          { sessionStorage.getItem("account") !== null &&
+          {sessionStorage.getItem("account") !== null && (
             <Link
-            to={"/"}
-            className="hover:underline"
-            onClick={() => {
-              sessionStorage.removeItem("account")
-              sessionStorage.removeItem("accountToken")
-            }}
-          >
-            <p>Logout</p>
-          </Link>}
+              to={"/"}
+              className="hover:underline"
+              onClick={() => {
+                sessionStorage.removeItem("account");
+                sessionStorage.removeItem("accountToken");
+              }}
+            >
+              <p>Logout</p>
+            </Link>
+          )}
           {/* Cart Quantity */}
           <div
             onClick={() => setIsOpen(!isOpen)}
