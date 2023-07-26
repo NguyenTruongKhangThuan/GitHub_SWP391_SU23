@@ -189,13 +189,19 @@ namespace BoardGameShopAPI.Services.PaymentService
 
         public async Task<List<GamePack>> GetBestSeller()
         {
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+
             var soldGamePackList = _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
                 (p, odt) => new
                 {
                     PaymentId = p.PaymentId,
                     GamePackId = odt.GamePackId,
                     Amount = odt.Amount,
+                    PaymentDate = p.PaymentDate
                 })
+                .Where(l => l.PaymentDate.Value.Month == currentMonth
+                && l.PaymentDate.Value.Year == currentYear)
                 .GroupBy(l => l.GamePackId)
                 .Select(l => new
                 {
@@ -216,13 +222,19 @@ namespace BoardGameShopAPI.Services.PaymentService
 
         public async Task<List<GamePack>> GetBestSellerOfPub(string pubId)
         {
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+
             var soldGamePackList = _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
                 (p, odt) => new
                 {
                     PaymentId = p.PaymentId,
                     GamePackId = odt.GamePackId,
                     Amount = odt.Amount,
+                    PaymentDate = p.PaymentDate
                 })
+                .Where(l => l.PaymentDate.Value.Month == currentMonth 
+                && l.PaymentDate.Value.Year == currentYear)
                 .GroupBy(l => l.GamePackId)
                 .Select(l => new
                 {
@@ -288,13 +300,19 @@ namespace BoardGameShopAPI.Services.PaymentService
 
         public async Task<List<GamePack>> GetBestSellerForShopPage()
         {
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+
             var soldGamePackList = _context.Payments.Join(_context.OrderDetails, p => p.OrderId, odt => odt.OrderId,
                 (p, odt) => new
                 {
                     PaymentId = p.PaymentId,
                     GamePackId = odt.GamePackId,
                     Amount = odt.Amount,
+                    PaymentDate = p.PaymentDate
                 })
+                .Where(l => l.PaymentDate.Value.Month == currentMonth
+                && l.PaymentDate.Value.Year == currentYear)
                 .GroupBy(l => l.GamePackId)
                 .Select(l => new
                 {
