@@ -99,7 +99,7 @@ const Header = (props) => {
             <Link to={"/shop"}>Home</Link>
           </div>
           <div className="rounded-full w-[100px] px-3 py-2 text-center hover:underline">
-            <Link to={"/shop/category"}>Browse</Link>
+            <Link to={"/shop/category"}>Shop</Link>
           </div>
           <div className="rounded-full w-[100px] px-3 py-2 text-center hover:underline">
             <Link to={"/shop/special"}>Special</Link>
@@ -113,7 +113,7 @@ const Header = (props) => {
 
                 <p>Hello {sessionStorage.getItem("account")}</p>
               ) : (
-                <Link to={"/auth"}><p>Log In/Sign Up</p></Link>
+                <Link to={"/auth"}><p>Log In</p></Link>
               )
             }
           </div>

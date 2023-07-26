@@ -2,6 +2,7 @@ import axiosClient from "../api/axiosClient";
 
 const END_POINT = {
   GAMEPACK: "api/gamepacks",
+
   BOARDGAME: "api/boardgames",
   SEARCH: "api/gamepacks/searchmethods",
   COMPONENTS: "api/components",
@@ -19,6 +20,10 @@ export const getBoardGameAPI = () => {
 export const getAvailableGamePackAPI = () => {
   return axiosClient.get(`${END_POINT.GAMEPACK}`);
 };
+
+export const getGamePacksBestSellerAPI = () => {
+  return axiosClient.get(`${END_POINT.GAMEPACK}/bestseller`)
+}
 
 export const searchGamePackAPI = (searchValue, boardGameName) => {
   return axiosClient.get(
