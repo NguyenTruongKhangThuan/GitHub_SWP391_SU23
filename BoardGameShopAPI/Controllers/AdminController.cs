@@ -97,7 +97,7 @@ namespace BoardGameShopAPI.Controllers
         [HttpGet("gamepacks")]
         public async Task<IActionResult> GetAllGamePack()
         {
-            List<GamePack> gamePacks = await _gamePackService.GetAllGamePack();
+            List<GamePack> gamePacks = await _gamePackService.GetAvailableGamePack();
             if(gamePacks == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);

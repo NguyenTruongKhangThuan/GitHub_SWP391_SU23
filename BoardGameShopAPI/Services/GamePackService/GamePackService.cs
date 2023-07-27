@@ -199,7 +199,7 @@ namespace BoardGameShopAPI.Services.GamePackService
         {
             try
             {
-                return (int)await _context.GamePacks.Where(gp => gp.AvailableAmount >= 0).SumAsync(gp => gp.AvailableAmount);
+                return (int)await _context.GamePacks.Where(gp => gp.AvailableAmount >= 0).CountAsync();
             }
             catch (Exception ex)
             {
