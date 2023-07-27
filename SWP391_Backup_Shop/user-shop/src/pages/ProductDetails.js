@@ -11,6 +11,8 @@ import Footer from "../components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { getGameTagOfGamPack } from "../api/productAPI";
+
 const ProductDetails = () => {
   //Get the Product ID from the URL
   const { id } = useParams();
@@ -36,10 +38,12 @@ const ProductDetails = () => {
     });
   };
 
-  const VND = new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
+  const VND = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
   });
+
+  const [tags, setTags] = useState([]);
 
   //Case: Product Not Found
   if (!product) {
@@ -48,6 +52,12 @@ const ProductDetails = () => {
         Loading...
       </section>
     );
+  } else {
+    getGameTagOfGamPack(product.gamePackId)
+      .then((res) => {
+        setTags(res);
+      })
+      .catch((err) => console.log("Error Occur"));
   }
 
   return (
@@ -57,11 +67,7 @@ const ProductDetails = () => {
         <div className="container mx-auto lg:mx-0">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex flex-1 justify-center items-center mb-8 lg:mb-10">
-              <img
-                src={product.image}
-                alt=""
-                className="w-[320px]"
-              />
+              <img src={product.image} alt="" className="w-[320px]" />
             </div>
             <div className="flex-1 text-center lg:text-left">
               <div className="flex justify-between">
@@ -104,7 +110,12 @@ const ProductDetails = () => {
                   </div>
                   <div className="flex justify-between w-[360px]">
                     <p className="font-semibold">Tags:</p>
-                    <p>{product.gameTag}</p>
+                    {tags &&
+                      tags.map((tag) => (
+                        <p className="border rounded bg-[#d2d2d2] p-2">
+                          {tag.gameTagName}
+                        </p>
+                      ))}
                   </div>
                 </div>
                 <div className="">
@@ -141,7 +152,7 @@ const ProductDetails = () => {
                         ? product.description
                         : `${product.description.slice(0, 100)}`}
                     </p>
-                    {(product.description.length > 120) && (
+                    {product.description.length > 120 && (
                       <button
                         className="text-blue-500 mt-2"
                         onClick={toggleRuleVisibility}
@@ -152,7 +163,6 @@ const ProductDetails = () => {
                   </div>
                 )}
               </div>
-              
             </div>
             <ToastContainer className={"mt-14 bg-no-repeat"} />
           </div>

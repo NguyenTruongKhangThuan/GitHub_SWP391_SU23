@@ -70,7 +70,7 @@ function Checkout() {
       createOrderDetailAPI(formData)
         .then((res) => {})
         .catch((err) => {
-          window.alert(err.response.data);
+          console.log(err);
         });
     });
   };

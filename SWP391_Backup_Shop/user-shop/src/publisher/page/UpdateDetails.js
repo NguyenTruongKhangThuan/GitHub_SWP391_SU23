@@ -14,6 +14,7 @@ import PizZip from "pizzip";
 import { useEffect } from "react";
 
 import Select from "react-select";
+import defaultImage from "../assets/defaultImg.jpg";
 
 //import firebase
 import storage from "../../firebase";
@@ -210,31 +211,20 @@ const StepTwoForm = (props) => {
 };
 
 const FinalStepForm = (props) => {
-  const { getPackData, getPackImage } = props;
+  const { getPackData, getPackImage, packData } = props;
+  const [image, setImage] = useState(packData.image);
 
   const getImageData = (e) => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
-      getPackImage(file);
-    }
-  };
-
-  const getRuleContent = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let file = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (x) => {
-        const content = x.target.result;
-        var doc = new Docxtemplater(new PizZip(content), {
-          delimiters: {
-            start: "12op1j2po1j2poj1po",
-            end: "op21j4po21jp4oj1op24j",
-          },
-        });
-        var text = doc.getFullText();
-        getPackData("gameRule", text);
+        setImage(x.target.result);
       };
-      reader.readAsBinaryString(file);
+      reader.readAsDataURL(file);
+      getPackImage(file);
+    } else {
+      setImage(defaultImage);
     }
   };
 
@@ -243,18 +233,8 @@ const FinalStepForm = (props) => {
       <h2 className="font-semibold mb-8 text-[32px]">Step 3: Imports</h2>
       <form className="h-fit px-[20px] gap-[10px]">
         <div className="flex flex-col gap-y-3">
-          <label className="font-bold mb-1">Game Package Rules</label>
-          <input
-            type="file"
-            accept={".docx" || ".doc"}
-            id="gameRule"
-            placeholder="Enter Game Package Price"
-            className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
-            onChange={getRuleContent}
-          />
-        </div>
-        <div className="flex flex-col gap-y-3">
           <label className="font-bold mb-1">Game Package Image</label>
+          <img className="w-[360px] h-[300px]" src={image} alt="" />
           <input
             type="file"
             accept={"image/*"}
@@ -262,16 +242,6 @@ const FinalStepForm = (props) => {
             placeholder="Enter Game Package Price"
             className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
             onChange={getImageData}
-          />
-        </div>
-        <div className="flex flex-col gap-y-3">
-          <label className="font-bold mb-1">Game Package Components</label>
-          <input
-            type="file"
-            accept={".xlsx" || ".xls"}
-            id="update-gpdescription"
-            placeholder="Enter Game Package Price"
-            className="border-b-solid bg-[#ffffff] p-1 border-b-[1px]"
           />
         </div>
       </form>
