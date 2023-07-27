@@ -14,8 +14,8 @@ const Hero_1 = () => {
       <div>
         <section className="bg-[url('https://wallpapercave.com/wp/wp3748775.jpg')] h-[400px] bg-no-repeat bg-cover bg-center bg-opacity-30 py-24">
           <div className='container mx-auto flex justify-around h-full'>
-            <div className='flex flex-col items-center justify-center text-white'>
-              <div className='font-semibold flex items-center uppercase'>
+            <div className='flex flex-col items-center justify-center text-white mt-14'>
+              <div className='font-semibold flex items-center justify-center uppercase'>
                 Strategical Building
               </div>
               <h1 className='text-[64px] leading-[1.1] text-center font-light mb-4'>
@@ -38,7 +38,7 @@ const Hero_2 = () => {
       <section className="bg-[url('https://c0.wallpaperflare.com/preview/937/656/43/play-board-game-cube-human-don-t-be-angry.jpg')] h-[400px] bg-no-repeat bg-opacity-20 bg-cover bg-center py-24">
         <div className='container mx-auto flex justify-start h-full text-white'>
           {/* Text */}
-          <div className='flex flex-col justify-center items-start'>
+          <div className='flex flex-col justify-center items-start mt-14'>
             {/* Pre Title */}
             <div className='font-semibold flex items-center uppercase'>
               Roll Your Luck
@@ -63,7 +63,7 @@ const Hero_3 = () => {
       <section className="bg-[url('https://www.offtheeatenpathblog.com/wp-content/uploads/2020/04/tono-graphy-WtdIwprWnB4-unsplash-1024x683.jpg.webp')] h-[400px] bg-no-repeat bg-cover bg-center py-24">
         <div className='container mx-auto flex justify-start h-full text-gray-200'>
           {/* Text */}
-          <div className='flex flex-col justify-center items-start'>
+          <div className='flex flex-col justify-center items-start mt-14'>
             {/* Pre Title */}
             <div className='font-semibold flex items-center uppercase'>
               Chess

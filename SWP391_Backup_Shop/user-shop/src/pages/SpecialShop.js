@@ -31,9 +31,11 @@ const SpecialShops = () => {
       if (products[i].boardGameId === boardGame.boardGameId)
         if (products[i].price >= 1000000)
           return (
-            <h2 className="font-semibold text-[24px] mb-4 bg-white w-[400px]">
-              {boardGame.name}
-            </h2>
+            <div className="font-semibold text-[24px] mb-4 w-full">
+              <h2 className="bg-gray-200 rounded-md bg-opacity-20 pl-2 italic">
+                {boardGame.name} Section
+              </h2>
+            </div>
           );
     }
   };

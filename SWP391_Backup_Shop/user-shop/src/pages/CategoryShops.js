@@ -41,9 +41,11 @@ const CategoryShops = () => {
     for (var i = 0; i < products.length; i++) {
       if (products[i].boardGameId === boardGame.boardGameId)
         return (
-          <h2 className="font-semibold text-[24px] mb-4 bg-white w-[400px]">
-            {boardGame.name}
-          </h2>
+          <div className="font-semibold text-[24px] mb-4 w-full">
+            <h2 className="bg-gray-200 rounded-md bg-opacity-20 pl-2 italic">
+              {boardGame.name} Section
+            </h2>
+          </div>
         );
     }
   };
@@ -55,16 +57,13 @@ const CategoryShops = () => {
         className={`py-[100px] bg-gradient-to-tr from-[#C0EEF2] via-[#89C4E1] to-[#146C94] `}
       >
         <div className="container mx-auto mt-8">
-          <h2 className="font-semibold text-[24px] mb-4 bg-white">
-            Categorial Shop -- {categoryNote}
-          </h2>
           {searchedProduct === null ? (
             boardGames.map((boardGame) => (
               <>
                 <>{getCategoryHeader(boardGame)}</>
                 <div
                   className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-4 xl: grid-cols-5 gap-[30px]
-              max-w-sm mx-auto md:max-w-none md:mx-0"
+              max-w-sm mx-auto md:max-w-none md:mx-0 mb-8"
                 >
                   {products.map((product) => {
                     if (product.boardGameId === boardGame.boardGameId)
