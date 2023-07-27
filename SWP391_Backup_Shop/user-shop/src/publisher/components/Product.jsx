@@ -6,13 +6,16 @@ import { BsPlus, BsEyeFill, BsTrash } from "react-icons/bs";
 
 import { deleteGamePackAPI } from "../../api/publisherAPI";
 
-const Product = ({ product }) => {
+const Product = ({ product, setActionTimer }) => {
   const { gamePackId, image, category, gamePackName, price } = product;
 
   const deleteHandler = (e) => {
     e.preventDefault();
     deleteGamePackAPI(sessionStorage.getItem("accountToken"), gamePackId)
-      .then((res) => window.alert(res))
+      .then((res) => {
+        window.alert(res);
+        setActionTimer();
+      })
       .catch((err) => console.log("Error Occur"));
   };
 

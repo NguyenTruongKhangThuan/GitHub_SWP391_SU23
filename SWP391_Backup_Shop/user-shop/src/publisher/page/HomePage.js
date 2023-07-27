@@ -20,6 +20,9 @@ const HomePage = () => {
   const [publisherId, setPublisherId] = useSessionStorageState("publisherId");
   const [products, setProducts] = useState([]);
 
+  //Timer value
+  const [timer, setTimer] = useState(1000);
+
   const load = () => {
     readPublisherInfoAPI(sessionStorage.getItem("accountToken")).then((res) => {
       sessionStorage.setItem("publisherId", res);
@@ -32,13 +35,20 @@ const HomePage = () => {
 
   //Need to change the delay setting
   const loadCreatedGamePack = async () => {
-    await delay(5000);
+    await delay(timer);
     getCreatedGamePackAPI(
       sessionStorage.getItem("accountToken"),
       sessionStorage.getItem("publisherId")
     )
-      .then((res) => setProducts(res))
+      .then((res) => {
+        setProducts(res);
+        setTimer(20000);
+      })
       .catch((err) => console.log(err));
+  };
+
+  const setActionTimer = () => {
+    setTimer(1000);
   };
 
   return (
@@ -62,7 +72,13 @@ const HomePage = () => {
             >
               {products.length > 0 &&
                 products.map((product) => {
-                  return <Product product={product} key={product.gamePackId} />;
+                  return (
+                    <Product
+                      product={product}
+                      key={product.gamePackId}
+                      setActionTimer={setActionTimer}
+                    />
+                  );
                 })}
             </div>
           </div>
