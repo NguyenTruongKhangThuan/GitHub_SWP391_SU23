@@ -18,8 +18,11 @@ using BoardGameShopAPI.Services.MomoService;
 using ProGCoder_MomoAPI.Models.Momo;
 using BoardGameShopAPI.Services.GameTagService;
 using BoardGameShopAPI.Services.TagInPackService;
+using Azure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 // Add services to the container.
 
@@ -68,6 +71,8 @@ builder.Services.AddDbContext<DbA9bc42BoardgameshopdbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BoardGameShopDB"));
 });
 
+builder.Services.AddCors();
+
 builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
 
 builder.Services.AddScoped<IBoardGameService, BoardGameService>();
@@ -85,6 +90,7 @@ builder.Services.AddScoped<ITagInPackService, TagInPackService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
@@ -103,7 +109,7 @@ app.UseCors(builder =>
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader();
-});
+}); 
 
 app.UseAuthorization();
 app.UseAuthentication();

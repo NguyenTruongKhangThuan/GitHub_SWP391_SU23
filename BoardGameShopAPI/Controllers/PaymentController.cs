@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using BoardGameShopAPI.Services.MomoService;
 using ProGCoder_MomoAPI.Models.Order;
 using BoardGameShopAPI.Services.UserService;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
