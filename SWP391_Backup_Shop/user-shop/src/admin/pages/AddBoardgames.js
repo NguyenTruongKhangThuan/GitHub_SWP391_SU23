@@ -93,7 +93,6 @@ const AddBoardgames = () => {
 
   return (
     <div className="p-[40px]">
-      <div className="flex justify-end"><AdminAccount/></div>
       <div className="flex justify-center">
         <form className="w-[840px]">
           <div className="grid grid-cols-2 mt-4">

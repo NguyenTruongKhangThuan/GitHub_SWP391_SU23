@@ -27,15 +27,16 @@ const AdminAccount = () => {
         <div className="absolute top-20 right-8 w-[200px] bg-white rounded shadow-md z-10">
           {/* Dropdown content */}
           <ul className="py-2">
+            <Link to={"/"} 
+              onClick={() => {
+                sessionStorage.removeItem("account")
+                sessionStorage.removeItem("accountToken")
+              }}
+            >
             <li className="px-4 py-2 hover:bg-gray-300 cursor-pointer text-[16px] text-red-400">
-              <Link to={"/auth"} 
-                onClick={() => {
-                  sessionStorage.removeItem("account")
-                  sessionStorage.removeItem("accountToken")
-                }}
-              >
-                Logout</Link>
+                Logout
             </li>
+            </Link>
           </ul>
         </div>
       )}

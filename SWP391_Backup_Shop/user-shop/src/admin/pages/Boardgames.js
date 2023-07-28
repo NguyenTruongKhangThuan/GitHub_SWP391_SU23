@@ -42,7 +42,7 @@ const BoardgameInformation = () => {
   };
 
   //Step 1: Declare
-  const itemsPerPage = 3; // Adjust this value as per your preference
+  const itemsPerPage = 5; // Adjust this value as per your preference
   const [currentPage, setCurrentPage] = useState(1);
 
   //Step 2: Pagination Function
@@ -59,6 +59,23 @@ const BoardgameInformation = () => {
 
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
+    };
+
+    const [deleteBoardGameId, setDeleteBoardGameId] = useState();
+    const deleteBoardGame = (e) => {
+      e.preventDefault();
+
+      if (deleteBoardGameId) {
+        deleteBoardgameAPI(
+          sessionStorage.getItem("accountToken"),
+          deleteBoardGameId
+        )
+          .then((res) => {
+            window.alert(res);
+            refreshBoardgamesList();
+          })
+          .catch((err) => console.log(err));
+      }
     };
 
     return (
@@ -106,22 +123,7 @@ const BoardgameInformation = () => {
     );
   };
 
-  const [deleteBoardGameId, setDeleteBoardGameId] = useState();
-  const deleteBoardGame = (e) => {
-    e.preventDefault();
-
-    if (deleteBoardGameId) {
-      deleteBoardgameAPI(
-        sessionStorage.getItem("accountToken"),
-        deleteBoardGameId
-      )
-        .then((res) => {
-          window.alert(res);
-          refreshBoardgamesList();
-        })
-        .catch((err) => console.log(err));
-    }
-  };
+  
 
   return (
     <div className="p-[40px]">
@@ -222,12 +224,12 @@ const BoardgameInformation = () => {
 
         {/* Image Modal */}
         {modalVisible && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-            <div className="max-w-[90%] max-h-[90%]">
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 overflow-auto">
+            <div className="max-w-[50%] max-h-[50%]">
               <img
                 src={clickedImage}
                 alt="Enlarged"
-                className="w-full h-auto"
+                className="w-[50%] h-auto mx-auto"
               />
               <button
                 className="absolute top-10 right-0 py-2 px-4 mr-4 rounded-md text-white bg-red-500 hover:bg-red-600"

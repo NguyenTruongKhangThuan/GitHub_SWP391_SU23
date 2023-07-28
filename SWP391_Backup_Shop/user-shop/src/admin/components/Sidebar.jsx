@@ -18,7 +18,7 @@ const Sidebar = () => {
   return (
     <div className={`${ !expand ? 'w-[240px]': 'w-[140px]'} bg-[#176B87] text-white duration-300`}>
       <div className="flex flex-col items-center gap-x-4 p-4">
-        <img src={Logo} alt="Logo" className="w-[100px]" />
+        <img src={Logo} alt="Logo" className="w-[200px]" />
         <h2 className={`text-[18px] text-center font-medium`}>Boardgame Shop</h2>
       </div>
       <div className="flex flex-col justify-center">

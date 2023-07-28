@@ -9,6 +9,11 @@ import { deleteGamePackAPI } from "../../api/publisherAPI";
 const Product = ({ product, setActionTimer }) => {
   const { gamePackId, image, category, gamePackName, price } = product;
 
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
   const deleteHandler = (e) => {
     e.preventDefault();
     deleteGamePackAPI(sessionStorage.getItem("accountToken"), gamePackId)
@@ -52,7 +57,7 @@ const Product = ({ product, setActionTimer }) => {
         <Link to={`/shop/publisher/product/${gamePackId}`}>
           <h2 className="font-semibold mb-1 ">{gamePackName}</h2>
         </Link>
-        <div className="font-semibold">{price}</div>
+        <div className="font-semibold">{VND.format(price)}</div>
       </div>
     </div>
   );

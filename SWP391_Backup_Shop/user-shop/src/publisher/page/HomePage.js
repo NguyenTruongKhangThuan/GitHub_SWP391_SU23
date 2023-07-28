@@ -23,6 +23,11 @@ const HomePage = () => {
   //Timer value
   const [timer, setTimer] = useState(1000);
 
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
   const load = () => {
     readPublisherInfoAPI(sessionStorage.getItem("accountToken")).then((res) => {
       sessionStorage.setItem("publisherId", res);

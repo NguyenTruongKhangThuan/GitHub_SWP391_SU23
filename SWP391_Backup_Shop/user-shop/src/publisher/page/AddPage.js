@@ -28,6 +28,8 @@ const StepOneForm = (props) => {
     handelTagChance,
     selectedTag,
   } = props;
+
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h2 className="font-semibold mb-8 text-[32px]">
@@ -67,7 +69,7 @@ const StepOneForm = (props) => {
             onChange={(e) => getPackData(e.currentTarget.id, e.target.value)}
           />
         </div>
-        <div className="flex flex-col gap-y-3">
+        <div className="flex flex-col gap-y-3 py-2">
           <label className="font-bold mb-1">
             Game Package Based Boardgame Tag
           </label>
