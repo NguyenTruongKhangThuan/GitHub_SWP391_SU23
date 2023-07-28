@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import {Link, useNavigate} from "react-router-dom"
-import AdminAccount from '../components/AdminAccount'
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AdminAccount from "../components/AdminAccount";
 import {
   getBoardgamesAPI,
   postBoardgamesAPI,
@@ -23,6 +23,8 @@ const AddBoardgames = () => {
   const [file, setFile] = useState("");
   const [percent, setPercent] = useState(0);
   const [boardgames, setBoardgames] = useState();
+
+  const [image, setImage] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,7 +84,7 @@ const AddBoardgames = () => {
     postBoardgamesAPI(sessionStorage.getItem("accountToken"), formData)
       .then((res) => {
         window.alert(res);
-        navigate("/admin/boardgames")
+        navigate("/admin/boardgames");
       })
       .catch((error) => {
         console.log(error);
@@ -90,10 +92,11 @@ const AddBoardgames = () => {
       });
   };
 
-
   return (
     <div className="p-[40px]">
-      <div className="flex justify-end"><AdminAccount/></div>
+      <div className="flex justify-end">
+        <AdminAccount />
+      </div>
       <div className="flex justify-center">
         <form className="w-[840px]">
           <div className="grid grid-cols-2 mt-4">
@@ -136,9 +139,7 @@ const AddBoardgames = () => {
               </div>
               <div className=" flex justify-end items-center gap-x-6">
                 <button
-                  onClick={
-                    addFormSubmission
-                  }
+                  onClick={addFormSubmission}
                   className="bg-blue-300 hover:bg-blue-600 font-bold items-center mt-4 p-4 w-[120px] rounded-md"
                 >
                   Add
@@ -155,7 +156,7 @@ const AddBoardgames = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddBoardgames
+export default AddBoardgames;

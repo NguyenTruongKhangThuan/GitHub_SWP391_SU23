@@ -61,6 +61,23 @@ const BoardgameInformation = () => {
       setIsOpen(!isOpen);
     };
 
+    const [deleteBoardGameId, setDeleteBoardGameId] = useState();
+    const deleteBoardGame = (e) => {
+      e.preventDefault();
+
+      if (deleteBoardGameId) {
+        deleteBoardgameAPI(
+          sessionStorage.getItem("accountToken"),
+          deleteBoardGameId
+        )
+          .then((res) => {
+            window.alert(res);
+            refreshBoardgamesList();
+          })
+          .catch((err) => console.log(err));
+      }
+    };
+
     return (
       <div className="relative">
         <button
@@ -104,23 +121,6 @@ const BoardgameInformation = () => {
         )}
       </div>
     );
-  };
-
-  const [deleteBoardGameId, setDeleteBoardGameId] = useState();
-  const deleteBoardGame = (e) => {
-    e.preventDefault();
-
-    if (deleteBoardGameId) {
-      deleteBoardgameAPI(
-        sessionStorage.getItem("accountToken"),
-        deleteBoardGameId
-      )
-        .then((res) => {
-          window.alert(res);
-          refreshBoardgamesList();
-        })
-        .catch((err) => console.log(err));
-    }
   };
 
   return (
