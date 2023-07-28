@@ -7,6 +7,8 @@ import {
   putBoardgameAPI,
   deleteBoardgameAPI,
 } from "../../api/adminAPI";
+
+import defaultImage from "../assets/defaultImg.jpg";
 //Import Firebase
 import storage from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -24,7 +26,7 @@ const AddBoardgames = () => {
   const [percent, setPercent] = useState(0);
   const [boardgames, setBoardgames] = useState();
 
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(defaultImage);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,6 +65,19 @@ const AddBoardgames = () => {
           });
         }
       );
+    }
+  };
+
+  const getImageData = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (x) => {
+        setImage(x.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImage(defaultImage);
     }
   };
 
@@ -113,13 +128,17 @@ const AddBoardgames = () => {
               </div>
               <div className="flex flex-col mt-4">
                 <label className="mb-3 font-bold">Boardgame Image</label>
+                <img className="w-[360px] h-[300px]" src={image} alt="" />
                 <input
                   type="file"
                   accept={"image/*"}
                   id="boardgameImageSrc"
                   placeholder="Import Boardgame Image"
                   className="p-2 rounded-md"
-                  onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) => {
+                    setFile(e.target.files[0]);
+                    getImageData(e);
+                  }}
                 />
               </div>
               <div></div>
