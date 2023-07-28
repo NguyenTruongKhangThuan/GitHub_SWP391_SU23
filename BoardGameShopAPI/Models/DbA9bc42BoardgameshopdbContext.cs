@@ -79,7 +79,7 @@ public partial class DbA9bc42BoardgameshopdbContext : DbContext
             entity.Property(e => e.GamePackName).HasMaxLength(150);
             entity.Property(e => e.GameRule).HasColumnType("text");
             entity.Property(e => e.Image).HasColumnType("text");
-            entity.Property(e => e.Material).HasMaxLength(50);
+            entity.Property(e => e.Material).HasColumnType("text");
             entity.Property(e => e.NumberOfPlayer).HasMaxLength(100);
             entity.Property(e => e.GameDuration).HasMaxLength(100);
             entity.Property(e => e.Origin).HasMaxLength(50);
