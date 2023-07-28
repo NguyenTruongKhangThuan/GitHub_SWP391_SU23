@@ -136,23 +136,9 @@ const GamePackages = () => {
                     onClick={() => handleImageClick(gamePack.image)}
                   />
                 </td>
-                {gamePack.description.length > 0 && (
-                  <td className={`border-b-[1px]  border-gray-500 pr-5 p-4`}>
-                    <p>
-                      {showFull
-                        ? gamePack.description
-                        : `${gamePack.description.slice(0, 70)}`}
-                    </p>
-                    {gamePack.description.length > 80 && (
-                      <button
-                        className="text-blue-500 mt-2"
-                        onClick={toggleTextVisibility}
-                      >
-                        {showFull ? "View Less" : "View More"}
-                      </button>
-                    )}
-                  </td>
-                )}
+                <td className={`border-b-[1px]  border-gray-500 pr-5 p-4`}> 
+                  <p>{gamePack.description}</p>
+                </td>
                 <td className={`border-b-[1px]  border-gray-500 pr-5 p-4`}>
                   {VND.format(gamePack.price)}
                 </td>

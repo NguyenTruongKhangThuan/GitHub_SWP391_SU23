@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import {Link, useNavigate} from "react-router-dom"
-import AdminAccount from '../components/AdminAccount'
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AdminAccount from "../components/AdminAccount";
 import {
   getBoardgamesAPI,
   postBoardgamesAPI,
   putBoardgameAPI,
   deleteBoardgameAPI,
 } from "../../api/adminAPI";
+
+import defaultImage from "../assets/defaultImg.jpg";
 //Import Firebase
 import storage from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -23,6 +25,8 @@ const AddBoardgames = () => {
   const [file, setFile] = useState("");
   const [percent, setPercent] = useState(0);
   const [boardgames, setBoardgames] = useState();
+
+  const [image, setImage] = useState(defaultImage);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,6 +68,19 @@ const AddBoardgames = () => {
     }
   };
 
+  const getImageData = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (x) => {
+        setImage(x.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImage(defaultImage);
+    }
+  };
+
   const [boardGameData, setBoardGameData] = useState(initalData);
   const getBoardGameData = (name, value) => {
     setBoardGameData({
@@ -82,14 +99,13 @@ const AddBoardgames = () => {
     postBoardgamesAPI(sessionStorage.getItem("accountToken"), formData)
       .then((res) => {
         window.alert(res);
-        navigate("/admin/boardgames")
+        navigate("/admin/boardgames");
       })
       .catch((error) => {
         console.log(error);
         window.alert("Cannot add boardgame");
       });
   };
-
 
   return (
     <div className="p-[40px]">
@@ -109,13 +125,17 @@ const AddBoardgames = () => {
               </div>
               <div className="flex flex-col mt-4">
                 <label className="mb-3 font-bold">Boardgame Image</label>
+                <img className="w-[360px] h-[300px]" src={image} alt="" />
                 <input
                   type="file"
                   accept={"image/*"}
                   id="boardgameImageSrc"
                   placeholder="Import Boardgame Image"
                   className="p-2 rounded-md"
-                  onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) => {
+                    setFile(e.target.files[0]);
+                    getImageData(e);
+                  }}
                 />
               </div>
               <div></div>
@@ -135,9 +155,7 @@ const AddBoardgames = () => {
               </div>
               <div className=" flex justify-end items-center gap-x-6">
                 <button
-                  onClick={
-                    addFormSubmission
-                  }
+                  onClick={addFormSubmission}
                   className="bg-blue-300 hover:bg-blue-600 font-bold items-center mt-4 p-4 w-[120px] rounded-md"
                 >
                   Add
@@ -154,7 +172,7 @@ const AddBoardgames = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddBoardgames
+export default AddBoardgames;

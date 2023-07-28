@@ -25,6 +25,11 @@ const ViewDetails = () => {
 
   const [tags, setTags] = useState([]);
 
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
   //Case: Product Not Found
   if (!product) {
     return (
@@ -77,7 +82,7 @@ const ViewDetails = () => {
                 </div>
               </div>
               <div className="text-xl text-red-500 font-medium mb-6">
-                {product.price} VND
+                {VND.format(product.price)}
               </div>
               <div className="flex gap-x-[120px]">
                 <div className="flex flex-col gap-y-4">

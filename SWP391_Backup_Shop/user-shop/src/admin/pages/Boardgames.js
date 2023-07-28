@@ -123,8 +123,6 @@ const BoardgameInformation = () => {
     );
   };
 
-  
-
   return (
     <div className="p-[40px]">
       <div className="mt-[20px]">
